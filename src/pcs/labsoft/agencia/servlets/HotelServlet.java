@@ -35,13 +35,13 @@ public class HotelServlet extends HttpServlet {
 		
 		if (request.getParameter("id") != null)
 		{
-			RequestDispatcher r = request.getRequestDispatcher("WEB-INF/pages/details.jsp");
+			RequestDispatcher r = request.getRequestDispatcher("WEB-INF/pages/hoteis/details.jsp");
 			r.forward(request, response);
 		}
 		else 
 		{
 			request.setAttribute("list", list);
-			RequestDispatcher r = request.getRequestDispatcher("WEB-INF/pages/list.jsp");
+			RequestDispatcher r = request.getRequestDispatcher("WEB-INF/pages/hoteis/list.jsp");
 			r.forward(request, response);
 		}
 	}

@@ -15,7 +15,7 @@
 	
 	for (Hotel hotel : list) {
 	%>
-	<li><a href="HotelController?id=<%hotel.getID(); %>" ><%=hotel.getID() %> | <%=hotel.getNome() %></a></li>
+	<li><a href="hoteis?id=<%hotel.getID(); %>" ><%=hotel.getID() %> | <%=hotel.getNome() %></a></li>
 	
 	<%} %>
 </body>
