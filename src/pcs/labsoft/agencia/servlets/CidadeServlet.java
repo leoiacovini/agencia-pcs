@@ -16,8 +16,8 @@ import java.util.Optional;
 /**
  * Created by leoiacovini on 10/7/16.
  */
-@WebServlet(name = "CidadesServlet", urlPatterns = "/cidades")
-public class CidadesServlet extends HttpServlet {
+@WebServlet(name = "CidadeServlet", urlPatterns = "/cidades")
+public class CidadeServlet extends HttpServlet {
 
     static private List<Cidade> mockCidades = Cidade.mockData();
 
@@ -47,5 +47,4 @@ public class CidadesServlet extends HttpServlet {
         String baseDirectory = "WEB-INF/pages/cidades/";
         return baseDirectory + pageName;
     }
-
 }
