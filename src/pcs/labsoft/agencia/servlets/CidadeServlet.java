@@ -47,4 +47,5 @@ public class CidadeServlet extends HttpServlet {
         String baseDirectory = "WEB-INF/pages/cidades/";
         return baseDirectory + pageName;
     }
+
 }
