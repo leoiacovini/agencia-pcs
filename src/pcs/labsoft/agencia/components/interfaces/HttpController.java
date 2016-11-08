@@ -1,5 +1,6 @@
 package pcs.labsoft.agencia.components.interfaces;
 
+import com.typesafe.config.Config;
 import pcs.labsoft.agencia.components.AppSystem;
 
 /**
@@ -9,10 +10,12 @@ public class HttpController {
 
     private AppSystem system;
     private IDB db;
+    private Config config;
 
     public HttpController() {
         system = AppSystem.getSystem();
         db = system.getDataBase();
+        config = system.getConfiguration();
     }
 
 }

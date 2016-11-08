@@ -39,6 +39,7 @@ public class TomcatServer implements IWebServer {
         filter1mapping.addURLPattern("/*");
         ctx.addFilterMap(filter1mapping);
 
+        tomcat.setSilent(true);
         tomcat.start();
         tomcat.getServer().await();
     }

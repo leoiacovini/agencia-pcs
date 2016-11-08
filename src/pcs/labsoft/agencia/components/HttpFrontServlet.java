@@ -19,7 +19,7 @@ public class HttpFrontServlet extends HttpServlet {
 
     private final IRouter router;
 
-    public HttpFrontServlet(Config config, IRouter router) {
+    public HttpFrontServlet(IRouter router) {
         this.router = router;
     }
 

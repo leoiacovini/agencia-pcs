@@ -52,30 +52,26 @@ public class AppSystem {
 
         Logger.getLogger().info("Starting up System...");
 
+        String configFile = "application.conf";
+
+        switch (env) {
+            case "test": {
+                H2Server.startServer();
+                configFile = "test.conf";
+                break;
+            }
+        }
+
         Routes = new Routes();
         Router = new Router(Routes);
-        Configuration = ConfigFactory.defaultApplication();
+        Configuration = ConfigFactory.load(configFile);
+        DataBase = new DefaultDB(Configuration);
         ServletFilter = new ServletFilter();
-        FrontServlet = new HttpFrontServlet(Configuration, Router);
-        DataBase = null; //new DefaultDB(Configuration);
+        FrontServlet = new HttpFrontServlet(Router);
         Auth = new Auth(Configuration);
 
         Logger.getLogger().info("All components started successfully");
 
-        switch (env) {
-            case "prod": {
-                startProdSystem();
-                break;
-            }
-            case "local": {
-                startLocalSystem();
-                break;
-            }
-            case "test": {
-                startTestSystem();
-                break;
-            }
-        }
     }
 
     public static void startSystem(String env) throws ServletException, LifecycleException {
@@ -87,16 +83,5 @@ public class AppSystem {
         return AppSystem.system;
     }
 
-    private static void startProdSystem() {
-
-    }
-
-    private static void startTestSystem() {
-
-    }
-
-    private static void startLocalSystem() {
-
-    }
 
 }
