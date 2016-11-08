@@ -50,8 +50,6 @@ public class AppSystem {
 
     private AppSystem(String env) throws ServletException, LifecycleException {
 
-        Logger.getLogger().info("Starting up System...");
-
         String configFile = "application.conf";
 
         switch (env) {
@@ -70,13 +68,14 @@ public class AppSystem {
         FrontServlet = new HttpFrontServlet(Router);
         Auth = new Auth(Configuration);
 
-        Logger.getLogger().info("All components started successfully");
+        TomcatServer.startServer(FrontServlet, ServletFilter);
 
     }
 
     public static void startSystem(String env) throws ServletException, LifecycleException {
+        Logger.getLogger().info("Starting up System...");
         AppSystem.system = new AppSystem(env);
-        TomcatServer.startServer(AppSystem.system.getServlet(), AppSystem.system.getServletFilter());
+        Logger.getLogger().info("All components started successfully");
     }
 
     public static AppSystem getSystem() {

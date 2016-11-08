@@ -9,6 +9,7 @@ import pcs.labsoft.agencia.components.interfaces.IWebServer;
 
 import javax.servlet.*;
 import java.io.File;
+import java.util.logging.Level;
 
 /**
  * Created by leoiacovini on 11/7/16.
@@ -22,8 +23,10 @@ public class TomcatServer implements IWebServer {
         Logger.getLogger().info("configuring app with basedir: " + new File("./" + webappDirLocation).getAbsolutePath());
 
         Tomcat tomcat = new Tomcat();
+        tomcat.setSilent(true);
+
         tomcat.setPort(Integer.valueOf("8080"));
-        StandardContext ctx = (StandardContext) tomcat.addWebapp("/", new File(webappDirLocation).getAbsolutePath());
+        StandardContext ctx = (StandardContext) tomcat.addWebapp("", new File(webappDirLocation).getAbsolutePath());
 
         tomcat.addServlet(ctx, "frontController", servlet);
         ctx.addServletMapping("/app/*", "frontController");
@@ -38,10 +41,8 @@ public class TomcatServer implements IWebServer {
         filter1mapping.setFilterName("servletFilter");
         filter1mapping.addURLPattern("/*");
         ctx.addFilterMap(filter1mapping);
-
-        tomcat.setSilent(true);
+        tomcat.init();
         tomcat.start();
-        tomcat.getServer().await();
     }
 
     public static IWebServer startServer(Servlet servlet, Filter filter) throws ServletException, LifecycleException {
