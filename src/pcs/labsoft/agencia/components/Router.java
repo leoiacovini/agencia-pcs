@@ -1,5 +1,6 @@
 package pcs.labsoft.agencia.components;
 
+import pcs.labsoft.agencia.components.interfaces.HttpInterceptor;
 import pcs.labsoft.agencia.components.interfaces.IRouter;
 import pcs.labsoft.agencia.misc.HttpHandler;
 import pcs.labsoft.agencia.misc.HttpRequest;
@@ -20,10 +21,12 @@ public class Router implements IRouter {
 
     private final Routes routes;
     private HashMap<Class<?>, Object> controllers;
+    private HashMap<Class<?>, HttpInterceptor> interceptors;
 
     public Router(Routes routes) {
         this.routes = routes;
         this.controllers = new HashMap<>();
+        this.interceptors = new HashMap<>();
     }
 
     public void route(HttpRequest servletRequest, HttpServletResponse servletResponse) throws IOException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException {
@@ -49,7 +52,8 @@ public class Router implements IRouter {
     private void runInterceptors(HttpRequest servletRequest, HttpServletResponse servletResponse, Route route) {
         Arrays.asList(route.getHandler().getAnnotation(HttpHandler.class).interceptors()).forEach(inter -> {
             try {
-                inter.newInstance().intercep(servletRequest, servletResponse);
+                interceptors.putIfAbsent(inter, inter.newInstance());
+                interceptors.get(inter).intercep(servletRequest, servletResponse);
             } catch (InstantiationException | IllegalAccessException e) {
                 e.printStackTrace();
             }

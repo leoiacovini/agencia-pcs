@@ -1,5 +1,6 @@
 package pcs.labsoft.agencia.components;
 
+import com.typesafe.config.Config;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.core.StandardContext;
 import org.apache.catalina.startup.Tomcat;
@@ -9,14 +10,13 @@ import pcs.labsoft.agencia.components.interfaces.IWebServer;
 
 import javax.servlet.*;
 import java.io.File;
-import java.util.logging.Level;
 
 /**
  * Created by leoiacovini on 11/7/16.
  */
 public class TomcatServer implements IWebServer {
 
-    private TomcatServer(Servlet servlet, Filter filter) throws ServletException, LifecycleException {
+    private TomcatServer(Config config, Servlet servlet, Filter filter) throws ServletException, LifecycleException {
 
         String webappDirLocation = "web/";
 
@@ -25,7 +25,7 @@ public class TomcatServer implements IWebServer {
         Tomcat tomcat = new Tomcat();
         tomcat.setSilent(true);
 
-        tomcat.setPort(Integer.valueOf("8080"));
+        tomcat.setPort(config.getInt("http.port"));
         StandardContext ctx = (StandardContext) tomcat.addWebapp("", new File(webappDirLocation).getAbsolutePath());
 
         tomcat.addServlet(ctx, "frontController", servlet);
@@ -34,18 +34,18 @@ public class TomcatServer implements IWebServer {
         FilterDef filter1definition = new FilterDef();
         filter1definition.setFilterName("servletFilter");
         filter1definition.setFilter(filter);
-
         ctx.addFilterDef(filter1definition);
 
         FilterMap filter1mapping = new FilterMap();
         filter1mapping.setFilterName("servletFilter");
         filter1mapping.addURLPattern("/*");
         ctx.addFilterMap(filter1mapping);
+
         tomcat.init();
         tomcat.start();
     }
 
-    public static IWebServer startServer(Servlet servlet, Filter filter) throws ServletException, LifecycleException {
-        return new TomcatServer(servlet, filter);
+    public static IWebServer startServer(Config config, Servlet servlet, Filter filter) throws ServletException, LifecycleException {
+        return new TomcatServer(config, servlet, filter);
     }
 }

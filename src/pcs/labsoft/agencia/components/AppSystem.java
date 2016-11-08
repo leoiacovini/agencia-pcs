@@ -68,7 +68,7 @@ public class AppSystem {
         FrontServlet = new HttpFrontServlet(Router);
         Auth = new Auth(Configuration);
 
-        TomcatServer.startServer(FrontServlet, ServletFilter);
+        TomcatServer.startServer(Configuration, FrontServlet, ServletFilter);
 
     }
 
@@ -81,6 +81,5 @@ public class AppSystem {
     public static AppSystem getSystem() {
         return AppSystem.system;
     }
-
 
 }
