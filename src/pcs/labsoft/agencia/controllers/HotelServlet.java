@@ -1,4 +1,4 @@
-package pcs.labsoft.agencia.servlets;
+package pcs.labsoft.agencia.controllers;
 
 import java.io.IOException;
 import java.util.ArrayList;
