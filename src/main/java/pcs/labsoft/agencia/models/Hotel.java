@@ -1,17 +1,17 @@
 package pcs.labsoft.agencia.models;
 
 public class Hotel {
-	private static int lastID = 1;
-	private int ID;
-	private String nome;
-	private double preco;
+
+	private final int id;
+	private final String nome;
+	private final double preco;
+	private final Cidade cidade;
 	
-	public Hotel(String n, double p)
-	{
-		nome = n;
-		preco = p;
-		ID = lastID;
-		lastID++;
+	public Hotel(String nome, double preco, Cidade cidade, int id) {
+		this.nome = nome;
+		this.preco = preco;
+		this.cidade = cidade;
+		this.id = id;
 	}
 	
 	public String getNome()
@@ -26,6 +26,6 @@ public class Hotel {
 	
 	public int getID()
 	{
-		return ID;
+		return id;
 	}
 }
