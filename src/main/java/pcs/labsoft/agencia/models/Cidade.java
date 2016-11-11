@@ -19,6 +19,9 @@ public class Cidade {
     private final String nome;
     private final String pais;
     private final String estado;
+    private List<Transporte> transportesDePartida;
+    private List<Transporte> transportesDeChegada;
+    private List<Hotel> hoteis;
 
     public Cidade(String nome, String pais, String estado, int id) {
         this.nome = nome;
@@ -56,4 +59,27 @@ public class Cidade {
         return cidades;
     }
 
+    public List<Transporte> getTransportesDePartida() {
+        return transportesDePartida;
+    }
+
+    public void addTransportesDePartida(Transporte transportesDePartida) {
+        this.transportesDePartida.add(transportesDePartida);
+    }
+
+    public List<Transporte> getTransportesDeChegada() {
+        return transportesDeChegada;
+    }
+
+    public void addTransportesDeChegada(Transporte transportesDeChegada) {
+        this.transportesDeChegada.add(transportesDeChegada);
+    }
+
+    public List<Hotel> getHoteis() {
+        return hoteis;
+    }
+
+    public void addHotel(Hotel hotel) {
+        this.hoteis.add(hotel);
+    }
 }

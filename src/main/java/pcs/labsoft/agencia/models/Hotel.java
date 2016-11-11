@@ -1,15 +1,17 @@
 package pcs.labsoft.agencia.models;
 
 public class Hotel {
+
 	private final int id;
-	private String nome;
-	private double preco;
+	private final String nome;
+	private final double preco;
+	private final Cidade cidade;
 	
-	public Hotel(String nome, double preco, int id)
-	{
+	public Hotel(String nome, double preco, int id, Cidade cidade) {
 		this.nome = nome;
 		this.preco = preco;
-		this.id = id;	
+		this.cidade = cidade;
+		this.id = id;
 	}
 	
 	public String getNome()

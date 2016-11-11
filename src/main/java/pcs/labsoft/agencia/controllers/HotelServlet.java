@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * Servlet implementation class HotelServlet
  */
-@WebServlet("/hoteis")
 public class HotelServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -28,10 +27,6 @@ public class HotelServlet extends HttpServlet {
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 		
 		List<Hotel> list = new ArrayList<Hotel>();
-		list.add(new Hotel("Hotel 10", 10.00, 1));
-		list.add(new Hotel("Hotel 20", 20.00, 2));
-		list.add(new Hotel("Hotel 30", 30.00, 3));
-		list.add(new Hotel("Hotel 40", 40.00, 4));
 		
 		if (request.getParameter("id") != null)
 		{

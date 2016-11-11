@@ -1,5 +1,6 @@
 package pcs.labsoft.agencia.controllers;
 
+import pcs.labsoft.agencia.components.interceptors.BadRequestInterceptor;
 import pcs.labsoft.agencia.components.interfaces.HttpController;
 import pcs.labsoft.agencia.misc.HttpHandler;
 import pcs.labsoft.agencia.misc.HttpRequest;
@@ -7,8 +8,6 @@ import pcs.labsoft.agencia.models.Cidade;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
