@@ -1,4 +1,4 @@
-package pcs.labsoft.agencia.servlets;
+package pcs.labsoft.agencia.controllers;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -35,13 +35,13 @@ public class HotelServlet extends HttpServlet {
 		
 		if (request.getParameter("id") != null)
 		{
-			RequestDispatcher r = request.getRequestDispatcher("WEB-INF/pages/hoteis/details.jsp");
+			RequestDispatcher r = request.getRequestDispatcher("src/main/webapp/WEB-INF/pages/hoteis/details.jsp");
 			r.forward(request, response);
 		}
 		else 
 		{
 			request.setAttribute("list", list);
-			RequestDispatcher r = request.getRequestDispatcher("WEB-INF/pages/hoteis/list.jsp");
+			RequestDispatcher r = request.getRequestDispatcher("src/main/webapp/WEB-INF/pages/hoteis/list.jsp");
 			r.forward(request, response);
 		}
 	}

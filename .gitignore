@@ -110,3 +110,7 @@ local.properties
 # Code Recommenders
 .recommenders/
 
+/build/
+
+/tomcat.8080/
+/target/

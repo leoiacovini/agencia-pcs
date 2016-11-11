@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+
+function delete_db() {
+
+	if [[ eval "docker ps -q -f name=agencia-pcs-mariadb" ]]; then
+		docker stop agencia-pcs-mariadb &> /dev/null || echo 'No container to stop...'
+		docker rm agencia-pcs-mariadb &> /dev/null || echo 'No container to remove...'
+		echo "Database deleted..."
+	fi
+
+}
+
+if [[ $1 == "delete" ]]; then
+    delete_db
+elif [[ $1 == "start" ]]; then
+	docker start agencia-pcs-mariadb
+elif [[ $1 == "stop" ]]; then
+	docker stopagencia-pcs-mariadb &> /dev/null || echo 'No container to stop...'
+elif [[ $1 == "setup" ]]; then
+	delete_db
+	echo "Creating new container now..."
+	docker run --name agencia-pcs-mariadb -e MYSQL_ROOT_PASSWORD=123456 -e MYSQL_DATABASE=agencia -e MYSQL_USER=user -e MYSQL_PASSWORD=pass -p 3306:3306 -d mariadb:latest &> /dev/null;
+	echo "Container created succesfully"
+else
+	echo "Choose one of the following options:"
+	echo "delete  -> Remove any existing instances of the database"
+	echo "start  -> Start a existing instance of the database, or create one if none exists"
+	echo "stop -> Stop a running instance of the database"
+	echo "setup -> Wipe and create a new database"
+fi
