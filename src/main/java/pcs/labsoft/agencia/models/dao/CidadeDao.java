@@ -12,6 +12,10 @@ import pcs.labsoft.agencia.models.Cidade;
 import pcs.labsoft.agencia.models.Hotel;
 import pcs.labsoft.agencia.models.Transporte;
 
+
+/**
+ * Created by jhonata-antunes on 11/11/16.
+ */
 public class CidadeDao {
 	
 	private Connection connection;  
