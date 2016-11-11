@@ -6,14 +6,14 @@ package pcs.labsoft.agencia.models;
 public class Transporte {
 
     private final int id;
-    private final Cidade cidadeDeOrigem;
     private final Cidade cidadeDePartida;
+    private final Cidade cidadeDeChegada;
     private final String tipo;
     private final Double preco;
 
-    public Transporte(Cidade cidadeDeOrigem, Cidade cidadeDePartida, String tipo, Double preco, int  id) {
-        this.cidadeDeOrigem = cidadeDeOrigem;
+    public Transporte(Cidade cidadeDePartida, Cidade cidadeDeChegada, String tipo, Double preco, int  id) {
         this.cidadeDePartida = cidadeDePartida;
+        this.cidadeDeChegada = cidadeDeChegada;
         this.tipo = tipo;
         this.preco = preco;
         this.id = id;

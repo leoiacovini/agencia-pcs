@@ -63,23 +63,23 @@ public class Cidade {
         return transportesDePartida;
     }
 
-    void setTransportesDePartida(List<Transporte> transportesDePartida) {
-        this.transportesDePartida = transportesDePartida;
+    public void addTransportesDePartida(Transporte transportesDePartida) {
+        this.transportesDePartida.add(transportesDePartida);
     }
 
     public List<Transporte> getTransportesDeChegada() {
         return transportesDeChegada;
     }
 
-    void setTransportesDeChegada(List<Transporte> transportesDeChegada) {
-        this.transportesDeChegada = transportesDeChegada;
+    public void addTransportesDeChegada(Transporte transportesDeChegada) {
+        this.transportesDeChegada.add(transportesDeChegada);
     }
 
     public List<Hotel> getHoteis() {
         return hoteis;
     }
 
-    void setHoteis(List<Hotel> hoteis) {
-        this.hoteis = hoteis;
+    public void addHotel(Hotel hotel) {
+        this.hoteis.add(hotel);
     }
 }
