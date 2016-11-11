@@ -9,5 +9,7 @@ import java.sql.SQLException;
 public interface IDB {
 
     public Connection getConnection() throws SQLException;
+    public void runMigrations();
+    public void clean();
 
 }

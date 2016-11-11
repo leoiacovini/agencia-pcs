@@ -64,6 +64,7 @@ public class AppSystem {
         Router = new Router(Routes);
         Configuration = ConfigFactory.load(configFile);
         DataBase = new DefaultDB(Configuration);
+        DataBase.runMigrations();
         ServletFilter = new ServletFilter();
         FrontServlet = new HttpFrontServlet(Router);
         Auth = new Auth(Configuration);
