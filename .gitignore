@@ -111,3 +111,6 @@ local.properties
 .recommenders/
 
 /build/
+
+/tomcat.8080/
+/target/
