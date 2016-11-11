@@ -18,7 +18,7 @@ public class TomcatServer implements IWebServer {
 
     private TomcatServer(Config config, Servlet servlet, Filter filter) throws ServletException, LifecycleException {
 
-        String webappDirLocation = "web/";
+        String webappDirLocation = "src/main/webapp";
 
         Logger.getLogger().info("configuring app with basedir: " + new File("./" + webappDirLocation).getAbsolutePath());
 

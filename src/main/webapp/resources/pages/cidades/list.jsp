@@ -10,7 +10,7 @@
 
 <ul>
     <% for (Cidade cidade : cidades) { %>
-    <a href="cidades/<%= cidade.getId() %>">
+    <a href="/cidades/<%= cidade.getId() %>">
         <li><%= cidade %></li>
     </a>
     <% } %>
