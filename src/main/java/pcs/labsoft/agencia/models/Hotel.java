@@ -6,7 +6,7 @@ public class Hotel {
 	private final String nome;
 	private final double preco;
 	private final Cidade cidade;
-	
+
 	public Hotel(String nome, double preco, int id, Cidade cidade) {
 		this.nome = nome;
 		this.preco = preco;
