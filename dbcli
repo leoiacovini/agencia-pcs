@@ -1,13 +1,9 @@
 #!/usr/bin/env bash
 
 function delete_db() {
-
-	if [[ eval "docker ps -q -f name=agencia-pcs-mariadb" ]]; then
-		docker stop agencia-pcs-mariadb &> /dev/null || echo 'No container to stop...'
-		docker rm agencia-pcs-mariadb &> /dev/null || echo 'No container to remove...'
-		echo "Database deleted..."
-	fi
-
+    docker stop agencia-pcs-mariadb &> /dev/null || echo 'No container to stop...'
+	    docker rm agencia-pcs-mariadb &> /dev/null || echo 'No container to remove...'
+	    echo "Database deleted..."
 }
 
 if [[ $1 == "delete" ]]; then
