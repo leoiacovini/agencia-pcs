@@ -26,12 +26,8 @@ public class HotelServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.getWriter().append("Served at: ").append(request.getContextPath());
-		
+
 		List<Hotel> list = new ArrayList<Hotel>();
-		list.add(new Hotel("Hotel 10", 10.00, cidade));
-		list.add(new Hotel("Hotel 20", 20.00, cidade));
-		list.add(new Hotel("Hotel 30", 30.00, cidade));
-		list.add(new Hotel("Hotel 40", 40.00, cidade));
 		
 		if (request.getParameter("id") != null)
 		{
