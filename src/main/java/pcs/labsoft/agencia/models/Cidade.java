@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class Cidade {
 
-    private final int id;
+    private int id;
     private final String nome;
     private final String pais;
     private final String estado;
@@ -28,6 +28,12 @@ public class Cidade {
         this.pais = pais;
         this.estado = estado;
         this.id = id;
+    }
+    
+    public Cidade(String nome, String pais, String estado) {
+        this.nome = nome;
+        this.pais = pais;
+        this.estado = estado;
     }
 
     public String getNome() {
