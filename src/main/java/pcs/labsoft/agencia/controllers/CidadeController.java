@@ -49,6 +49,12 @@ public class CidadeController extends HttpController {
             e.printStackTrace();
         }
     }
+    @HttpHandler(path = "/novacidade", method = "POST")
+    public void addCidade(HttpRequest request, HttpServletResponse response) throws IOException {
+        Cidade nova = new Cidade(request.getParameter("Nome"),request.getParameter("Estado"),request.getParameter("Pais"));
+        mockCidades.add(nova);
+        response.getWriter().write("OK");
+    }
 
     @HttpHandler(path="/managercidades", method = "GET")
     public void CRUDCidade(HttpRequest request, HttpServletResponse response) {
