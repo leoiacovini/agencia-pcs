@@ -91,8 +91,11 @@ public class CidadeDao {
         try(Connection connection = idb.getConnection()) {
 			Statement statement = connection.createStatement();
 			ResultSet rs = statement.executeQuery("SELECT * FROM cidades WHERE id=" + id);
-            rs.next();
-            return new Cidade(rs.getString("nome"), rs.getString("pais"), rs.getString("estado"), id);
+            if (rs.next()) {
+                return new Cidade(rs.getString("nome"), rs.getString("pais"), rs.getString("estado"), id);
+            } else {
+                return null;
+            }
 		}
 		catch (Exception ex) {
             ex.printStackTrace();
@@ -111,11 +114,9 @@ public class CidadeDao {
 		
 		try(Connection connection = idb.getConnection()) {
 			Statement statement = connection.createStatement();
-			
 			String SQLInsert = "INSERT INTO cidades ";
 			String SQLColumns = "(nome, estado, pais) ";
 			String SQLValues = "VALUES ( '" + cidade.getNome() + "' , '" + cidade.getEstado() + "' , '" + cidade.getPais() + "')";
-			
 			statement.executeUpdate(SQLInsert + SQLColumns + SQLValues);
             ResultSet genKeys = statement.getGeneratedKeys();
             if (genKeys.next()) {
@@ -139,13 +140,10 @@ public class CidadeDao {
 	public void update(Cidade cidade) throws Exception {
 		
 		try(Connection connection = idb.getConnection()) {
-
 			Statement statement = connection.createStatement();
-			
 			String SQLUpdate = "UPDATE cidades ";
 			String SQLSet = "SET nome = '" + cidade.getNome() + "' , estado = '" + cidade.getEstado() + "' , pais = '" + cidade.getPais() + "' ";
 			String SQLWhere = "WHERE id = " + cidade.getId();
-			
 			statement.executeUpdate(SQLUpdate + SQLSet + SQLWhere);
 		}
 		catch (Exception ex) {
@@ -155,49 +153,18 @@ public class CidadeDao {
 	}
 
 	/**
-	Delete all rows from the table. 
-	@throws thrown when delete fails.
-	*/
-	public void deleteAll() throws Exception {
-		boolean error = false;
-		
-		try {
-			Connection connection = idb.getConnection();
-			Statement statement = connection.createStatement();
-			
-			statement.executeQuery("DELETE * FROM cidades");
-			
-			connection.close();
-		}
-		catch (Exception ex) {
-			Logger.getLogger().info("CidadeDao Class: " + ex.getMessage());
-			error = true;
-		}
-		
-		if (error) throw new Exception("Erro ao deletar todos os registros.");
-	}
-
-	/**
 	Delete row, by id, from the table.
 	@param  Id from object to be deleted.
 	@throws thrown when delete fails.
 	*/
 	public void deleteById(int id) throws Exception {
-		boolean error = false;
-		
-		try {
-			Connection connection = idb.getConnection();
+		try(Connection connection = idb.getConnection()) {
 			Statement statement = connection.createStatement();
-			
-			statement.executeQuery("DELETE * FROM cidades WHERE id = " + id);
-			
-			connection.close();
+			statement.executeUpdate("DELETE FROM cidades WHERE id = " + id);
 		}
 		catch (Exception ex) {
-			Logger.getLogger().info("CidadeDao Class: " + ex.getMessage());
-			error = true;
+            ex.printStackTrace();
+			Logger.getLogger().info(ex.getMessage());
 		}
-		
-		if (error) throw new Exception("Erro ao deletar o registro (id = " + id + ").");
 	}
 }

@@ -9,25 +9,28 @@ CREATE TABLE cidades (
 CREATE TABLE hoteis (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   nome VARCHAR(255) NOT NULL,
-  cidade_id INT REFERENCES cidades(id),
+  cidade_id INT REFERENCES cidades(id) ON DELETE CASCADE,
   preco DOUBLE NOT NULL,
   CONSTRAINT hoteis_cidade_id_fk
     FOREIGN KEY (cidade_id)
     REFERENCES cidades(id)
+    ON DELETE CASCADE
 );
 
 CREATE TABLE transportes (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
   tipo VARCHAR(255) NOT NULL,
-  cidade_partida_id INT NOT NULL REFERENCES cidades(id),
-  cidade_chegada_id INT NOT NULL REFERENCES cidades(id),
+  cidade_partida_id INT NOT NULL REFERENCES cidades(id) ON DELETE CASCADE,
+  cidade_chegada_id INT NOT NULL REFERENCES cidades(id) ON DELETE CASCADE,
   preco DOUBLE NOT NULL,
   CONSTRAINT transportes_cidade_partida_id_fk
     FOREIGN KEY (cidade_partida_id)
-    REFERENCES cidades(id),
+    REFERENCES cidades(id)
+    ON DELETE CASCADE,
   CONSTRAINT trasportes_cidade_chegada_id_fk
     FOREIGN KEY (cidade_chegada_id)
     REFERENCES cidades(id)
+    ON DELETE CASCADE
 );
 
 CREATE TABLE clientes (
@@ -58,18 +61,20 @@ CREATE TABLE pagamentos (
 CREATE TABLE roteiros (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   duracao INT,
-  funcionario_id INT NOT NULL REFERENCES funcionarios(id),
-  cliente_id INT NOT NULL REFERENCES clientes(id),
-  pagamento_id INT REFERENCES pagamentos(id),
+  funcionario_id INT NOT NULL REFERENCES funcionarios(id) ,
+  cliente_id INT NOT NULL REFERENCES clientes(id) ON DELETE CASCADE,
+  pagamento_id INT REFERENCES pagamentos(id) ON DELETE CASCADE,
   CONSTRAINT roteiros_cliente_fk
     FOREIGN KEY (cliente_id)
-    REFERENCES clientes(id),
+    REFERENCES clientes(id)
+    ON DELETE CASCADE,
   CONSTRAINT roteiros_funcionario_id_fk
     FOREIGN KEY (funcionario_id)
     REFERENCES funcionarios(id),
   CONSTRAINT roteiros_pagamento_id_fk
     FOREIGN KEY (pagamento_id)
     REFERENCES pagamentos(id)
+    ON DELETE CASCADE
 );
 
 CREATE TABLE trechos (

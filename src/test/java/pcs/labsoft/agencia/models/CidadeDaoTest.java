@@ -7,6 +7,7 @@ import pcs.labsoft.agencia.models.dao.CidadeDao;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 
 /**
@@ -53,6 +54,13 @@ public class CidadeDaoTest extends SystemTest {
         assertEquals("Updated", updatedCidade.getNome());
         assertEquals("Pais", updatedCidade.getPais());
         assertEquals("PCS", updatedCidade.getEstado());
+    }
+
+    @Test
+    public void deleteById() throws Exception {
+        cidadeDao.deleteById(1);
+        Cidade cidade = cidadeDao.findById(1);
+        assertNull(cidade);
     }
 
 }
