@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -35,10 +36,8 @@ public class CidadeDao {
         try (Connection connection = idb.getConnection()) {
 
             Statement statement = connection.createStatement();
-            ResultSet rsCidades = statement.executeQuery("SELECT * FROM cidades");
-            ResultSet rsHoteis = statement.executeQuery("SELECT * FROM hoteis");
-            ResultSet rsTransportes = statement.executeQuery("SELECT * FROM transportes");
 
+            ResultSet rsCidades = statement.executeQuery("SELECT * FROM cidades");
             while (rsCidades.next()) {
                 int id = rsCidades.getInt("id");
                 String nome = rsCidades.getString("nome");
@@ -47,15 +46,17 @@ public class CidadeDao {
                 map.put(id, new Cidade(nome, pais, estado, id));
             }
 
+            ResultSet rsHoteis = statement.executeQuery("SELECT * FROM hoteis");
             while (rsHoteis.next()) {
                 int id = rsHoteis.getInt("id");
-                int cidadeId = rsHoteis.getInt("cidadeId");
+                int cidadeId = rsHoteis.getInt("cidade_id");
                 String nome = rsHoteis.getString("nome");
                 Double preco = rsHoteis.getDouble("preco");
                 Cidade cidade = map.get(cidadeId);
                 cidade.addHotel(new Hotel(nome, preco, id, cidade));
             }
 
+            ResultSet rsTransportes = statement.executeQuery("SELECT * FROM transportes");
             while (rsTransportes.next()) {
                 int id = rsTransportes.getInt("id");
                 int cidadePartidaId = rsTransportes.getInt("cidade_partida_id");
@@ -70,11 +71,12 @@ public class CidadeDao {
             }
 
         } catch (SQLException ex) {
+            ex.printStackTrace();
             Logger.getLogger().info(this.getClass().getName() + " - " + ex.getMessage());
             map = new HashMap<Integer, Cidade>();
         }
 		
-		return (List<Cidade>) map.values();
+		return new ArrayList<>(map.values());
 	}
 
 	/**

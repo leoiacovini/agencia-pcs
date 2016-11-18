@@ -31,9 +31,10 @@ public class DBHelper {
         try(Connection con = db.getConnection()) {
             Statement st = con.createStatement();
             for (String sql: seedInserts) {
-                Logger.getLogger().info("Executing: " + sql + "\n");
+                Logger.getLogger().info("Executing: " + sql);
                 st.executeUpdate(sql);
             }
+            System.out.println();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

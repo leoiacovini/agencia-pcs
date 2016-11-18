@@ -24,13 +24,14 @@ public class Cidade {
     private List<Hotel> hoteis;
 
     public Cidade(String nome, String pais, String estado, int id) {
-        this.nome = nome;
-        this.pais = pais;
-        this.estado = estado;
+        this(nome, pais, estado);
         this.id = id;
     }
     
     public Cidade(String nome, String pais, String estado) {
+        this.transportesDeChegada = new ArrayList<>();
+        this.transportesDePartida = new ArrayList<>();
+        this.hoteis = new ArrayList<>();
         this.nome = nome;
         this.pais = pais;
         this.estado = estado;

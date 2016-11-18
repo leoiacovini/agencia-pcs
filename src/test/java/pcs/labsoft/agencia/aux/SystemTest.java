@@ -13,9 +13,11 @@ import java.sql.SQLException;
  */
 public class SystemTest {
 
+    static protected AppSystem system;
+
     @BeforeClass
     public static void setUp() throws LifecycleException, ServletException, SQLException {
-        AppSystem system = AppSystem.startSystem("test");
+        SystemTest.system = AppSystem.startSystem("test");
         DBHelper dbHelper = new DBHelper(system.getDataBase());
         dbHelper.prepareWithSeed();
     }
