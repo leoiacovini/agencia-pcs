@@ -8,9 +8,9 @@ import pcs.labsoft.agencia.components.AppSystem;
  */
 public class HttpController {
 
-    private AppSystem system;
-    private IDB db;
-    private Config config;
+    protected AppSystem system;
+    protected IDB db;
+    protected Config config;
 
     public HttpController() {
         system = AppSystem.getSystem();

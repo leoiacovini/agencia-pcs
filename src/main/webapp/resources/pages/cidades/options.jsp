@@ -23,7 +23,8 @@
 
     </ul>
 
-
-
-</body>
+    <% if (request.getAttribute("Adicao").equals("OK"))  { %>
+       <jsp:text>Pagina criada com sucesso</jsp:text>
+    <% } %>
+    </body>
 </html>

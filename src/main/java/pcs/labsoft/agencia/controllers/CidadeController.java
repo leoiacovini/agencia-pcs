@@ -1,10 +1,13 @@
 package pcs.labsoft.agencia.controllers;
 
+import org.apache.commons.lang3.ObjectUtils;
+import pcs.labsoft.agencia.components.AppSystem;
 import pcs.labsoft.agencia.components.interceptors.BadRequestInterceptor;
 import pcs.labsoft.agencia.components.interfaces.HttpController;
 import pcs.labsoft.agencia.misc.HttpHandler;
 import pcs.labsoft.agencia.misc.HttpRequest;
 import pcs.labsoft.agencia.models.Cidade;
+import pcs.labsoft.agencia.models.dao.CidadeDao;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -19,10 +22,9 @@ import java.util.Optional;
  */
 public class CidadeController extends HttpController {
 
-    static private List<Cidade> mockCidades = Cidade.mockData();
-
+    private CidadeDao CityDao = new CidadeDao(db);
     @HttpHandler(path="/cidades/:id", method = "GET")
-    public void getCidade(HttpRequest request, HttpServletResponse response) {
+    public void getCidade(HttpRequest request, HttpServletResponse response) throws Exception {
         try {
             String cidadeId = request.getPathParam("id");
             RequestDispatcher requestDispatcher = renderCidadeDetails(cidadeId, request);
@@ -50,15 +52,24 @@ public class CidadeController extends HttpController {
         }
     }
     @HttpHandler(path = "/novacidade", method = "POST")
-    public void addCidade(HttpRequest request, HttpServletResponse response) throws IOException {
+    public void addCidade(HttpRequest request, HttpServletResponse response) throws Exception {
         Cidade nova = new Cidade(request.getParameter("Nome"),request.getParameter("Estado"),request.getParameter("Pais"));
-        mockCidades.add(nova);
-        response.getWriter().write("OK");
+        CityDao.create(nova);
+        String ok ="OK";
+        request.setAttribute("Adicao",ok);
+        CRUDCidade(request,response);
+
     }
 
     @HttpHandler(path="/managercidades", method = "GET")
     public void CRUDCidade(HttpRequest request, HttpServletResponse response) {
         try {
+            if(request.getAttribute("Adicao") != null){
+
+            }else{
+                request.setAttribute("Adicao","Null");
+            }
+
             renderCRUDCidade(request).forward(request, response);
         } catch (IOException | ServletException e) {
             e.printStackTrace();
@@ -66,24 +77,22 @@ public class CidadeController extends HttpController {
     }
 
     private RequestDispatcher renderCidadesList(HttpServletRequest servletRequest) {
-        servletRequest.setAttribute("cidades", mockCidades);
+        servletRequest.setAttribute("cidades", CityDao.loadAll());
         return servletRequest.getRequestDispatcher(getPagePath("list.jsp"));
     }
 
     private RequestDispatcher renderCRUDCidade(HttpServletRequest servletRequest) {
-        servletRequest.setAttribute("managercidades", mockCidades);
         return servletRequest.getRequestDispatcher(getPagePath("options.jsp"));
     }
 
     private RequestDispatcher rendernewCidade(HttpServletRequest servletRequest) {
-        servletRequest.setAttribute("newcidade", mockCidades);
         return servletRequest.getRequestDispatcher(getPagePath("newcity.jsp"));
     }
 
-    private RequestDispatcher renderCidadeDetails(String cidadeId, HttpServletRequest servletRequest) {
-        Optional<Cidade> cidade = mockCidades.stream().filter(c -> c.getId() == Integer.parseInt(cidadeId)).findFirst();
-        if (cidade.isPresent()) {
-            servletRequest.setAttribute("cidade", cidade.get());
+    private RequestDispatcher renderCidadeDetails(String cidadeId, HttpServletRequest servletRequest) throws Exception {
+        Cidade cidade = CityDao.findById(Integer.parseInt(cidadeId));
+        if (cidade!=null) {
+            servletRequest.setAttribute("cidade", cidade);
             return servletRequest.getRequestDispatcher(getPagePath("details.jsp"));
         } else {
             servletRequest.setAttribute("subject", "cidade");
