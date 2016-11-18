@@ -17,8 +17,9 @@ import pcs.labsoft.agencia.models.Transporte;
 /**
  * Created by jhonata-antunes on 11/11/16.
  */
-public class CidadeDao {  
-	private IDB idb;
+public class CidadeDao {
+
+	private final IDB idb;
 	
 	public CidadeDao (IDB idb) {
 		this.idb = idb;
@@ -28,53 +29,50 @@ public class CidadeDao {
 	Load all objects of type Cidade from DB.
 	@return List containing all objects of type Cidade. Never null.
 	*/
-	public List<Cidade> LoadAll() {
-		HashMap<Integer, Cidade> map = new HashMap<Integer, Cidade>(); 
-		
-		try {
-			Connection connection = idb.getConnection();
-			Statement statement = connection.createStatement();
+	public List<Cidade> loadAll() {
+		HashMap<Integer, Cidade> map = new HashMap<Integer, Cidade>();
 
-			ResultSet rsCidades = statement.executeQuery("SELECT * FROM cidades");
-			ResultSet rsHoteis = statement.executeQuery("SELECT * FROM hoteis");
-			ResultSet rsTransportes = statement.executeQuery("SELECT * FROM transportes");
-			
-			while (rsCidades.next()) {
-				int id = rsCidades.getInt("id");
-				String nome = rsCidades.getString("nome");
-				String pais = rsCidades.getString("pais");
-				String estado = rsCidades.getString("estado");
-				map.put(id, new Cidade(nome, pais, estado, id));
-			}
-			
-			while (rsHoteis.next()) {
-				int id = rsHoteis.getInt("id");
-				int cidadeId = rsHoteis.getInt("cidadeId");
-				String nome = rsHoteis.getString("nome");
-				Double preco = rsHoteis.getDouble("preco");
-				Cidade cidade = map.get(cidadeId);
-				cidade.addHotel(new Hotel(nome, preco, id, cidade));
-			}
-			
-			while (rsTransportes.next()) {
-				int id = rsTransportes.getInt("id");
-				int cidadePartidaId = rsTransportes.getInt("cidade_partida_id");
-				int cidadeChegadaId = rsTransportes.getInt("cidade_chegada_id");
-				String tipo = rsTransportes.getString("tipo");
-				Double preco = rsTransportes.getDouble("preco");
-				Cidade cidadePartida = map.get(cidadePartidaId);
-				Cidade cidadeChegada = map.get(cidadeChegadaId);
-				Transporte transoprte = new Transporte(cidadePartida, cidadeChegada, tipo, preco, id);
-				cidadePartida.addTransportesDePartida(transoprte);
-				cidadeChegada.addTransportesDeChegada(transoprte);
-			}
-			
-			connection.close();
-		}
-		catch (SQLException ex) {
-			Logger.getLogger().info("CidadeDao Class: " + ex.getMessage());
-			map = new HashMap<Integer, Cidade>();
-		}
+        try (Connection connection = idb.getConnection()) {
+
+            Statement statement = connection.createStatement();
+            ResultSet rsCidades = statement.executeQuery("SELECT * FROM cidades");
+            ResultSet rsHoteis = statement.executeQuery("SELECT * FROM hoteis");
+            ResultSet rsTransportes = statement.executeQuery("SELECT * FROM transportes");
+
+            while (rsCidades.next()) {
+                int id = rsCidades.getInt("id");
+                String nome = rsCidades.getString("nome");
+                String pais = rsCidades.getString("pais");
+                String estado = rsCidades.getString("estado");
+                map.put(id, new Cidade(nome, pais, estado, id));
+            }
+
+            while (rsHoteis.next()) {
+                int id = rsHoteis.getInt("id");
+                int cidadeId = rsHoteis.getInt("cidadeId");
+                String nome = rsHoteis.getString("nome");
+                Double preco = rsHoteis.getDouble("preco");
+                Cidade cidade = map.get(cidadeId);
+                cidade.addHotel(new Hotel(nome, preco, id, cidade));
+            }
+
+            while (rsTransportes.next()) {
+                int id = rsTransportes.getInt("id");
+                int cidadePartidaId = rsTransportes.getInt("cidade_partida_id");
+                int cidadeChegadaId = rsTransportes.getInt("cidade_chegada_id");
+                String tipo = rsTransportes.getString("tipo");
+                Double preco = rsTransportes.getDouble("preco");
+                Cidade cidadePartida = map.get(cidadePartidaId);
+                Cidade cidadeChegada = map.get(cidadeChegadaId);
+                Transporte transoprte = new Transporte(cidadePartida, cidadeChegada, tipo, preco, id);
+                cidadePartida.addTransportesDePartida(transoprte);
+                cidadeChegada.addTransportesDeChegada(transoprte);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger().info(this.getClass().getName() + " - " + ex.getMessage());
+            map = new HashMap<Integer, Cidade>();
+        }
 		
 		return (List<Cidade>) map.values();
 	}
@@ -85,7 +83,7 @@ public class CidadeDao {
 	@return Object of type Cidade, or null.
 	@throws thrown when two objects are loaded by the same id.
 	*/
-	public Cidade LoadById(int id) throws Exception {
+	public Cidade loadById(int id) throws Exception {
 		String nome;
 		String estado;
 		String pais;
@@ -127,7 +125,7 @@ public class CidadeDao {
 	@param  New object to be saved.
 	@throws thrown when Create/Insert fails.
 	*/
-	public void Create(Cidade cidade) throws Exception {
+	public void create(Cidade cidade) throws Exception {
 		boolean error = false;
 		
 		try {
@@ -155,7 +153,7 @@ public class CidadeDao {
 	@param  Object to be updated.
 	@throws thrown when update fails.
 	*/
-	public void Update(Cidade cidade) throws Exception {
+	public void update(Cidade cidade) throws Exception {
 		boolean error = false;
 		
 		try {
@@ -183,7 +181,7 @@ public class CidadeDao {
 	Delete all rows from the table. 
 	@throws thrown when delete fails.
 	*/
-	public void DeleteAll() throws Exception {
+	public void deleteAll() throws Exception {
 		boolean error = false;
 		
 		try {
@@ -207,7 +205,7 @@ public class CidadeDao {
 	@param  Id from object to be deleted.
 	@throws thrown when delete fails.
 	*/
-	public void DeleteById(int id) throws Exception {
+	public void deleteById(int id) throws Exception {
 		boolean error = false;
 		
 		try {
