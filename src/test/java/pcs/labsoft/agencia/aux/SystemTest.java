@@ -14,15 +14,14 @@ import java.sql.SQLException;
 public class SystemTest {
 
     @BeforeClass
-    public void setUp() throws LifecycleException, ServletException, SQLException {
+    public static void setUp() throws LifecycleException, ServletException, SQLException {
         AppSystem system = AppSystem.startSystem("test");
         DBHelper dbHelper = new DBHelper(system.getDataBase());
-        dbHelper.cleanData();
         dbHelper.prepareWithSeed();
     }
 
     @AfterClass
-    public void cleanUp() throws LifecycleException {
+    public static void cleanUp() throws LifecycleException {
         AppSystem.stopSystem();
     }
 
