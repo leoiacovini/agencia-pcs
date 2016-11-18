@@ -32,7 +32,7 @@ public class CidadeDao {
 	@return List containing all objects of type Cidade. Never null.
 	*/
 	public List<Cidade> loadAll() {
-		HashMap<Integer, Cidade> map = new HashMap<Integer, Cidade>();
+		HashMap<Integer, Cidade> map = new HashMap<>();
 
         try (Connection connection = idb.getConnection()) {
 
@@ -73,8 +73,8 @@ public class CidadeDao {
 
         } catch (SQLException ex) {
             ex.printStackTrace();
-            Logger.getLogger().info(this.getClass().getName() + " - " + ex.getMessage());
-            map = new HashMap<Integer, Cidade>();
+            Logger.getLogger().info(ex.getMessage());
+            return null;
         }
 		
 		return new ArrayList<>(map.values());
@@ -99,7 +99,7 @@ public class CidadeDao {
 		}
 		catch (Exception ex) {
             ex.printStackTrace();
-			Logger.getLogger().error("CidadeDao Class: " + ex.getMessage());
+			Logger.getLogger().error(ex.getMessage());
 			return null;
 		}
 
@@ -127,7 +127,7 @@ public class CidadeDao {
 		}
 		catch (Exception ex) {
             ex.printStackTrace();
-			Logger.getLogger().error("CidadeDao Class: " + ex.getMessage());
+			Logger.getLogger().error(ex.getMessage());
             return -1;
 		}
 	}
