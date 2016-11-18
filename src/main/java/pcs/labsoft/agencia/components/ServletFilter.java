@@ -43,9 +43,11 @@ public class ServletFilter implements Filter {
 
         for (HttpServletFilter filter : filters) { filter.intercepRequest(req); }
 
-        if (path.startsWith("/resources/")) {
+        if (path.startsWith("/resources/") && req.getMethod().equals("GET")) {
+            Logger.getLogger().info("RES ACTION " +  path);
             filterChain.doFilter(req, rep); // Goes to default servlet.
         } else {
+            Logger.getLogger().info("SERVLET ACTION " + path);
             req.getRequestDispatcher("/app" + path).forward(req, rep); // Goes to front controller.
         }
 

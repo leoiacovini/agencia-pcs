@@ -26,6 +26,7 @@ public class HttpFrontServlet extends HttpServlet {
     @Override
     protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
+            Logger.getLogger().info("Front Servlet OK");
             HttpRequest newReq = new HttpRequest(req);
             router.route(newReq, resp);
         } catch (ClassNotFoundException | NoSuchMethodException | InvocationTargetException | IllegalAccessException | InstantiationException e) {

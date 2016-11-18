@@ -32,7 +32,12 @@ public class Router implements IRouter {
     public void route(HttpRequest servletRequest, HttpServletResponse servletResponse) throws IOException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException {
 
         Optional<Route> matchedRoute = Arrays.stream(routes.getRoutes()).filter(route -> match(servletRequest, route)).findFirst();
+
+        Logger.getLogger().info("Matched: " + matchedRoute.isPresent());
+        Logger.getLogger().info("MethodMatch: " + matchedRoute.get().getMethod().equals(servletRequest.getMethod()));
+
         if (matchedRoute.isPresent() && matchedRoute.get().getMethod().equals(servletRequest.getMethod())) {
+            Logger.getLogger().info("Matched route: " + matchedRoute.get().getPath() + matchedRoute.get().getMethod());
             Route route = matchedRoute.get();
             Method method = route.getHandler();
             Class<?> controller = route.getController();
@@ -42,6 +47,7 @@ public class Router implements IRouter {
             method.invoke(controllers.get(controller), servletRequest, servletResponse);
         } else {
             try {
+                Logger.getLogger().info("Route not matched");
                 servletRequest.getRequest().getRequestDispatcher("/resources/" + servletRequest.getPathInfo()).forward(servletRequest, servletResponse);
             } catch (ServletException e) {
                 e.printStackTrace();
@@ -66,7 +72,8 @@ public class Router implements IRouter {
         boolean matches = true;
 
         String[] splitedRoutePath = route.getPath().split("/");
-        if (splitedPath.length != splitedRoutePath.length) return false;
+        if (!route.getMethod().equals(req.getMethod())) return false;
+        if (splitedPath.length != splitedRoutePath.length) { Logger.getLogger().info("Wrong len"); return false; }
         for (int i = 0; i < splitedPath.length; i++) {
             String reqPart = splitedPath[i];
             String routePart = splitedRoutePath[i];

@@ -26,6 +26,9 @@ public class Routes {
             HttpHandler an = m.getAnnotation(HttpHandler.class);
             return new Route(an.method(), an.path(), m.getDeclaringClass(), m);
         }).toArray(Route[]::new);
+        for(Route route: routes) {
+            Logger.getLogger().info("Route: " + route.getPath() + " " + route.getMethod());
+        }
     }
 
 }

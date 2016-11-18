@@ -12,7 +12,7 @@
 </head>
 <body>
 <h3>Preencha os campos abaixo</h3>
-<form method="POST" name="/novacidade">
+<form method="POST" name="/novacidade" action="/novacidade">
 <table>
     <tr><td>Nome:</td><td><input name="Nome" type="text"></td></tr>
     <tr><td>Estado:</td><td><input name="Estado" type="text"></td></tr>
