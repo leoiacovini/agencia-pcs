@@ -41,9 +41,37 @@ public class CidadeController extends HttpController {
         }
     }
 
+    @HttpHandler(path = "/novacidade", method = "GET")
+    public void newCidade(HttpRequest request, HttpServletResponse response) {
+        try {
+            rendernewCidade(request).forward(request, response);
+        } catch (ServletException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @HttpHandler(path="/managercidades", method = "GET")
+    public void CRUDCidade(HttpRequest request, HttpServletResponse response) {
+        try {
+            renderCRUDCidade(request).forward(request, response);
+        } catch (IOException | ServletException e) {
+            e.printStackTrace();
+        }
+    }
+
     private RequestDispatcher renderCidadesList(HttpServletRequest servletRequest) {
         servletRequest.setAttribute("cidades", mockCidades);
         return servletRequest.getRequestDispatcher(getPagePath("list.jsp"));
+    }
+
+    private RequestDispatcher renderCRUDCidade(HttpServletRequest servletRequest) {
+        servletRequest.setAttribute("managercidades", mockCidades);
+        return servletRequest.getRequestDispatcher(getPagePath("options.jsp"));
+    }
+
+    private RequestDispatcher rendernewCidade(HttpServletRequest servletRequest) {
+        servletRequest.setAttribute("newcidade", mockCidades);
+        return servletRequest.getRequestDispatcher(getPagePath("newcity.jsp"));
     }
 
     private RequestDispatcher renderCidadeDetails(String cidadeId, HttpServletRequest servletRequest) {
