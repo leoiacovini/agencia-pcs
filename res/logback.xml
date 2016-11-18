@@ -13,6 +13,15 @@
         <appender-ref ref="STDOUT" />
     </logger>
 
+
+    <logger name="org.flywaydb.core.internal.command.DbMigrate" level="WARN" />
+    <logger name="org.flywaydb.core.internal.command.DbValidate" level="WARN" />
+    <logger name="org.flywaydb.core.internal.command.DbValidate" level="WARN" />
+    <logger name="org.flywaydb.core.internal.command.DbClean" level="WARN" />
+    <logger name="org.flywaydb.core.internal.dbsupport.DbSupportFactory" level="WARN" />
+    <logger name="org.flywaydb.core.internal.metadatatable.MetaDataTableImpl" level="WARN" />
+    <logger name="org.flywaydb.core.internal.util.VersionPrinter" level="WARN" />
+
     <!-- By default, the level of the root level is set to DEBUG -->
     <root level="INFO">
         <appender-ref ref="STDOUT" />

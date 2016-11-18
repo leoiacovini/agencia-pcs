@@ -143,8 +143,8 @@ public class CidadeDao {
 			Statement statement = connection.createStatement();
 			
 			String SQLUpdate = "UPDATE cidades ";
-			String SQLSet = "SET nome = " + cidade.getNome() + ", estado = " + cidade.getEstado() + ", pais = " + cidade.getPais();
-			String SQLWhere = " WHERE id = " + cidade.getId();
+			String SQLSet = "SET nome = '" + cidade.getNome() + "' , estado = '" + cidade.getEstado() + "' , pais = '" + cidade.getPais() + "' ";
+			String SQLWhere = "WHERE id = " + cidade.getId();
 			
 			statement.executeUpdate(SQLUpdate + SQLSet + SQLWhere);
 		}

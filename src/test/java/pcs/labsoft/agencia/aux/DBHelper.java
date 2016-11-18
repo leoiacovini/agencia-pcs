@@ -43,7 +43,6 @@ public class DBHelper {
                 Logger.getLogger().debug("Executing: " + sql);
                 st.executeUpdate(sql);
             }
-            System.out.println();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

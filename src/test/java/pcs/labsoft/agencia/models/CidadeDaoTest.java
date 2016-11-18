@@ -46,7 +46,13 @@ public class CidadeDaoTest extends SystemTest {
     @Test
     public void updateCidade() throws Exception {
         Cidade cidade = new Cidade("Teste", "PaisTeste", "PTS");
-        cidadeDao.create(cidade);
+        int id = cidadeDao.create(cidade);
+        Cidade updatedCidade = new Cidade("Updated", "Pais", "PCS", id);
+        cidadeDao.update(updatedCidade);
+        updatedCidade = cidadeDao.findById(id);
+        assertEquals("Updated", updatedCidade.getNome());
+        assertEquals("Pais", updatedCidade.getPais());
+        assertEquals("PCS", updatedCidade.getEstado());
     }
 
 }
