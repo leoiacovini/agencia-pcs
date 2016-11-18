@@ -1,39 +1,52 @@
 package pcs.labsoft.agencia.models;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 import pcs.labsoft.agencia.aux.SystemTest;
 import pcs.labsoft.agencia.models.dao.CidadeDao;
 import java.util.List;
-import static org.hamcrest.CoreMatchers.allOf;
-import static org.hamcrest.CoreMatchers.anyOf;
-import static org.hamcrest.CoreMatchers.both;
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.everyItem;
-import static org.hamcrest.CoreMatchers.hasItems;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.CoreMatchers.sameInstance;
-import static org.hamcrest.CoreMatchers.startsWith;
-import static org.junit.Assert.assertArrayEquals;
+
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+
 
 /**
  * Created by leoiacovini on 11/18/16.
  */
 public class CidadeDaoTest extends SystemTest {
 
+    private static CidadeDao cidadeDao;
+
+    @BeforeClass
+    public static void before() {
+        cidadeDao = new CidadeDao(system.getDataBase());
+    }
+
     @Test
     public void loadAll() {
-        CidadeDao cidadeDao = new CidadeDao(system.getDataBase());
         List<Cidade> cidades = cidadeDao.loadAll();
-        assertEquals(2, cidades.size());
+        assertEquals(3, cidades.size());
+    }
+
+    @Test
+    public void createCidade() throws Exception {
+        Cidade cidade = new Cidade("Paris", "França", "Ilha de França", 4);
+        cidadeDao.create(cidade);
+        Cidade cid = cidadeDao.loadAll().stream().filter( c -> c.getId() == 4).findFirst().get();
+        assertEquals(cid.getNome(), cidade.getNome());
+    }
+
+    @Test
+    public void findCidade() throws Exception {
+        Cidade cidade = cidadeDao.findById(1);
+        assertEquals(cidade.getNome(), "Sao Paulo");
+        assertEquals(cidade.getEstado(), "SP");
+        assertEquals(cidade.getPais(), "Brasil");
+    }
+
+    @Test
+    public void updateCidade() throws Exception {
+        Cidade cidade = new Cidade("Teste", "PaisTeste", "PTS");
+        cidadeDao.create(cidade);
     }
 
 }

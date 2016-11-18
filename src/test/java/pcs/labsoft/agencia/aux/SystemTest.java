@@ -2,6 +2,7 @@ package pcs.labsoft.agencia.aux;
 
 import org.apache.catalina.LifecycleException;
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import pcs.labsoft.agencia.components.AppSystem;
 
@@ -18,6 +19,12 @@ public class SystemTest {
     @BeforeClass
     public static void setUp() throws LifecycleException, ServletException, SQLException {
         SystemTest.system = AppSystem.startSystem("test");
+    }
+
+    @Before
+    public void cleanDB() {
+        system.getDataBase().clean();
+        system.getDataBase().runMigrations();
         DBHelper dbHelper = new DBHelper(system.getDataBase());
         dbHelper.prepareWithSeed();
     }

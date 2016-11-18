@@ -13,6 +13,7 @@ import pcs.labsoft.agencia.components.interfaces.IDB;
 import pcs.labsoft.agencia.models.Cidade;
 import pcs.labsoft.agencia.models.Hotel;
 import pcs.labsoft.agencia.models.Transporte;
+import sun.security.tools.keytool.Resources_sv;
 
 
 /**
@@ -85,41 +86,20 @@ public class CidadeDao {
 	@return Object of type Cidade, or null.
 	@throws thrown when two objects are loaded by the same id.
 	*/
-	public Cidade loadById(int id) throws Exception {
-		String nome;
-		String estado;
-		String pais;
-		
-		int rows = 0;
-		
-		try {
-			Connection connection = idb.getConnection();
+	public Cidade findById(int id) throws Exception {
+
+        try(Connection connection = idb.getConnection()) {
 			Statement statement = connection.createStatement();
-			
-			ResultSet rs = statement.executeQuery("SELECT * FROM cidades WHERE id = " + id);
-			
-			rows = rs.getFetchSize();
-			
-			nome = rs.getString("nome");
-			estado = rs.getString("estado");
-			pais = rs.getString("pais");
-			
-			connection.close();
+			ResultSet rs = statement.executeQuery("SELECT * FROM cidades WHERE id=" + id);
+            rs.next();
+            return new Cidade(rs.getString("nome"), rs.getString("pais"), rs.getString("estado"), id);
 		}
 		catch (Exception ex) {
-			Logger.getLogger().info("CidadeDao Class: " + ex.getMessage());
+            ex.printStackTrace();
+			Logger.getLogger().error("CidadeDao Class: " + ex.getMessage());
 			return null;
 		}
-		
-		if (rows == 0)     
-			return null;   
-		
-		else if (rows > 1) {
-			Logger.getLogger().info("CidadeDao Class: Mais de um registro com o mesmo id");
-			throw new Exception("Mais de um registro com o mesmo id");
-		}
-		
-		return new Cidade(nome, pais, estado, id);
+
 	}
 	
 	/**
@@ -127,27 +107,28 @@ public class CidadeDao {
 	@param  New object to be saved.
 	@throws thrown when Create/Insert fails.
 	*/
-	public void create(Cidade cidade) throws Exception {
-		boolean error = false;
+	public int create(Cidade cidade) throws Exception {
 		
-		try {
-			Connection connection = idb.getConnection();
+		try(Connection connection = idb.getConnection()) {
 			Statement statement = connection.createStatement();
 			
 			String SQLInsert = "INSERT INTO cidades ";
 			String SQLColumns = "(nome, estado, pais) ";
-			String SQLValues = "VALUES (" + cidade.getNome() + ", " + cidade.getEstado() + ", " + cidade.getPais() + ")";
+			String SQLValues = "VALUES ( '" + cidade.getNome() + "' , '" + cidade.getEstado() + "' , '" + cidade.getPais() + "')";
 			
-			statement.executeQuery(SQLInsert + SQLColumns + SQLValues);
-			
-			connection.close();
+			statement.executeUpdate(SQLInsert + SQLColumns + SQLValues);
+            ResultSet genKeys = statement.getGeneratedKeys();
+            if (genKeys.next()) {
+                return genKeys.getInt(1);
+            } else {
+                throw new SQLException("No rows have been created");
+            }
 		}
 		catch (Exception ex) {
-			Logger.getLogger().info("CidadeDao Class: " + ex.getMessage());
-			error = true;
+            ex.printStackTrace();
+			Logger.getLogger().error("CidadeDao Class: " + ex.getMessage());
+            return -1;
 		}
-		
-		if (error) throw new Exception("Erro ao inserir novo registro.");
 	}
 
 	/**
@@ -156,27 +137,21 @@ public class CidadeDao {
 	@throws thrown when update fails.
 	*/
 	public void update(Cidade cidade) throws Exception {
-		boolean error = false;
 		
-		try {
-			Connection connection = idb.getConnection();
+		try(Connection connection = idb.getConnection()) {
+
 			Statement statement = connection.createStatement();
 			
 			String SQLUpdate = "UPDATE cidades ";
-			String SQLSet = "SET nome = " + cidade.getNome() + ", estado = " + cidade.getEstado() + ", pais = " + cidade.getPais() + " ";
-			String SQLWhere = "WHERE id = " + cidade.getId();
+			String SQLSet = "SET nome = " + cidade.getNome() + ", estado = " + cidade.getEstado() + ", pais = " + cidade.getPais();
+			String SQLWhere = " WHERE id = " + cidade.getId();
 			
-			statement.executeQuery(SQLUpdate + SQLSet + SQLWhere);
-			
-			connection.close();
+			statement.executeUpdate(SQLUpdate + SQLSet + SQLWhere);
 		}
 		catch (Exception ex) {
-			Logger.getLogger().info("CidadeDao Class: " + ex.getMessage());
-			Logger.getLogger().info("Erro ao atualizar registro (id = "+ cidade.getId() +").");
-			error = true;
+			ex.printStackTrace();
+			Logger.getLogger().error("Erro ao atualizar registro (id = "+ cidade.getId() +").");
 		}
-		
-		if (error) throw new Exception("Erro ao atualizar registro (id = "+ cidade.getId() +").");
 	}
 
 	/**
