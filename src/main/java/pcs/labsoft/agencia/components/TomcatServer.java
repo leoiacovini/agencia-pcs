@@ -16,13 +16,14 @@ import java.io.File;
  */
 public class TomcatServer implements IWebServer {
 
-    private TomcatServer(Config config, Servlet servlet, Filter filter) throws ServletException, LifecycleException {
+    private final Tomcat tomcat;
+
+    private TomcatServer(Config config, Servlet servlet, Filter filter) throws LifecycleException, ServletException {
 
         String webappDirLocation = "src/main/webapp";
-
         Logger.getLogger().info("configuring app with basedir: " + new File("./" + webappDirLocation).getAbsolutePath());
 
-        Tomcat tomcat = new Tomcat();
+        this.tomcat = new Tomcat();
         tomcat.setSilent(true);
 
         tomcat.setPort(config.getInt("http.port"));
@@ -43,6 +44,11 @@ public class TomcatServer implements IWebServer {
 
         tomcat.init();
         tomcat.start();
+    }
+
+    public void stop() throws LifecycleException {
+        tomcat.stop();
+        tomcat.destroy();
     }
 
     public static IWebServer startServer(Config config, Servlet servlet, Filter filter) throws ServletException, LifecycleException {

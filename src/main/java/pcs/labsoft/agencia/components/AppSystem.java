@@ -3,11 +3,13 @@ package pcs.labsoft.agencia.components;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import org.apache.catalina.LifecycleException;
+import org.h2.tools.Server;
 import pcs.labsoft.agencia.components.interfaces.*;
 
 import javax.servlet.Filter;
 import javax.servlet.Servlet;
 import javax.servlet.ServletException;
+import java.sql.SQLException;
 
 /**
  * Created by leoiacovini on 11/4/16.
@@ -20,6 +22,9 @@ public class AppSystem {
     private final IAuth Auth;
     private final Routes Routes;
     private final Servlet FrontServlet;
+    private final String env;
+    private final H2Server h2Server;
+    private final IWebServer webServer;
 
     public Filter getServletFilter() {
         return ServletFilter;
@@ -48,15 +53,19 @@ public class AppSystem {
     public Servlet getServlet() { return FrontServlet; }
 
 
-    private AppSystem(String env) throws ServletException, LifecycleException {
+    private AppSystem(String env) throws ServletException, LifecycleException, SQLException {
 
         String configFile = "application.conf";
-
+        this.env = env;
         switch (env) {
             case "test": {
-                H2Server.startServer();
+                this.h2Server = new H2Server();
+                h2Server.startServer();
                 configFile = "test.conf";
                 break;
+            }
+            default: {
+                h2Server = null;
             }
         }
 
@@ -69,14 +78,28 @@ public class AppSystem {
         FrontServlet = new HttpFrontServlet(Router);
         Auth = new Auth(Configuration);
 
-        TomcatServer.startServer(Configuration, FrontServlet, ServletFilter);
+        this.webServer = TomcatServer.startServer(Configuration, FrontServlet, ServletFilter);
 
     }
 
-    public static void startSystem(String env) throws ServletException, LifecycleException {
+    public static AppSystem startSystem(String env) throws ServletException, LifecycleException, SQLException {
         Logger.getLogger().info("Starting up System...");
         AppSystem.system = new AppSystem(env);
         Logger.getLogger().info("All components started successfully");
+        return AppSystem.system;
+    }
+
+    private void stop() throws LifecycleException {
+        switch (this.env) {
+            case "test": {
+                h2Server.stopServer();
+            }
+        }
+        this.webServer.stop();
+    }
+
+    public static void stopSystem() throws LifecycleException {
+        AppSystem.system.stop();
     }
 
     public static AppSystem getSystem() {

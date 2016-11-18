@@ -14,4 +14,6 @@ public interface IWebServer {
         return null;
     };
 
+    public void stop() throws LifecycleException;
+
 }

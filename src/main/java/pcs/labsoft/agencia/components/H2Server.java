@@ -9,14 +9,20 @@ import java.sql.SQLException;
  */
 public class H2Server {
 
-    public static void startServer() {
+    private final Server h2Server;
+
+    public H2Server() throws SQLException {
+        this.h2Server = Server.createTcpServer();
+    }
+
+    public void startServer() throws SQLException {
         Logger.getLogger().info("Starting in memory H2 server");
-        try {
-            Server h2Server = Server.createTcpServer();
-            h2Server.start();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        h2Server.start();
+    }
+
+    public void stopServer() {
+        h2Server.stop();
+        h2Server.shutdown();
     }
 
 }
