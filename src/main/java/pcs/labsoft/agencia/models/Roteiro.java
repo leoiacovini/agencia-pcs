@@ -22,4 +22,35 @@ public class Roteiro {
         this.id = id;
     }
 
+    public List<Trecho> getTrechos() {
+        return trechos;
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public Funcionario getFuncionario() {
+        return funcionario;
+    }
+
+    public Pagamento getPagamento() {
+        return pagamento;
+    }
+
+    public int getDuracao() {
+        return duracao;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setPagamento(Pagamento pagamento) {
+        this.pagamento = pagamento;
+    }
+
+    public void setDuracao(int duracao) {
+        this.duracao = duracao;
+    }
 }
