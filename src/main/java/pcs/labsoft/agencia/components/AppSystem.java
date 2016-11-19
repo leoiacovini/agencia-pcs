@@ -3,36 +3,26 @@ package pcs.labsoft.agencia.components;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import org.apache.catalina.LifecycleException;
-import org.h2.tools.Server;
+import org.apache.tomcat.util.log.SystemLogHandler;
 import pcs.labsoft.agencia.components.interfaces.*;
 
-import javax.servlet.Filter;
-import javax.servlet.Servlet;
-import javax.servlet.ServletException;
+import javax.servlet.*;
 import java.sql.SQLException;
 
 /**
  * Created by leoiacovini on 11/4/16.
  */
-public class AppSystem {
+public class AppSystem implements ServletContextListener {
 
-    private final IDB DataBase;
-    private final Config Configuration;
-    private final IRouter Router;
-    private final IAuth Auth;
-    private final Routes Routes;
-    private final Servlet FrontServlet;
-    private final String env;
-    private final H2Server h2Server;
-    private final IWebServer webServer;
-
-    public Filter getServletFilter() {
-        return ServletFilter;
-    }
-
-    private final Filter ServletFilter;
+    private IDB DataBase;
+    private Config Configuration;
+    private IRouter Router;
+    private Routes Routes;
+    private H2Server h2Server;
+    private IWebServer webServer;
 
     static private AppSystem system;
+    static private String env;
 
     public Config getConfiguration() {
         return Configuration;
@@ -44,66 +34,97 @@ public class AppSystem {
         return Router;
     }
 
-    public IAuth getAuth() {
-        return Auth;
-    }
-
     public Routes getRoutes() { return Routes; }
-
-    public Servlet getServlet() { return FrontServlet; }
-
-
-    private AppSystem(String env) throws ServletException, LifecycleException, SQLException {
-
-        String configFile = "application.conf";
-        this.env = env;
-        switch (env) {
-            case "test": {
-                this.h2Server = new H2Server();
-                h2Server.startServer();
-                configFile = "test.conf";
-                break;
-            }
-            default: {
-                h2Server = null;
-            }
-        }
-
-        Routes = new Routes();
-        Router = new Router(Routes);
-        Configuration = ConfigFactory.load(configFile);
-        DataBase = new DefaultDB(Configuration);
-        DataBase.runMigrations();
-        ServletFilter = new ServletFilter();
-        FrontServlet = new HttpFrontServlet(Router);
-        Auth = new Auth(Configuration);
-
-        this.webServer = TomcatServer.startServer(Configuration, FrontServlet, ServletFilter);
-
-    }
-
-    public static AppSystem startSystem(String env) throws ServletException, LifecycleException, SQLException {
-        Logger.getLogger().info("Starting up System...");
-        AppSystem.system = new AppSystem(env);
-        Logger.getLogger().info("All components started successfully");
-        return AppSystem.system;
-    }
-
-    private void stop() throws LifecycleException {
-        switch (this.env) {
-            case "test": {
-                h2Server.stopServer();
-            }
-        }
-        this.webServer.stop();
-    }
-
-    public static void stopSystem() throws LifecycleException {
-        AppSystem.system.stop();
-    }
 
     public static AppSystem getSystem() {
         return AppSystem.system;
     }
 
+    public static void setEnv(String env) {
+        AppSystem.env = env;
+    }
+
+    public static void setWebServer(IWebServer server) {
+        AppSystem.getSystem().webServer = server;
+    }
+
+    public static AppSystem startSystem(String env) throws ServletException, LifecycleException, SQLException {
+        Logger.getLogger().info("Starting up System...");
+        AppSystem system = AppSystem.system = new AppSystem(env);
+        Logger.getLogger().info("All components started successfully");
+        return system;
+    }
+
+    public static AppSystem ensureSystemIsUp(String env) throws ServletException, SQLException, LifecycleException {
+        if (AppSystem.getSystem() == null) {
+            AppSystem.startSystem(env);
+        }
+        return AppSystem.getSystem();
+    }
+
+    public static void startEmbeddedServer(String env) throws ServletException, LifecycleException {
+        Config conf = ConfigFactory.defaultApplication();
+        AppSystem.setEnv(env);
+        IWebServer server = EmbeddedServer.startServer(conf);
+        AppSystem.setWebServer(server);
+    }
+
+    public static void stopSystem() throws LifecycleException {
+        if (AppSystem.getSystem().webServer != null) {
+            AppSystem.system.webServer.stop();
+        } else {
+            AppSystem.getSystem().stop();
+        }
+    }
+
+    public AppSystem() {}
+    private AppSystem(String env) throws ServletException, LifecycleException, SQLException {
+
+        AppSystem.env = env;
+        String configFile;
+
+        switch (env) {
+            case "test": {
+                configFile = "test.conf";
+                this.h2Server = new H2Server();
+                h2Server.startServer();
+                break;
+            }
+            default: {
+                configFile = "application.conf";
+                break;
+            }
+        }
+        Configuration = ConfigFactory.load(configFile);
+        Routes = new Routes();
+        Router = new Router(Routes);
+        DataBase = new DefaultDB(Configuration);
+        DataBase.runMigrations();
+    }
+
+    private void stop() throws LifecycleException {
+        DataBase.stop();
+        if (h2Server != null) {
+            h2Server.stopServer();
+        }
+    }
+
+    @Override
+    public void contextInitialized(ServletContextEvent servletContextEvent) {
+        try {
+            AppSystem.ensureSystemIsUp(env == null ? "test" : env);
+        } catch (ServletException | LifecycleException | SQLException e) {
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public void contextDestroyed(ServletContextEvent servletContextEvent) {
+        try {
+            AppSystem.getSystem().stop();
+        } catch (LifecycleException e) {
+            e.printStackTrace();
+        }
+    }
 }

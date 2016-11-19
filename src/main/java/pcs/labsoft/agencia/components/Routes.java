@@ -27,7 +27,7 @@ public class Routes {
             return new Route(an.method(), an.path(), m.getDeclaringClass(), m);
         }).toArray(Route[]::new);
         for(Route route: routes) {
-            Logger.getLogger().info("Route: " + route.getPath() + " " + route.getMethod());
+            Logger.getLogger().debug("Route: " + route.getPath() + " " + route.getMethod());
         }
     }
 

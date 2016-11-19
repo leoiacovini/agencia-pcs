@@ -33,9 +33,6 @@ public class Router implements IRouter {
 
         Optional<Route> matchedRoute = Arrays.stream(routes.getRoutes()).filter(route -> match(servletRequest, route)).findFirst();
 
-        Logger.getLogger().info("Matched: " + matchedRoute.isPresent());
-        Logger.getLogger().info("MethodMatch: " + matchedRoute.get().getMethod().equals(servletRequest.getMethod()));
-
         if (matchedRoute.isPresent() && matchedRoute.get().getMethod().equals(servletRequest.getMethod())) {
             Logger.getLogger().info("Matched route: " + matchedRoute.get().getPath() + matchedRoute.get().getMethod());
             Route route = matchedRoute.get();
@@ -73,7 +70,7 @@ public class Router implements IRouter {
 
         String[] splitedRoutePath = route.getPath().split("/");
         if (!route.getMethod().equals(req.getMethod())) return false;
-        if (splitedPath.length != splitedRoutePath.length) { Logger.getLogger().info("Wrong len"); return false; }
+        if (splitedPath.length != splitedRoutePath.length) return false;
         for (int i = 0; i < splitedPath.length; i++) {
             String reqPart = splitedPath[i];
             String routePart = splitedRoutePath[i];

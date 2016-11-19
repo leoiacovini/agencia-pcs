@@ -18,6 +18,7 @@ import java.io.IOException;
 public class CidadeController extends HttpController {
 
     private CidadeDao CityDao = new CidadeDao(db);
+
     @HttpHandler(path="/cidades/:id", method = "GET")
     public void getCidade(HttpRequest request, HttpServletResponse response) throws Exception {
         try {
@@ -41,7 +42,7 @@ public class CidadeController extends HttpController {
     @HttpHandler(path = "/novacidade", method = "GET")
     public void newCidade(HttpRequest request, HttpServletResponse response) {
         try {
-            rendernewCidade(request).forward(request, response);
+            renderNewCidade(request).forward(request, response);
         } catch (ServletException | IOException e) {
             e.printStackTrace();
         }
@@ -80,7 +81,7 @@ public class CidadeController extends HttpController {
         return servletRequest.getRequestDispatcher(getPagePath("options.jsp"));
     }
 
-    private RequestDispatcher rendernewCidade(HttpServletRequest servletRequest) {
+    private RequestDispatcher renderNewCidade(HttpServletRequest servletRequest) {
         return servletRequest.getRequestDispatcher(getPagePath("newcity.jsp"));
     }
 

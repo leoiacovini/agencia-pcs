@@ -11,5 +11,6 @@ public interface IDB {
     public Connection getConnection() throws SQLException;
     public void runMigrations();
     public void clean();
+    public void stop();
 
 }

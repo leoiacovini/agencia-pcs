@@ -15,9 +15,10 @@ import java.util.Set;
  */
 public class ServletFilter implements Filter {
 
-    private final HttpServletFilter[] filters;
+    private HttpServletFilter[] filters;
 
-    public ServletFilter() {
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
         Reflections reflections = new Reflections("pcs.labsoft.agencia");
         Set<Class<?>> filtersClasses = reflections.getTypesAnnotatedWith(HttpFilter.class);
         this.filters = filtersClasses.stream().map( fc -> {
@@ -27,11 +28,6 @@ public class ServletFilter implements Filter {
                 throw new RuntimeException(e);
             }
         }).toArray(HttpServletFilter[]::new);
-    }
-
-    @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-
     }
 
     @Override

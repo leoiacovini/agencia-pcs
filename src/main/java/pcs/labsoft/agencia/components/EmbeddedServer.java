@@ -14,11 +14,11 @@ import java.io.File;
 /**
  * Created by leoiacovini on 11/7/16.
  */
-public class TomcatServer implements IWebServer {
+public class EmbeddedServer implements IWebServer {
 
     private final Tomcat tomcat;
 
-    private TomcatServer(Config config, Servlet servlet, Filter filter) throws LifecycleException, ServletException {
+    private EmbeddedServer(Config config) throws LifecycleException, ServletException {
 
         String webappDirLocation = "src/main/webapp";
         Logger.getLogger().info("configuring app with basedir: " + new File("./" + webappDirLocation).getAbsolutePath());
@@ -29,19 +29,6 @@ public class TomcatServer implements IWebServer {
         tomcat.setPort(config.getInt("http.port"));
         StandardContext ctx = (StandardContext) tomcat.addWebapp("", new File(webappDirLocation).getAbsolutePath());
 
-        tomcat.addServlet(ctx, "frontController", servlet);
-        ctx.addServletMapping("/app/*", "frontController");
-
-        FilterDef filter1definition = new FilterDef();
-        filter1definition.setFilterName("servletFilter");
-        filter1definition.setFilter(filter);
-        ctx.addFilterDef(filter1definition);
-
-        FilterMap filter1mapping = new FilterMap();
-        filter1mapping.setFilterName("servletFilter");
-        filter1mapping.addURLPattern("/*");
-        ctx.addFilterMap(filter1mapping);
-
         tomcat.init();
         tomcat.start();
     }
@@ -51,7 +38,7 @@ public class TomcatServer implements IWebServer {
         tomcat.destroy();
     }
 
-    public static IWebServer startServer(Config config, Servlet servlet, Filter filter) throws ServletException, LifecycleException {
-        return new TomcatServer(config, servlet, filter);
+    public static IWebServer startServer(Config config) throws ServletException, LifecycleException {
+        return new EmbeddedServer(config);
     }
 }

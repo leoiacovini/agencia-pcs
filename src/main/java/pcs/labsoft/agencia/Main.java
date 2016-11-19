@@ -13,7 +13,7 @@ import java.sql.SQLException;
 public class Main {
 
     static public void main(String[] args) throws LifecycleException, ServletException, SQLException {
-        AppSystem.startSystem("test");
+        AppSystem.startEmbeddedServer("test");
     }
 
 }

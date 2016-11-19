@@ -54,4 +54,8 @@ public class DefaultDB implements IDB {
         migrationManager.clean();
     }
 
+    public void stop() {
+        dataSource.close();
+    }
+
 }
