@@ -25,11 +25,7 @@ public class CidadeDao {
 	public CidadeDao (IDB idb) {
 		this.idb = idb;
 	}
-	
-	/**
-	Load all objects of type Cidade from DB.
-	@return List containing all objects of type Cidade.
-	*/
+
 	public List<Cidade> loadAll() {
 		HashMap<Integer, Cidade> map = new HashMap<>();
 
@@ -79,12 +75,6 @@ public class CidadeDao {
 		return new ArrayList<>(map.values());
 	}
 
-	/**
-	Load one object by id.
-	@param  Objects id in DB.
-	@return Object of type Cidade, or null.
-	@throws thrown when two objects are loaded by the same id.
-	*/
 	public Cidade findById(int id) throws Exception {
 
         try(Connection connection = idb.getConnection()) {
@@ -103,12 +93,7 @@ public class CidadeDao {
 		}
 
 	}
-	
-	/**
-	Create/Insert new object.
-	@param  New object to be saved.
-	@throws thrown when Create/Insert fails.
-	*/
+
 	public int create(Cidade cidade) throws Exception {
 		
 		try(Connection connection = idb.getConnection()) {
@@ -131,11 +116,6 @@ public class CidadeDao {
 		}
 	}
 
-	/**
-	Update an object.
-	@param  Object to be updated.
-	@throws thrown when update fails.
-	*/
 	public void update(Cidade cidade) throws Exception {
 		
 		try (Connection connection = idb.getConnection()) {
@@ -150,11 +130,6 @@ public class CidadeDao {
 		}
 	}
 
-	/**
-	Delete row, by id, from the table.
-	@param  Id from object to be deleted.
-	@throws thrown when delete fails.
-	*/
 	public void deleteById(int id) throws Exception {
 		try(Connection connection = idb.getConnection()) {
 			Statement statement = connection.createStatement();
