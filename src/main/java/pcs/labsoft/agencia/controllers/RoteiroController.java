@@ -14,7 +14,7 @@ import java.io.IOException;
 /**
  * Created by adilsontorres on 18/11/16.
  */
-public class RoteiroController extends HttpController{
+public class RoteiroController extends HttpController {
     private CidadeDao CityDao = new CidadeDao(db);
 
     @HttpHandler(path = "/roteiro", method = "GET")

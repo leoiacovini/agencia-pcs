@@ -19,7 +19,7 @@ public class CidadeController extends HttpController {
 
     private CidadeDao CityDao = new CidadeDao(db);
 
-    @HttpHandler(path="/cidades/:id", method = "GET")
+    @HttpHandler(path = "/cidades/:id", method = "GET")
     public void getCidade(HttpRequest request, HttpServletResponse response) throws Exception {
         try {
             String cidadeId = request.getPathParam("id");
@@ -47,23 +47,24 @@ public class CidadeController extends HttpController {
             e.printStackTrace();
         }
     }
+
     @HttpHandler(path = "/novacidade", method = "POST")
     public void addCidade(HttpRequest request, HttpServletResponse response) throws Exception {
-        Cidade nova = new Cidade(request.getParameter("Nome"),request.getParameter("Estado"),request.getParameter("Pais"));
+        Cidade nova = new Cidade(request.getParameter("Nome"), request.getParameter("Estado"), request.getParameter("Pais"));
         CityDao.create(nova);
-        String ok ="OK";
-        request.setAttribute("Adicao",ok);
-        CRUDCidade(request,response);
+        String ok = "OK";
+        request.setAttribute("Adicao", ok);
+        CRUDCidade(request, response);
 
     }
 
-    @HttpHandler(path="/managercidades", method = "GET")
+    @HttpHandler(path = "/managercidades", method = "GET")
     public void CRUDCidade(HttpRequest request, HttpServletResponse response) {
         try {
-            if(request.getAttribute("Adicao") != null){
+            if (request.getAttribute("Adicao") != null) {
 
-            }else{
-                request.setAttribute("Adicao","Null");
+            } else {
+                request.setAttribute("Adicao", "Null");
             }
 
             renderCRUDCidade(request).forward(request, response);
@@ -87,7 +88,7 @@ public class CidadeController extends HttpController {
 
     private RequestDispatcher renderCidadeDetails(String cidadeId, HttpServletRequest servletRequest) throws Exception {
         Cidade cidade = CityDao.findById(Integer.parseInt(cidadeId));
-        if (cidade!=null) {
+        if (cidade != null) {
             servletRequest.setAttribute("cidade", cidade);
             return servletRequest.getRequestDispatcher(getPagePath("details.jsp"));
         } else {

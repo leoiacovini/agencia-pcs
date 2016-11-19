@@ -28,4 +28,8 @@ public class Hotel {
 	{
 		return id;
 	}
+
+	public Cidade getCidade() {
+		return cidade;
+	}
 }

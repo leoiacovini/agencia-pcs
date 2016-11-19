@@ -57,15 +57,6 @@ public class Cidade {
         return id + " - " + nome + ", " + estado + ", " + pais;
     }
 
-    public static List<Cidade> mockData() {
-        List<Cidade> cidades = new ArrayList<>();
-        cidades.add(new Cidade("São Paulo", "Brasil", "SP", 1));
-        cidades.add(new Cidade("Rio de Janeiro", "Brasil", "RJ", 2));
-        cidades.add(new Cidade("Brasilia", "Brasil", "DF", 3));
-        cidades.add(new Cidade("Paris", "França", "Ilha de França", 4));
-        return cidades;
-    }
-
     public List<Transporte> getTransportesDePartida() {
         return transportesDePartida;
     }

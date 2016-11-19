@@ -21,32 +21,17 @@ public class AppSystem implements ServletContextListener {
     private H2Server h2Server;
     private IWebServer webServer;
 
+    public Config getConfiguration() { return Configuration;}
+    public IDB getDataBase() { return DataBase; }
+    public IRouter getRouter() { return Router; }
+    public Routes getRoutes() { return Routes; }
+    public static AppSystem getSystem() { return AppSystem.system; }
+
     static private AppSystem system;
     static private String env;
 
-    public Config getConfiguration() {
-        return Configuration;
-    }
-
-    public IDB getDataBase() { return DataBase; }
-
-    public IRouter getRouter() {
-        return Router;
-    }
-
-    public Routes getRoutes() { return Routes; }
-
-    public static AppSystem getSystem() {
-        return AppSystem.system;
-    }
-
-    public static void setEnv(String env) {
-        AppSystem.env = env;
-    }
-
-    public static void setWebServer(IWebServer server) {
-        AppSystem.getSystem().webServer = server;
-    }
+    public static void setEnv(String env) { AppSystem.env = env; }
+    public static void setWebServer(IWebServer server) { AppSystem.getSystem().webServer = server; }
 
     public static AppSystem startSystem(String env) throws ServletException, LifecycleException, SQLException {
         Logger.getLogger().info("Starting up System...");

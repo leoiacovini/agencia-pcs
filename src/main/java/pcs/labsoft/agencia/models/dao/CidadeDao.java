@@ -28,7 +28,7 @@ public class CidadeDao {
 	
 	/**
 	Load all objects of type Cidade from DB.
-	@return List containing all objects of type Cidade. Never null.
+	@return List containing all objects of type Cidade.
 	*/
 	public List<Cidade> loadAll() {
 		HashMap<Integer, Cidade> map = new HashMap<>();
@@ -96,7 +96,7 @@ public class CidadeDao {
                 return null;
             }
 		}
-		catch (Exception ex) {
+		catch (SQLException ex) {
             ex.printStackTrace();
 			Logger.getLogger().error(ex.getMessage());
 			return null;
@@ -124,7 +124,7 @@ public class CidadeDao {
                 throw new SQLException("No rows have been created");
             }
 		}
-		catch (Exception ex) {
+		catch (SQLException ex) {
             ex.printStackTrace();
 			Logger.getLogger().error(ex.getMessage());
             return -1;
@@ -138,14 +138,13 @@ public class CidadeDao {
 	*/
 	public void update(Cidade cidade) throws Exception {
 		
-		try(Connection connection = idb.getConnection()) {
+		try (Connection connection = idb.getConnection()) {
 			Statement statement = connection.createStatement();
 			String SQLUpdate = "UPDATE cidades ";
 			String SQLSet = "SET nome = '" + cidade.getNome() + "' , estado = '" + cidade.getEstado() + "' , pais = '" + cidade.getPais() + "' ";
 			String SQLWhere = "WHERE id = " + cidade.getId();
 			statement.executeUpdate(SQLUpdate + SQLSet + SQLWhere);
-		}
-		catch (Exception ex) {
+		} catch (SQLException ex) {
 			ex.printStackTrace();
 			Logger.getLogger().error("Erro ao atualizar registro (id = "+ cidade.getId() +").");
 		}
@@ -160,8 +159,7 @@ public class CidadeDao {
 		try(Connection connection = idb.getConnection()) {
 			Statement statement = connection.createStatement();
 			statement.executeUpdate("DELETE FROM cidades WHERE id = " + id);
-		}
-		catch (Exception ex) {
+		} catch (SQLException ex) {
             ex.printStackTrace();
 			Logger.getLogger().info(ex.getMessage());
 		}
