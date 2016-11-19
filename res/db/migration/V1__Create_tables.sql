@@ -79,7 +79,7 @@ CREATE TABLE roteiros (
 
 CREATE TABLE trechos (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  trecho_inicial BOOLEAN NOT NULL DEFAULT FALSE,
+  is_trecho_inicial BOOLEAN NOT NULL DEFAULT FALSE,
   duracao INT NOT NULL,
   cidade_id INT  NOT NULL REFERENCES cidades(id),
   hotel_id INT REFERENCES hoteis(id),
