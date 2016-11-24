@@ -31,9 +31,9 @@ public class RoteiroController extends HttpController {
     public void Roteiro(HttpRequest request, HttpServletResponse response) {
         try {
             HttpSession session = request.getSession();
-            if (session.getAttribute("funcionario") instanceof Funcionario) {
-                Funcionario funcionario = (Funcionario) session.getAttribute("funcionario");
-            }
+            Funcionario funcionario = (Funcionario) session.getAttribute("user");
+
+
 
             renderRoteiro(request).forward(request, response);
         } catch (ServletException | IOException e) {

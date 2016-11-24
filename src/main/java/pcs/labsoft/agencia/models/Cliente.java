@@ -1,5 +1,8 @@
 package pcs.labsoft.agencia.models;
 
+import pcs.labsoft.agencia.components.interfaces.IDB;
+import pcs.labsoft.agencia.models.dao.ClienteDao;
+
 /**
  * Created by leoiacovini on 11/19/16.
  */
@@ -21,6 +24,10 @@ public class Cliente {
         this.email = email;
         this.passaporte = passaporte;
         this.telefone = telefone;
+    }
+
+    public Cliente(String nome, String cpf, String rg, String email, String passaporte, String telefone) {
+        this(0, nome, cpf, rg, email, passaporte, telefone);
     }
 
     public int getId() {
@@ -50,4 +57,10 @@ public class Cliente {
     public String getTelefone() {
         return telefone;
     }
+
+    public static Cliente registerCliente(Cliente cliente, IDB db) {
+        ClienteDao dao = new ClienteDao(db);
+        return dao.createCliente(cliente);
+    }
+
 }
