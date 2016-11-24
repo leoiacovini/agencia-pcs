@@ -2,7 +2,6 @@ package pcs.labsoft.agencia.models;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
-import pcs.labsoft.agencia.aux.ServerTest;
 import pcs.labsoft.agencia.aux.SystemTest;
 import pcs.labsoft.agencia.models.dao.CidadeDao;
 import java.util.List;
