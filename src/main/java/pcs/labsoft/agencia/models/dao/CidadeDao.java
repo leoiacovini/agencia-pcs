@@ -75,6 +75,46 @@ public class CidadeDao {
 		return new ArrayList<>(map.values());
 	}
 
+	public List<Cidade> loadCityAeroporto(){
+        HashMap<Integer, Cidade> map = new HashMap<>();
+
+        try (Connection connection = idb.getConnection()) {
+
+            Statement statement = connection.createStatement();
+
+            ResultSet rsCidades = statement.executeQuery("SELECT * FROM cidades");
+            while (rsCidades.next()) {
+                int id = rsCidades.getInt("id");
+                String nome = rsCidades.getString("nome");
+                String pais = rsCidades.getString("pais");
+                String estado = rsCidades.getString("estado");
+                map.put(id, new Cidade(nome, pais, estado, id));
+            }
+
+            ResultSet rsTransportes = statement.executeQuery("SELECT * FROM transportes");
+            while (rsTransportes.next()) {
+                int id = rsTransportes.getInt("id");
+                int cidadePartidaId = rsTransportes.getInt("cidade_partida_id");
+                int cidadeChegadaId = rsTransportes.getInt("cidade_chegada_id");
+                String tipo = rsTransportes.getString("tipo");
+                Double preco = rsTransportes.getDouble("preco");
+                Cidade cidadePartida = map.get(cidadePartidaId);
+                Cidade cidadeChegada = map.get(cidadeChegadaId);
+                Transporte transoprte = new Transporte(cidadePartida, cidadeChegada, tipo, preco, id);
+                cidadePartida.addTransportesDePartida(transoprte);
+                cidadeChegada.addTransportesDeChegada(transoprte);
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            Logger.getLogger().info(ex.getMessage());
+            return null;
+        }
+
+        return new ArrayList<>(map.values());
+
+    }
+
 	public Cidade findById(int id) throws Exception {
 
         try(Connection connection = idb.getConnection()) {

@@ -9,11 +9,6 @@
         </encoder>
     </appender>
 
-    <logger name="com.javacodegeeks.examples.logbackexample.beans" level="INFO" additivity="false">
-        <appender-ref ref="STDOUT" />
-    </logger>
-
-
     <logger name="org.flywaydb.core.internal.command.DbMigrate" level="WARN" />
     <logger name="org.flywaydb.core.internal.command.DbValidate" level="WARN" />
     <logger name="org.flywaydb.core.internal.command.DbValidate" level="WARN" />

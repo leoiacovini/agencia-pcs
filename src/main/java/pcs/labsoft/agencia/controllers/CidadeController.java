@@ -58,15 +58,35 @@ public class CidadeController extends HttpController {
 
     }
 
+    @HttpHandler(path = "/removercidade", method = "POST")
+    public void delCidade(HttpRequest request, HttpServletResponse response) {
+        try {
+            CityDao.deleteById(Integer.parseInt(request.getParameter("escolha")));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        String ok = "OK";
+        request.setAttribute("Remocao", ok);
+        CRUDCidade(request, response);
+    }
+    @HttpHandler(path = "/removercidade", method = "GET")
+    public void deleteCidade(HttpRequest request, HttpServletResponse response) {
+        try {
+            renderDeleteCidade(request).forward(request, response);
+        } catch (ServletException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     @HttpHandler(path = "/managercidades", method = "GET")
     public void CRUDCidade(HttpRequest request, HttpServletResponse response) {
         try {
-            if (request.getAttribute("Adicao") != null) {
-
-            } else {
+            if (request.getAttribute("Adicao") == null) {
                 request.setAttribute("Adicao", "Null");
             }
-
+            if (request.getAttribute("Remocao") == null) {
+                request.setAttribute("Remocao", "Null");
+            }
             renderCRUDCidade(request).forward(request, response);
         } catch (IOException | ServletException e) {
             e.printStackTrace();
@@ -84,6 +104,10 @@ public class CidadeController extends HttpController {
 
     private RequestDispatcher renderNewCidade(HttpServletRequest servletRequest) {
         return servletRequest.getRequestDispatcher(getPagePath("newcity.jsp"));
+    }
+    private RequestDispatcher renderDeleteCidade(HttpServletRequest servletRequest) {
+        servletRequest.setAttribute("cidades", CityDao.loadAll());
+        return servletRequest.getRequestDispatcher(getPagePath("deletecity.jsp"));
     }
 
     private RequestDispatcher renderCidadeDetails(String cidadeId, HttpServletRequest servletRequest) throws Exception {
