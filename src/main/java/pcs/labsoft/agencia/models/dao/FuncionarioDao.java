@@ -1,6 +1,7 @@
 package pcs.labsoft.agencia.models.dao;
 
 import pcs.labsoft.agencia.components.interfaces.IDB;
+import pcs.labsoft.agencia.components.interfaces.ModelDao;
 import pcs.labsoft.agencia.models.Funcionario;
 
 import java.sql.*;
@@ -8,12 +9,10 @@ import java.sql.*;
 /**
  * Created by leoiacovini on 23/11/16.
  */
-public class FuncionarioDao {
-
-    private final IDB db;
+public class FuncionarioDao extends ModelDao {
 
     public FuncionarioDao(IDB db) {
-        this.db = db;
+        super(db);
     }
 
     public Funcionario getByUsername(String username){
