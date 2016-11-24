@@ -10,6 +10,7 @@ import java.util.List;
 
 import pcs.labsoft.agencia.components.Logger;
 import pcs.labsoft.agencia.components.interfaces.IDB;
+import pcs.labsoft.agencia.components.interfaces.ModelDao;
 import pcs.labsoft.agencia.models.Cidade;
 import pcs.labsoft.agencia.models.Hotel;
 import pcs.labsoft.agencia.models.Transporte;
@@ -18,18 +19,16 @@ import pcs.labsoft.agencia.models.Transporte;
 /**
  * Created by jhonata-antunes on 11/11/16.
  */
-public class CidadeDao {
-
-	private final IDB idb;
+public class CidadeDao extends ModelDao {
 	
-	public CidadeDao (IDB idb) {
-		this.idb = idb;
+	public CidadeDao (IDB db) {
+		super(db);
 	}
 
 	public List<Cidade> loadAll() {
 		HashMap<Integer, Cidade> map = new HashMap<>();
 
-        try (Connection connection = idb.getConnection()) {
+        try (Connection connection = db.getConnection()) {
 
             Statement statement = connection.createStatement();
 
@@ -78,7 +77,7 @@ public class CidadeDao {
 
 	public Cidade findById(int id) throws Exception {
 
-        try(Connection connection = idb.getConnection()) {
+        try(Connection connection = db.getConnection()) {
 			Statement statement = connection.createStatement();
 			ResultSet rs = statement.executeQuery("SELECT * FROM cidades WHERE id=" + id);
             if (rs.next()) {
@@ -97,7 +96,7 @@ public class CidadeDao {
 
 	public int create(Cidade cidade) throws Exception {
 		
-		try(Connection connection = idb.getConnection()) {
+		try(Connection connection = db.getConnection()) {
 			Statement statement = connection.createStatement();
 			String SQLInsert = "INSERT INTO cidades ";
 			String SQLColumns = "(nome, estado, pais) ";
@@ -119,7 +118,7 @@ public class CidadeDao {
 
 	public void update(Cidade cidade) throws Exception {
 		
-		try (Connection connection = idb.getConnection()) {
+		try (Connection connection = db.getConnection()) {
 			Statement statement = connection.createStatement();
 			String SQLUpdate = "UPDATE cidades ";
 			String SQLSet = "SET nome = '" + cidade.getNome() + "' , estado = '" + cidade.getEstado() + "' , pais = '" + cidade.getPais() + "' ";
@@ -132,7 +131,7 @@ public class CidadeDao {
 	}
 
 	public void deleteById(int id) throws Exception {
-		try(Connection connection = idb.getConnection()) {
+		try(Connection connection = db.getConnection()) {
 			Statement statement = connection.createStatement();
 			statement.executeUpdate("DELETE FROM cidades WHERE id = " + id);
 		} catch (SQLException ex) {

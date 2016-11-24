@@ -21,7 +21,8 @@ public class EmbeddedServer implements IWebServer {
     private EmbeddedServer(Config config) throws LifecycleException, ServletException {
 
         String webappDirLocation = "src/main/webapp";
-        Logger.getLogger().info("configuring app with basedir: " + new File("./" + webappDirLocation).getAbsolutePath());
+        Logger.getLogger().info("Starting up embedded TomCat Server");
+        Logger.getLogger().info("Configuring app with basedir: " + new File("./" + webappDirLocation).getAbsolutePath());
 
         this.tomcat = new Tomcat();
         tomcat.setSilent(true);
@@ -31,6 +32,7 @@ public class EmbeddedServer implements IWebServer {
 
         tomcat.init();
         tomcat.start();
+        Logger.getLogger().info("Embedded Server started successfully");
     }
 
     public void stop() throws LifecycleException {

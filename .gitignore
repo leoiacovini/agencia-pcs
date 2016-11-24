@@ -111,4 +111,5 @@ local.properties
 /build/
 
 /tomcat.*/
-/target/
+target/
+*/target/*

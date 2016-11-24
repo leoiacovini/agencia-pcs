@@ -22,6 +22,10 @@ public class Roteiro {
         this.id = id;
     }
 
+    public Roteiro(Cliente cliente, Funcionario funcionario) {
+        this(cliente, funcionario, 0);
+    }
+
     public List<Trecho> getTrechos() {
         return trechos;
     }
@@ -52,5 +56,12 @@ public class Roteiro {
 
     public void setDuracao(int duracao) {
         this.duracao = duracao;
+    }
+
+    public void addTrecho(Trecho trecho) {
+        this.trechos.add(trecho);
+    }
+    public void removeLastTrecho() {
+        this.trechos.remove(this.trechos.size() -1 );
     }
 }

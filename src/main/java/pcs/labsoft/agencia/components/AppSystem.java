@@ -20,6 +20,7 @@ public class AppSystem implements ServletContextListener {
     private Routes Routes;
     private H2Server h2Server;
     private IWebServer webServer;
+    private Auth Auth;
 
     public Config getConfiguration() { return Configuration;}
     public IDB getDataBase() { return DataBase; }
@@ -36,7 +37,8 @@ public class AppSystem implements ServletContextListener {
     public static AppSystem startSystem(String env) throws ServletException, LifecycleException, SQLException {
         Logger.getLogger().info("Starting up System...");
         AppSystem system = AppSystem.system = new AppSystem(env);
-        Logger.getLogger().info("All components started successfully");
+        Logger.getLogger().info("All components started successfully!");
+        System.out.println();
         return system;
     }
 
@@ -60,6 +62,8 @@ public class AppSystem implements ServletContextListener {
         } else {
             AppSystem.getSystem().stop();
         }
+        Logger.getLogger().info("Stopping System");
+        System.out.println();
     }
 
     public AppSystem() {}
@@ -82,6 +86,7 @@ public class AppSystem implements ServletContextListener {
         }
         Configuration = ConfigFactory.load(configFile);
         Routes = new Routes();
+        Auth = new Auth();
         Router = new Router(Routes);
         DataBase = new DefaultDB(Configuration);
         DataBase.runMigrations();
@@ -111,5 +116,9 @@ public class AppSystem implements ServletContextListener {
         } catch (LifecycleException e) {
             e.printStackTrace();
         }
+    }
+
+    public Auth getAuth() {
+        return Auth;
     }
 }

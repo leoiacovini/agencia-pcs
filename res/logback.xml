@@ -16,6 +16,8 @@
     <logger name="org.flywaydb.core.internal.dbsupport.DbSupportFactory" level="WARN" />
     <logger name="org.flywaydb.core.internal.metadatatable.MetaDataTableImpl" level="WARN" />
     <logger name="org.flywaydb.core.internal.util.VersionPrinter" level="WARN" />
+    <logger name="org.reflections.Reflections" level="WARN" />
+    <logger name="com.zaxxer.hikari.HikariDataSource" level="WARN" />
 
     <!-- By default, the level of the root level is set to DEBUG -->
     <root level="INFO">

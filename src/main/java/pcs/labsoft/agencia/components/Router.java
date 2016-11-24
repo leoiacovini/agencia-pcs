@@ -7,7 +7,6 @@ import pcs.labsoft.agencia.misc.HttpRequest;
 import pcs.labsoft.agencia.misc.Route;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -24,9 +23,11 @@ public class Router implements IRouter {
     private HashMap<Class<?>, HttpInterceptor> interceptors;
 
     public Router(Routes routes) {
+        Logger.getLogger().info("Starting up Router");
         this.routes = routes;
         this.controllers = new HashMap<>();
         this.interceptors = new HashMap<>();
+        Logger.getLogger().info("Router initialized");
     }
 
     public void route(HttpRequest servletRequest, HttpServletResponse servletResponse) throws IOException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException {
@@ -34,14 +35,16 @@ public class Router implements IRouter {
         Optional<Route> matchedRoute = Arrays.stream(routes.getRoutes()).filter(route -> match(servletRequest, route)).findFirst();
 
         if (matchedRoute.isPresent() && matchedRoute.get().getMethod().equals(servletRequest.getMethod())) {
-            Logger.getLogger().info("Matched route: " + matchedRoute.get().getPath() + matchedRoute.get().getMethod());
+            Logger.getLogger().info("Matched route: " + matchedRoute.get().getPath() + " " + matchedRoute.get().getMethod());
             Route route = matchedRoute.get();
             Method method = route.getHandler();
             Class<?> controller = route.getController();
             Logger.getLogger().info("Handler: " + method.getName());
             controllers.putIfAbsent(controller, controller.newInstance());
             runInterceptors(servletRequest, servletResponse, route);
-            method.invoke(controllers.get(controller), servletRequest, servletResponse);
+            if (!servletResponse.isCommitted()) {
+                method.invoke(controllers.get(controller), servletRequest, servletResponse);
+            }
         } else {
             try {
                 Logger.getLogger().info("Route not matched");
@@ -56,7 +59,7 @@ public class Router implements IRouter {
         Arrays.asList(route.getHandler().getAnnotation(HttpHandler.class).interceptors()).forEach(inter -> {
             try {
                 interceptors.putIfAbsent(inter, inter.newInstance());
-                interceptors.get(inter).intercep(servletRequest, servletResponse);
+                interceptors.get(inter).intercept(servletRequest, servletResponse);
             } catch (InstantiationException | IllegalAccessException e) {
                 e.printStackTrace();
             }

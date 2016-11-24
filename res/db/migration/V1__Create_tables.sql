@@ -36,17 +36,17 @@ CREATE TABLE transportes (
 CREATE TABLE clientes (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   nome VARCHAR(255) NOT NULL,
-  cpf VARCHAR(255) NOT NULL,
-  rg VARCHAR(255) NOT NULL,
+  cpf VARCHAR(255) NOT NULL UNIQUE,
+  rg VARCHAR(255) NOT NULL UNIQUE,
   passaporte VARCHAR(255),
-  email VARCHAR(255) NOT NULL,
+  email VARCHAR(255) NOT NULL UNIQUE,
   telefone VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE funcionarios (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   nome VARCHAR(255) NOT NULL,
-  username VARCHAR(255) NOT NULL,
+  username VARCHAR(255) NOT NULL UNIQUE,
   encrypted_password VARCHAR(255) NOT NULL,
   cargo VARCHAR(255) NOT NULL
 );
@@ -98,3 +98,5 @@ CREATE TABLE trechos (
     FOREIGN KEY (roteiro_id)
     REFERENCES roteiros(id)
 );
+
+INSERT INTO funcionarios (nome, username, encrypted_password, cargo) VALUES ('Fulano', 'fulano', '46070d4bf934fb0d4b06d9e2c46e346944e322444900a435d7d9a95e6d7435f5', 'agente'); -- password: teste

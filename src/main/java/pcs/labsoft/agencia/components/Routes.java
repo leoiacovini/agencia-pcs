@@ -19,6 +19,7 @@ public class Routes {
     }
 
     public Routes() {
+        Logger.getLogger().info("Starting Routes component");
         MethodAnnotationsScanner anSc = new MethodAnnotationsScanner();
         Reflections reflections = new Reflections("pcs.labsoft.agencia", anSc);
         Set<Method> handlers = reflections.getMethodsAnnotatedWith(HttpHandler.class);
@@ -29,6 +30,7 @@ public class Routes {
         for(Route route: routes) {
             Logger.getLogger().debug("Route: " + route.getPath() + " " + route.getMethod());
         }
+        Logger.getLogger().info("Routes created successfully");
     }
 
 }
