@@ -23,9 +23,11 @@ public class Router implements IRouter {
     private HashMap<Class<?>, HttpInterceptor> interceptors;
 
     public Router(Routes routes) {
+        Logger.getLogger().info("Starting up Router");
         this.routes = routes;
         this.controllers = new HashMap<>();
         this.interceptors = new HashMap<>();
+        Logger.getLogger().info("Router initialized");
     }
 
     public void route(HttpRequest servletRequest, HttpServletResponse servletResponse) throws IOException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException {
@@ -33,7 +35,7 @@ public class Router implements IRouter {
         Optional<Route> matchedRoute = Arrays.stream(routes.getRoutes()).filter(route -> match(servletRequest, route)).findFirst();
 
         if (matchedRoute.isPresent() && matchedRoute.get().getMethod().equals(servletRequest.getMethod())) {
-            Logger.getLogger().info("Matched route: " + matchedRoute.get().getPath() + matchedRoute.get().getMethod());
+            Logger.getLogger().info("Matched route: " + matchedRoute.get().getPath() + " " + matchedRoute.get().getMethod());
             Route route = matchedRoute.get();
             Method method = route.getHandler();
             Class<?> controller = route.getController();

@@ -37,7 +37,7 @@ public class AppSystem implements ServletContextListener {
     public static AppSystem startSystem(String env) throws ServletException, LifecycleException, SQLException {
         Logger.getLogger().info("Starting up System...");
         AppSystem system = AppSystem.system = new AppSystem(env);
-        Logger.getLogger().info("All components started successfully");
+        Logger.getLogger().info("All components started successfully!");
         return system;
     }
 
