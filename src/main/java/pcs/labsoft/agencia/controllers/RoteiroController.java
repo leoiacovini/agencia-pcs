@@ -1,6 +1,7 @@
 package pcs.labsoft.agencia.controllers;
 
 import pcs.labsoft.agencia.components.interceptors.AgenteRequired;
+import pcs.labsoft.agencia.components.interceptors.ClienteRequired;
 import pcs.labsoft.agencia.components.interfaces.HttpController;
 import pcs.labsoft.agencia.misc.HttpHandler;
 import pcs.labsoft.agencia.misc.HttpRequest;
@@ -28,17 +29,20 @@ public class RoteiroController extends HttpController {
     }
 
     @HttpHandler(path = "/roteiro", method = "GET", interceptors = AgenteRequired.class)
-    public void Roteiro(HttpRequest request, HttpServletResponse response) {
+    public void roteiro(HttpRequest request, HttpServletResponse response) {
         try {
             HttpSession session = request.getSession();
             Funcionario funcionario = (Funcionario) session.getAttribute("user");
-
-
 
             renderRoteiro(request).forward(request, response);
         } catch (ServletException | IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @HttpHandler(path = "/start-roteiro", method = "POST", interceptors = {AgenteRequired.class, ClienteRequired.class})
+    public void startRoteiro(HttpRequest request, HttpServletResponse response) {
+
     }
 
     private RequestDispatcher renderRoteiro(HttpServletRequest servletRequest) {
