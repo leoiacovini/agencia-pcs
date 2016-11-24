@@ -20,6 +20,9 @@
     <a href="/mudarcidade">
         <li>Alterar Cidade</li>
     </a>
+    <a href="/novacidade">
+        <li>Adicionar Cidade</li>
+    </a>
 </ul>
 
 </body>
