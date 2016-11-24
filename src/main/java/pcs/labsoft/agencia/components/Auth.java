@@ -12,7 +12,7 @@ public class Auth {
         try {
             MessageDigest digest = MessageDigest.getInstance("SHA-256");
             byte[] hashed = digest.digest(text.getBytes());
-            StringBuffer sb = new StringBuffer();
+            StringBuilder sb = new StringBuilder();
             for (int i = 0; i < hashed.length; i++) {
                 sb.append(Integer.toString((hashed[i] & 0xff) + 0x100, 16).substring(1));
             }

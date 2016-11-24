@@ -25,8 +25,7 @@ public class AuthController extends HttpController {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         if (username != null && password != null) {
-            String hashedPassword = auth.secureHash(password);
-            Funcionario funcionario = Funcionario.logIn(username, hashedPassword, db);
+            Funcionario funcionario = Funcionario.logIn(username, password, db, auth);
             if (funcionario != null) {
                 request.getSession().setAttribute("user", funcionario);
                 response.getWriter().write("Logado com sucesso: " + funcionario.getNome());

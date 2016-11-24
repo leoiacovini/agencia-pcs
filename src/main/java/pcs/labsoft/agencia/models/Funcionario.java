@@ -1,5 +1,6 @@
 package pcs.labsoft.agencia.models;
 
+import pcs.labsoft.agencia.components.Auth;
 import pcs.labsoft.agencia.components.interfaces.IDB;
 import pcs.labsoft.agencia.models.dao.FuncionarioDao;
 
@@ -42,7 +43,8 @@ public class Funcionario {
         return cargo;
     }
 
-    static public Funcionario logIn(String username, String hashedPassword, IDB db) {
+    static public Funcionario logIn(String username, String password, IDB db, Auth auth) {
+        String hashedPassword = auth.secureHash(password);
         FuncionarioDao dao = new FuncionarioDao(db);
         Funcionario funcionario = dao.getByUsername(username);
         if  (funcionario != null && funcionario.encryptedPassword.equals(hashedPassword)) {
