@@ -38,6 +38,7 @@ public class AppSystem implements ServletContextListener {
         Logger.getLogger().info("Starting up System...");
         AppSystem system = AppSystem.system = new AppSystem(env);
         Logger.getLogger().info("All components started successfully!");
+        System.out.println();
         return system;
     }
 
@@ -61,6 +62,8 @@ public class AppSystem implements ServletContextListener {
         } else {
             AppSystem.getSystem().stop();
         }
+        Logger.getLogger().info("Stopping System");
+        System.out.println();
     }
 
     public AppSystem() {}

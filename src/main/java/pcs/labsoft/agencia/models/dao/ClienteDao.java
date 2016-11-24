@@ -1,5 +1,6 @@
 package pcs.labsoft.agencia.models.dao;
 
+import pcs.labsoft.agencia.components.Logger;
 import pcs.labsoft.agencia.components.interfaces.IDB;
 import pcs.labsoft.agencia.components.interfaces.ModelDao;
 import pcs.labsoft.agencia.models.Cliente;
@@ -37,7 +38,11 @@ public class ClienteDao extends ModelDao {
                 return null;
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            if (e.getErrorCode() == 23505) {
+                Logger.getLogger().warn(e.getMessage());
+            } else {
+                e.printStackTrace();
+            }
             return null;
         }
     }
