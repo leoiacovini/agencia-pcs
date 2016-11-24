@@ -9,8 +9,19 @@
 <html>
 <head>
     <title>Alterar Cidade</title>
+    <% List<Cidade> cidades = (List<Cidade>) request.getAttribute("cidades"); %>
 </head>
 <body>
-
+<h3>Cidades disponíveis para remoção:</h3>
+<form method="POST" name="/removercidade">
+    <tr><select name="escolha">
+        <option disabled selected value>Selecione uma opção</option>
+        <% for (Cidade cidade : cidades) { %>
+        <option value="<%=cidade.getId()%>"><%=cidade.getNome()%>
+        </option>
+        <% } %>
+    </select></tr>
+    <tr><input value="Deletar" type="submit"></tr>
+</form>
 </body>
 </html>
