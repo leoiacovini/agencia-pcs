@@ -20,7 +20,7 @@ public class ClienteDao extends ModelDao {
 
     public Cliente createCliente(Cliente cliente) {
 
-        try(Connection connection = db.getConnection()) {
+        try (Connection connection = db.getConnection()) {
             PreparedStatement statement = connection.prepareStatement("INSERT INTO clientes (nome, rg, cpf, passaporte, email, telefone) VALUES (?, ?, ?, ?, ?, ?)");
             statement.setString(1, cliente.getNome());
             statement.setString(2, cliente.getRg());
@@ -40,7 +40,23 @@ public class ClienteDao extends ModelDao {
             e.printStackTrace();
             return null;
         }
+    }
 
+    public Cliente getClienteById(int id) {
+
+        try (Connection connection = db.getConnection()) {
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM clientes WHERE id = ?");
+            statement.setInt(1, id);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                return new Cliente(id, rs.getString("nome"), rs.getString("cpf"), rs.getString("rg"), rs.getString("email"), rs.getString("passaporte"), rs.getString("telefone"));
+            } else{
+                return null;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
 }

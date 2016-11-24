@@ -63,4 +63,8 @@ public class Cliente {
         return dao.createCliente(cliente);
     }
 
+    public static Cliente getById(int id, IDB db) {
+        return new ClienteDao(db).getClienteById(id);
+    }
+
 }
