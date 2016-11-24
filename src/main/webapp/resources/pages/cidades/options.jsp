@@ -24,7 +24,10 @@
     </ul>
 
     <% if (request.getAttribute("Adicao").equals("OK"))  { %>
-       <jsp:text>Pagina criada com sucesso</jsp:text>
+       <jsp:text>Cidade criada com sucesso</jsp:text>
+    <% } %>
+    <% if (request.getAttribute("Remocao").equals("OK"))  { %>
+    <jsp:text>Cidade removida com sucesso</jsp:text>
     <% } %>
     </body>
 </html>
