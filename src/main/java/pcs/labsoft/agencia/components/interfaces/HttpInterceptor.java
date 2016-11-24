@@ -9,6 +9,6 @@ import javax.servlet.http.HttpServletResponse;
  */
 public interface HttpInterceptor {
 
-    public void intercep(HttpRequest httpRequest, HttpServletResponse httpResponse);
+    public void intercept(HttpRequest httpRequest, HttpServletResponse httpResponse);
 
 }

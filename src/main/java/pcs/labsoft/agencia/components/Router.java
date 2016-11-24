@@ -7,7 +7,6 @@ import pcs.labsoft.agencia.misc.HttpRequest;
 import pcs.labsoft.agencia.misc.Route;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -41,7 +40,9 @@ public class Router implements IRouter {
             Logger.getLogger().info("Handler: " + method.getName());
             controllers.putIfAbsent(controller, controller.newInstance());
             runInterceptors(servletRequest, servletResponse, route);
-            method.invoke(controllers.get(controller), servletRequest, servletResponse);
+            if (!servletResponse.isCommitted()) {
+                method.invoke(controllers.get(controller), servletRequest, servletResponse);
+            }
         } else {
             try {
                 Logger.getLogger().info("Route not matched");
@@ -56,7 +57,7 @@ public class Router implements IRouter {
         Arrays.asList(route.getHandler().getAnnotation(HttpHandler.class).interceptors()).forEach(inter -> {
             try {
                 interceptors.putIfAbsent(inter, inter.newInstance());
-                interceptors.get(inter).intercep(servletRequest, servletResponse);
+                interceptors.get(inter).intercept(servletRequest, servletResponse);
             } catch (InstantiationException | IllegalAccessException e) {
                 e.printStackTrace();
             }
