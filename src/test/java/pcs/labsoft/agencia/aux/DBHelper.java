@@ -20,12 +20,18 @@ public class DBHelper {
     private final String[] cidadesStubs = new String[]
             {cidadeInsert + "('Sao Paulo', 'SP', 'Brasil', 1);",
              cidadeInsert + "('Rio de Janeiro', 'RJ', 'Brasil', 2);",
-             cidadeInsert + "('Minas Gerais', 'MG', 'Brasil', 3)"};
+             cidadeInsert + "('Minas Gerais', 'MG', 'Brasil', 3)",
+             cidadeInsert + "('Guarulhos', 'SP', 'Brasil', 4)",
+             cidadeInsert + "('Paraty', 'RJ', 'Brasil', 5)",
+             cidadeInsert + "('Campos do Jordão', 'SP', 'Brasil', 6)"};
 
     private final String[] hoteisStubs = new String[]
             {hotelInsert + "('Ibis', 120.0, 1, 1);",
              hotelInsert + "('Hilton', 200.0, 2, 2);",
-             hotelInsert + "('Holiday Inn', 100.0, 3, 3)"};
+             hotelInsert + "('Holiday Inn', 100.0, 3, 3)",
+             hotelInsert + "('Ibis', 100.0, 4, 1)",
+             hotelInsert + "('Triade', 100.0, 5, 5)",
+             hotelInsert + "('Bella', 100.0, 6, 4)"};
 
     private final String[] transportesStubs = new String[]
             {transporteInsert + "('Avião', 240.0, 2, 1, 1);",
