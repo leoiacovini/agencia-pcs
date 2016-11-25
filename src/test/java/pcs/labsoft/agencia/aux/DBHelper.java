@@ -40,7 +40,7 @@ public class DBHelper {
         try(Connection con = db.getConnection()) {
             Statement st = con.createStatement();
             for (String sql: seedInserts) {
-                Logger.getLogger().debug("Executing: " + sql);
+                Logger.getLogger().debug("Seed DB Executing: " + sql);
                 st.executeUpdate(sql);
             }
         } catch (SQLException e) {

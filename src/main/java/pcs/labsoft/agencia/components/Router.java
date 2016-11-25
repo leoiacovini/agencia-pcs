@@ -47,7 +47,7 @@ public class Router implements IRouter {
             }
         } else {
             try {
-                Logger.getLogger().info("Route not matched");
+                Logger.getLogger().info("Route not matched, trying resource folder...");
                 servletRequest.getRequest().getRequestDispatcher("/resources/" + servletRequest.getPathInfo()).forward(servletRequest, servletResponse);
             } catch (ServletException e) {
                 e.printStackTrace();
