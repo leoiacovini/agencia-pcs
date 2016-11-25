@@ -25,8 +25,6 @@ public class SystemTest {
     public void cleanDB() {
         system.getDataBase().clean();
         system.getDataBase().runMigrations();
-        DBHelper dbHelper = new DBHelper(system.getDataBase());
-        dbHelper.prepareWithSeed();
     }
 
     @AfterClass

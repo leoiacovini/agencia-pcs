@@ -20,5 +20,8 @@
     </table>
     <tr><input value="Alterar" type="submit"></tr>
 </form>
+<form method="GET" action="/managercidades">
+    <input value="Cancelar" type="submit">
+</form>
 </body>
 </html>

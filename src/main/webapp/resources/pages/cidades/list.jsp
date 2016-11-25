@@ -16,6 +16,9 @@
     </a>
     <% } %>
 </ul>
+<form method="GET" action="/managercidades">
+    <input value="Voltar" type="submit">
+</form>
 
 </body>
 </html>

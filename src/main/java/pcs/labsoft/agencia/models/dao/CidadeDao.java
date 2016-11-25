@@ -58,9 +58,9 @@ public class CidadeDao extends ModelDao {
                 Double preco = rsTransportes.getDouble("preco");
                 Cidade cidadePartida = map.get(cidadePartidaId);
                 Cidade cidadeChegada = map.get(cidadeChegadaId);
-                Transporte transoprte = new Transporte(cidadePartida, cidadeChegada, tipo, preco, id);
-                cidadePartida.addTransportesDePartida(transoprte);
-                cidadeChegada.addTransportesDeChegada(transoprte);
+                Transporte transporte = new Transporte(cidadePartida, cidadeChegada, tipo, preco, id);
+                cidadePartida.addTransportesDePartida(transporte);
+                cidadeChegada.addTransportesDeChegada(transporte);
             }
 
         } catch (SQLException ex) {

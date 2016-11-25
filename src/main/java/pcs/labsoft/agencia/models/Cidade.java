@@ -2,6 +2,7 @@ package pcs.labsoft.agencia.models;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by leoiacovini on 10/7/16.
@@ -73,4 +74,9 @@ public class Cidade {
     public void addHotel(Hotel hotel) {
         this.hoteis.add(hotel);
     }
+
+    public boolean temAeroporto() {
+        return transportesDePartida.stream().filter(t -> t.getTipo().equals("avião")).count() > 0;
+    }
+
 }

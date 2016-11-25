@@ -19,9 +19,11 @@ public class DefaultDB implements IDB {
     private final String username;
     private final String password;
     private final Flyway migrationManager;
+    private final Config config;
     private int poolSize;
 
     public DefaultDB(Config configuration) {
+        this.config = configuration;
         Logger.getLogger().info("Initializing DB");
         jdbcUrl = configuration.getString("db.default.url");
         username = configuration.getString("db.default.username");
@@ -47,6 +49,11 @@ public class DefaultDB implements IDB {
     }
 
     public void runMigrations() {
+        if (config.getString("env").equals("test")) {
+            migrationManager.setLocations("db/migration", "db/seed/test");
+        } else {
+            migrationManager.setLocations("db/migration", "db/seed/prod");
+        }
         migrationManager.migrate();
     }
 

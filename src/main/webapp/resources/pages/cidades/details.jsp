@@ -15,5 +15,8 @@
 <form method="GET" action="/cidades/${requestScope.get("cidade").getId()}/edit">
     <tr><input value="Alterar" type="submit"></tr>
 </form>
+<form method="GET" action="/managercidades">
+    <input value="Voltar" type="submit">
+</form>
 </body>
 </html>

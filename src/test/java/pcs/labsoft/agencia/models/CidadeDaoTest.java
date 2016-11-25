@@ -26,7 +26,7 @@ public class CidadeDaoTest extends SystemTest {
     @Test
     public void loadAll() {
         List<Cidade> cidades = cidadeDao.loadAll();
-        assertEquals(3, cidades.size());
+        assertEquals(6, cidades.size());
     }
 
     @Test
