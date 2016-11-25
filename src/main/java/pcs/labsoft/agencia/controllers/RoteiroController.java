@@ -1,5 +1,6 @@
 package pcs.labsoft.agencia.controllers;
 
+import pcs.labsoft.agencia.components.Logger;
 import pcs.labsoft.agencia.components.interceptors.AgenteRequired;
 import pcs.labsoft.agencia.components.interceptors.ClienteRequired;
 import pcs.labsoft.agencia.components.interfaces.HttpController;
@@ -48,13 +49,55 @@ public class RoteiroController extends HttpController {
         Funcionario funcionario = (Funcionario) session.getAttribute("funcionario");
         Roteiro roteiro = new Roteiro(cliente, funcionario);
         session.setAttribute("cidadeBase", cidadeBase);
+        session.setAttribute("cidadeAtual", cidadeBase);
         session.setAttribute("cliente", cliente);
         session.setAttribute("roteiro", roteiro);
+        try {
+            renderRoteiro(request).forward(request, response);
+        } catch (ServletException | IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @HttpHandler(path = "/roteiro/get-proxima-cidade", method = "GET", interceptors = {AgenteRequired.class})
+    public void getProximasCidades(HttpRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession();
+        Cidade cidadeAtual = (Cidade) session.getAttribute("cidadeAtual");
+        List<Cidade> proximasCidades = cidadeAtual.getTransportesDePartida().stream().map(t -> t.getCidadeDeChegada()).collect(Collectors.toList());
+        request.setAttribute("proximasCidades", proximasCidades);
+    }
+
+    @HttpHandler(path = "/roteiro/set-proxima-cidade", method = "GET", interceptors = {AgenteRequired.class})
+    public void setProximaCidade(HttpRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession();
+        int proximaCidadeId = Integer.parseInt(request.getParameter("proximaCidadeId"));
+        Cidade proximaCidade = cidadeDao.findById(proximaCidadeId);
+        session.setAttribute("proximaCidade", proximaCidade);
+    }
+
+    @HttpHandler(path = "/roteiro/get-transporte-to-cidade", method = "GET", interceptors = {AgenteRequired.class})
+    public void getTransportesToCidade(HttpRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession();
+        Cidade cidadeAtual = (Cidade) session.getAttribute("cidadeAtual");
+        Cidade proximaCidade = (Cidade) session.getAttribute("proximaCidade");
+        List<Transporte> transportes = cidadeAtual.getTransportesDePartida().stream().filter(t -> t.getCidadeDeChegada().getId() == proximaCidade.getId()).collect(Collectors.toList());
+        request.setAttribute("transportes", transportes);
+    }
+
+    @HttpHandler(path = "/roteiro/add-trecho-inicial", method = "POST", interceptors = {AgenteRequired.class})
+    public void addTrechoInicial(HttpRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession();
+        Cidade cidadeBase = (Cidade) session.getAttribute("cidadeBase");
+        Roteiro roteiro = (Roteiro) session.getAttribute("roteiro");
+        int transporteId = Integer.parseInt(request.getParameter("transporteId"));
+        Transporte transporte = cidadeBase.getTransportesDePartida().stream().filter(t -> t.getId() == transporteId).findFirst().get();
+        Trecho trechoInicial = new Trecho(cidadeBase, transporte, null, 0, true);
+        roteiro.addTrecho(trechoInicial);
     }
 
     @HttpHandler(path = "/roteiro/add-trecho", method = "GET", interceptors = {AgenteRequired.class})
     public void renderAddTrecho(HttpRequest request, HttpServletResponse response) {
-        
+
     }
 
     private RequestDispatcher renderRoteiro(HttpServletRequest servletRequest) {

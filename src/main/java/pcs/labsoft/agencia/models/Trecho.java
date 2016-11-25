@@ -21,6 +21,10 @@ public class Trecho {
         this.id = id;
     }
 
+    public Trecho(Cidade cidade, Transporte transporte, Hotel hotel, int duracao, boolean isTrechoInicial) {
+        this(cidade, transporte, hotel, duracao, isTrechoInicial, 0);
+    }
+
     public int getId() {
         return id;
     }
