@@ -44,13 +44,12 @@ public class RoteiroController extends HttpController {
     public void startRoteiro(HttpRequest request, HttpServletResponse response) throws Exception {
         HttpSession session = request.getSession();
         Cliente cliente = new Cliente("Cliente","00312345678","1234567890","cliente@email.com","12309128901","991234567");
-        int cidadeBaseId = Integer.parseInt(request.getParameter("session."));
+        int cidadeBaseId = Integer.parseInt(request.getParameter("cidadeBaseId"));
         Cidade cidadeBase = cidadeDao.findById(cidadeBaseId);
-
         Funcionario funcionario = (Funcionario) session.getAttribute("funcionario");
         Roteiro roteiro = new Roteiro(cliente, funcionario);
-        Trecho  trecho = new Trecho(request.getParameter("cidadeBaseId"),);
-        roteiro.addTrecho(trecho);
+        session.setAttribute("cidadeBase", cidadeBase);
+        session.setAttribute("cliente", cliente);
         session.setAttribute("roteiro", roteiro);
         try {
             renderRoteiro(request).forward(request, response);
@@ -61,7 +60,7 @@ public class RoteiroController extends HttpController {
 
     @HttpHandler(path = "/roteiro/add-trecho", method = "GET", interceptors = {AgenteRequired.class})
     public void renderAddTrecho(HttpRequest request, HttpServletResponse response) {
-
+        
     }
 
     private RequestDispatcher renderRoteiro(HttpServletRequest servletRequest) {
