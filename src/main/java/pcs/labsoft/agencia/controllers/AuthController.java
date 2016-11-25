@@ -7,6 +7,9 @@ import pcs.labsoft.agencia.misc.HttpRequest;
 import pcs.labsoft.agencia.models.Cliente;
 import pcs.labsoft.agencia.models.Funcionario;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
@@ -17,7 +20,11 @@ public class AuthController extends HttpController {
 
     @HttpHandler(path = "/login", method = "GET")
     public void getLoginFuncionario(HttpRequest request, HttpServletResponse response) {
-
+        try {
+            renderLogin(request).forward(request, response);
+        } catch (ServletException | IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @HttpHandler(path = "/login", method = "POST")
@@ -49,4 +56,12 @@ public class AuthController extends HttpController {
         }
     }
 
+    private RequestDispatcher renderLogin(HttpRequest servletRequest) {
+        return servletRequest.getRequestDispatcher(getPagePath("login.jsp"));
+    }
+
+    private String getPagePath(String pageName) {
+        String baseDirectory = "funcionario/";
+        return baseDirectory + pageName;
+    }
 }
