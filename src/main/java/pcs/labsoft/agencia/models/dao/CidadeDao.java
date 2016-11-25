@@ -74,8 +74,7 @@ public class CidadeDao extends ModelDao {
 
 
 	public Cidade findById(int id) throws Exception {
-
-        try(Connection connection = db.getConnection()) {
+        try (Connection connection = db.getConnection()) {
 			Statement statement = connection.createStatement();
 			ResultSet rs = statement.executeQuery("SELECT * FROM cidades WHERE id=" + id);
             if (rs.next()) {
@@ -129,7 +128,7 @@ public class CidadeDao extends ModelDao {
 	}
 
 	public void deleteById(int id) throws Exception {
-		try(Connection connection = db.getConnection()) {
+		try (Connection connection = db.getConnection()) {
 			PreparedStatement statement = connection.prepareStatement("DELETE FROM cidades WHERE id = ?");
             statement.setInt(1, id);
 			statement.executeUpdate();

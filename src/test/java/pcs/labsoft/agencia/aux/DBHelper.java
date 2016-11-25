@@ -5,6 +5,7 @@ import pcs.labsoft.agencia.components.Logger;
 import pcs.labsoft.agencia.components.interfaces.IDB;
 
 import java.sql.*;
+import java.util.stream.Stream;
 
 /**
  * Created by leoiacovini on 11/18/16.
@@ -21,16 +22,18 @@ public class DBHelper {
             {cidadeInsert + "('Sao Paulo', 'SP', 'Brasil', 1);",
              cidadeInsert + "('Rio de Janeiro', 'RJ', 'Brasil', 2);",
              cidadeInsert + "('Minas Gerais', 'MG', 'Brasil', 3)"};
+
     private final String[] hoteisStubs = new String[]
             {hotelInsert + "('Ibis', 120.0, 1, 1);",
              hotelInsert + "('Hilton', 200.0, 2, 2);",
              hotelInsert + "('Holiday Inn', 100.0, 3, 3)"};
+
     private final String[] transportesStubs = new String[]
             {transporteInsert + "('Avião', 240.0, 2, 1, 1);",
              transporteInsert + "('Onibus', 120.0, 1, 2, 2);",
              transporteInsert + "('Onibus', 140.0, 2, 3, 3)"};
 
-    private final String[] seedInserts = ArrayUtils.addAll(cidadesStubs, ArrayUtils.addAll(hoteisStubs, transportesStubs));
+    private final String[] seedInserts =  Stream.of(cidadesStubs, hoteisStubs, transportesStubs).flatMap(Stream::of).toArray(String[]::new);
 
     public DBHelper(IDB db) {
         this.db = db;
