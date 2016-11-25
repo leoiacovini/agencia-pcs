@@ -20,6 +20,8 @@
     <tr><td><input value="Enviar" type="submit"></td></tr>
 </table>
 </form>
-
+<form method="GET" action="/managercidades">
+    <input value="Cancelar" type="submit">
+</form>
 </body>
 </html>
