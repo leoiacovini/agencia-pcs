@@ -29,7 +29,7 @@ public class RoteiroController extends HttpController {
         cidadeDao = new CidadeDao(db);
     }
 
-    @HttpHandler(path = "/roteiro", method = "GET", interceptors = AgenteRequired.class)
+    @HttpHandler(path = "/roteiro", method = "GET", interceptors = {AgenteRequired.class})
     public void roteiro(HttpRequest request, HttpServletResponse response) {
         try {
             List<Cidade> cidadesElegiveis = cidadeDao.loadAll().stream().filter(Cidade::temAeroporto).collect(Collectors.toList());
@@ -41,10 +41,12 @@ public class RoteiroController extends HttpController {
     }
 
     @HttpHandler(path = "/roteiro", method = "POST", interceptors = {AgenteRequired.class})
-    public void startRoteiro(HttpRequest request, HttpServletResponse response) {
+    public void startRoteiro(HttpRequest request, HttpServletResponse response) throws Exception {
         HttpSession session = request.getSession();
         Cliente cliente = new Cliente("Cliente","00312345678","1234567890","cliente@email.com","12309128901","991234567");
-//        Cliente cliente = (Cliente) session.getAttribute("cliente");
+        int cidadeBaseId = Integer.parseInt(request.getParameter("session."));
+        Cidade cidadeBase = cidadeDao.findById(cidadeBaseId);
+
         Funcionario funcionario = (Funcionario) session.getAttribute("funcionario");
         Roteiro roteiro = new Roteiro(cliente, funcionario);
         Trecho  trecho = new Trecho(request.getParameter("cidadeBaseId"),);
@@ -57,9 +59,9 @@ public class RoteiroController extends HttpController {
         }
     }
 
-    @HttpHandler(path = "/roteiro/add-trecho", method = "GET", interceptors = AgenteRequired.class)
+    @HttpHandler(path = "/roteiro/add-trecho", method = "GET", interceptors = {AgenteRequired.class})
     public void renderAddTrecho(HttpRequest request, HttpServletResponse response) {
-        
+
     }
 
     private RequestDispatcher renderRoteiro(HttpServletRequest servletRequest) {

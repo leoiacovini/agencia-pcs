@@ -4,6 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 import org.h2.command.Prepared;
 import pcs.labsoft.agencia.components.Logger;
@@ -73,22 +74,10 @@ public class CidadeDao extends ModelDao {
 	}
 
 
-	public Cidade findById(int id) throws Exception {
-        try (Connection connection = db.getConnection()) {
-			Statement statement = connection.createStatement();
-			ResultSet rs = statement.executeQuery("SELECT * FROM cidades WHERE id=" + id);
-            if (rs.next()) {
-                return new Cidade(rs.getString("nome"), rs.getString("pais"), rs.getString("estado"), id);
-            } else {
-                return null;
-            }
-		}
-		catch (SQLException ex) {
-            ex.printStackTrace();
-			Logger.getLogger().error(ex.getMessage());
-			return null;
-		}
-
+	public Cidade findById(int id) {
+	    List<Cidade> cidades = loadAll();
+        Optional<Cidade> cidade = cidades.stream().filter(c -> c.getId() == id).findFirst();
+        return cidade.orElse(null);
 	}
 
 	public Cidade create(Cidade cidade) throws Exception {
