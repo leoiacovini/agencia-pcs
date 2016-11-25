@@ -42,13 +42,18 @@ public class RoteiroController extends HttpController {
         }
     }
 
-    @HttpHandler(path = "/start-roteiro", method = "POST", interceptors = {AgenteRequired.class, ClienteRequired.class})
+    @HttpHandler(path = "/roteiro", method = "POST", interceptors = {AgenteRequired.class, ClienteRequired.class})
     public void startRoteiro(HttpRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
         Cliente cliente = (Cliente) session.getAttribute("cliente");
         Funcionario funcionario = (Funcionario) session.getAttribute("funcionario");
         Roteiro roteiro = new Roteiro(cliente, funcionario);
         session.setAttribute("roteiro", roteiro);
+    }
+
+    @HttpHandler(path = "/roteiro/add-trecho", method = "GET", interceptors = AgenteRequired.class)
+    public void renderAddTrecho(HttpRequest request, HttpServletResponse response) {
+        
     }
 
     private RequestDispatcher renderRoteiro(HttpServletRequest servletRequest) {

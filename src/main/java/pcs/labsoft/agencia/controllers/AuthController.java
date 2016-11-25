@@ -42,7 +42,12 @@ public class AuthController extends HttpController {
         }
     }
 
-    @HttpHandler(path = "/cliente", method = "POST", interceptors = {AgenteRequired.class})
+    @HttpHandler(path = "/clientes/registrar", method = "GET", interceptors = AgenteRequired.class)
+    public void renderRegistrarCliente(HttpRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.getRequestDispatcher("clientes/register.jsp").forward(request, response);
+    }
+
+    @HttpHandler(path = "/clientes/registrar", method = "POST", interceptors = {AgenteRequired.class})
     public void registerCliente(HttpRequest request, HttpServletResponse response) throws IOException {
         String nome = request.getParameter("nome");
         String rg = request.getParameter("rg");
@@ -57,11 +62,6 @@ public class AuthController extends HttpController {
     }
 
     private RequestDispatcher renderLogin(HttpRequest servletRequest) {
-        return servletRequest.getRequestDispatcher(getPagePath("login.jsp"));
-    }
-
-    private String getPagePath(String pageName) {
-        String baseDirectory = "funcionario/";
-        return baseDirectory + pageName;
+        return servletRequest.getRequestDispatcher("funcionario/login.jsp");
     }
 }
