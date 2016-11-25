@@ -52,9 +52,22 @@ public class RoteiroController extends HttpController {
         session.setAttribute("roteiro", roteiro);
     }
 
+
+
+    @HttpHandler(path = "/roteiro/add-trecho-inicial", method = "POST", interceptors = {AgenteRequired.class})
+    public void addTrechoInicial(HttpRequest request, HttpServletResponse response) {
+        HttpSession session = request.getSession();
+        Cidade cidadeBase = (Cidade) session.getAttribute("cidadeBase");
+        Roteiro roteiro = (Roteiro) session.getAttribute("roteiro");
+        int transporteId = Integer.parseInt(request.getParameter("transporteId"));
+        Transporte transporte = cidadeBase.getTransportesDePartida().stream().filter(t -> t.getId() == transporteId).findFirst().get();
+        Trecho trechoInicial = new Trecho(cidadeBase, transporte, null, 0, true);
+        roteiro.addTrecho(trechoInicial);
+    }
+
     @HttpHandler(path = "/roteiro/add-trecho", method = "GET", interceptors = {AgenteRequired.class})
     public void renderAddTrecho(HttpRequest request, HttpServletResponse response) {
-        
+
     }
 
     private RequestDispatcher renderRoteiro(HttpServletRequest servletRequest) {
