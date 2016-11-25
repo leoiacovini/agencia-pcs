@@ -50,12 +50,24 @@ public class CidadeController extends HttpController {
 
     @HttpHandler(path = "/novacidade", method = "POST")
     public void addCidade(HttpRequest request, HttpServletResponse response) throws Exception {
-        Cidade nova = new Cidade(request.getParameter("Nome"), request.getParameter("Estado"), request.getParameter("Pais"));
+        String nome = request.getParameter("Nome");
+        String estado = request.getParameter("Estado");
+        String pais = request.getParameter("Pais");
+
+        if (isNullOrEmptyOrNumber(nome) ||
+            isNullOrEmptyOrNumber(estado) ||
+            isNullOrEmptyOrNumber(pais))
+        {
+            request.setAttribute("invalido", "Verifique o preenchimento dos campos.");
+            renderNewCidade(request).forward(request, response);
+            return;
+        }
+
+        Cidade nova = new Cidade(nome, pais, estado);
         CityDao.create(nova);
         String ok = "OK";
         request.setAttribute("Adicao", ok);
         CRUDCidade(request, response);
-
     }
 
     @HttpHandler(path = "/cidades/:id/delete", method = "POST")
@@ -147,6 +159,10 @@ public class CidadeController extends HttpController {
     private String getPagePath(String pageName) {
         String baseDirectory = "cidades/";
         return baseDirectory + pageName;
+    }
+
+    private boolean isNullOrEmptyOrNumber(String s) {
+        return s == null || s.trim().isEmpty() || s.matches("-?\\d+(\\.\\d+)?");
     }
 
 }
