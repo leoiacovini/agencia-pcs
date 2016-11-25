@@ -7,6 +7,7 @@ import pcs.labsoft.agencia.models.dao.CidadeDao;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 
@@ -31,9 +32,9 @@ public class CidadeDaoTest extends SystemTest {
     @Test
     public void createCidade() throws Exception {
         Cidade cidade = new Cidade("Paris", "França", "Ilha de França", 4);
-        cidadeDao.create(cidade);
-        Cidade cid = cidadeDao.loadAll().stream().filter( c -> c.getId() == 4).findFirst().get();
-        assertEquals(cid.getNome(), cidade.getNome());
+        Cidade newCidade = cidadeDao.create(cidade);
+        assertNotNull(newCidade);
+        assertEquals(newCidade.getNome(), cidade.getNome());
     }
 
     @Test
@@ -46,11 +47,9 @@ public class CidadeDaoTest extends SystemTest {
 
     @Test
     public void updateCidade() throws Exception {
-        Cidade cidade = new Cidade("Teste", "PaisTeste", "PTS");
-        int id = cidadeDao.create(cidade);
-        Cidade updatedCidade = new Cidade("Updated", "Pais", "PCS", id);
+        Cidade updatedCidade = new Cidade("Updated", "Pais", "PCS", 1);
         cidadeDao.update(updatedCidade);
-        updatedCidade = cidadeDao.findById(id);
+        updatedCidade = cidadeDao.findById(1);
         assertEquals("Updated", updatedCidade.getNome());
         assertEquals("Pais", updatedCidade.getPais());
         assertEquals("PCS", updatedCidade.getEstado());
