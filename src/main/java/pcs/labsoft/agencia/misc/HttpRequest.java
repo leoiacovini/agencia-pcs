@@ -26,4 +26,8 @@ public class HttpRequest extends HttpServletRequestWrapper {
     public RequestDispatcher getRequestDispatcher(String path) {
         return super.getRequestDispatcher("/resources/pages/" + path);
     }
+
+    public RequestDispatcher getSuperRequestDispatcher(String path) {
+        return super.getRequestDispatcher(path);
+    }
 }
