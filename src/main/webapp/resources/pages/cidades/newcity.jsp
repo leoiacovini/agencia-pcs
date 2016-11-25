@@ -23,5 +23,8 @@
 <form method="GET" action="/managercidades">
     <input value="Cancelar" type="submit">
 </form>
+<% if (request.getAttribute("invalido") != null)  { %>
+    <p><%=request.getAttribute("invalido").toString()%></p>
+<% } %>
 </body>
 </html>
