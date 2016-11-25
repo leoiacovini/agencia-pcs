@@ -11,10 +11,11 @@
     <title>Agência</title>
 </head>
 <body>
-    <h2>Agência de viagens PCS<h2>
-    <a href="/managercidades">Cidades</a>
-    <a href="/hoteis">Hoteis</a>
-    <a href="/login">Fazer login</a>
-    <a href="/roteiro">Roteiros</a>
+    <h2>Agência de viagens PCS</h2>
+    <ul>
+        <a href="/managercidades"><li>Cidades</li></a>
+        <a href="/login"><li>Fazer login</li></a>
+        <a href="/roteiro"><li>Roteiros</li></a>
+    </ul>
 </body>
 </html>
