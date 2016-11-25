@@ -11,12 +11,12 @@
 <ul>
     <h3>Cidades cadastradas (<%= cidades.size() %>)</h3>
     <% for (Cidade cidade : cidades) { %>
-    <a href="/cidades/<%= cidade.getId() %>">
+    <a href="/AgenciaPCS/cidades/<%= cidade.getId() %>">
         <li><%= cidade %></li>
     </a>
     <% } %>
 </ul>
-<form method="GET" action="/managercidades">
+<form method="GET" action="/AgenciaPCS/managercidades">
     <input value="Voltar" type="submit">
 </form>
 

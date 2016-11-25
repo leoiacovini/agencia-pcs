@@ -14,10 +14,10 @@
     <h3>Escolha uma das opções abaixo</h3>
 
     <ul>
-        <a href="/cidades/">
+        <a href="/AgenciaPCS/cidades/">
             <li>Listar cidade</li>
         </a>
-        <a href="/novacidade">
+        <a href="/AgenciaPCS/novacidade">
             <li>Criar cidade</li>
         </a>
 

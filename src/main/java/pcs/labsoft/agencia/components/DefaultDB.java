@@ -40,6 +40,7 @@ public class DefaultDB implements IDB {
         hikariConfig.setJdbcUrl(jdbcUrl);
         hikariConfig.setUsername(username);
         hikariConfig.setPassword(password);
+        hikariConfig.setDriverClassName(config.getString("db.default.driver"));
         hikariConfig.setMaximumPoolSize(poolSize);
         return hikariConfig;
     }
@@ -49,6 +50,7 @@ public class DefaultDB implements IDB {
     }
 
     public void runMigrations() {
+        migrationManager.clean();
         if (config.getString("env").equals("test")) {
             migrationManager.setLocations("db/migration", "db/seed/test");
         } else {

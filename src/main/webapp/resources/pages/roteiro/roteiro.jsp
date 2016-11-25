@@ -17,7 +17,7 @@
 <jsp:text>Selecione a cidade base:</jsp:text>
 
 <%if(request.getSession().getAttribute("roteiro") == null) {%>
-<form method="POST" action="/roteiro">
+<form method="POST" action="/AgenciaPCS/roteiro">
     <select name="cidadeBaseId">
         <% for(Cidade cidade : cidades) { %>
             <option value="<%= cidade.getId() %>"> <%= cidade.getNome() %> </option>
@@ -28,7 +28,7 @@
 <% }else{%>
 <br>
 <select>
-    <option value="<%=request.getSession().getAttribute("roteiro").%>"
+    <option value="<%=request.getSession().getAttribute("roteiro") %>"></option>
 </select>
 <jsp:text>Tudo OK</jsp:text>
 <%--<%=request.getAttribute("roteiro")%>--%>

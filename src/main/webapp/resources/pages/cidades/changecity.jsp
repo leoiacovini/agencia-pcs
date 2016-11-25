@@ -11,7 +11,7 @@
     <title>Alterar Cidade</title>
 </head>
 <body>
-<form method="POST" action="/cidades/${requestScope.get("cidade").getId()}/edit">
+<form method="POST" action="/AgenciaPCS/cidades/${requestScope.get("cidade").getId()}/edit">
     <table>
         <input type="hidden" name="Id"  value="${requestScope.get("cidade").getId()}">
         <tr><td>Nome:</td><td><input name="Nome" type="text" value="${requestScope.get("cidade").getNome()}"></td></tr>
@@ -20,7 +20,7 @@
     </table>
     <tr><input value="Alterar" type="submit"></tr>
 </form>
-<form method="GET" action="/managercidades">
+<form method="GET" action="/AgenciaPCS/managercidades">
     <input value="Cancelar" type="submit">
 </form>
 </body>

@@ -42,7 +42,7 @@ public class AuthController extends HttpController {
         }
     }
 
-    @HttpHandler(path = "/clientes/registrar", method = "GET", interceptors = AgenteRequired.class)
+    @HttpHandler(path = "/clientes/registrar", method = "GET", interceptors = {AgenteRequired.class})
     public void renderRegistrarCliente(HttpRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getRequestDispatcher("clientes/register.jsp").forward(request, response);
     }

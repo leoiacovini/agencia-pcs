@@ -49,7 +49,7 @@ public class AppSystem implements ServletContextListener {
         return AppSystem.getSystem();
     }
 
-    public static void startEmbeddedServer(String env) throws ServletException, LifecycleException {
+    public static void startEmbeddedServer(String env) throws ServletException, LifecycleException, InterruptedException {
         Config conf = ConfigFactory.defaultApplication();
         AppSystem.setEnv(env);
         IWebServer server = EmbeddedServer.startServer(conf);

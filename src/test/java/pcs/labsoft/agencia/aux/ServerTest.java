@@ -17,7 +17,7 @@ public class ServerTest {
     static protected AppSystem system;
 
     @BeforeClass
-    public static void setUp() throws LifecycleException, ServletException, SQLException {
+    public static void setUp() throws LifecycleException, ServletException, SQLException, InterruptedException {
         AppSystem.startEmbeddedServer("test");
         system = AppSystem.getSystem();
     }

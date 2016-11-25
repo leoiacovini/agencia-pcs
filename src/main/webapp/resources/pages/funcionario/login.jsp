@@ -12,7 +12,7 @@
 </head>
 <body>
 <h3>Agente, identifique-se</h3>
-<form method="POST" name="/login" action="/login">
+<form method="POST" name="login" action="/AgenciaPCS/login">
     <table>
         <tr><td>Nome de Usuário:</td><td><input name="username" type="text"></td></tr>
         <tr><td>Senha:</td><td><input name="password" type="password"></td></tr>

@@ -18,7 +18,7 @@ public class EmbeddedServer implements IWebServer {
 
     private final Tomcat tomcat;
 
-    private EmbeddedServer(Config config) throws LifecycleException, ServletException {
+    private EmbeddedServer(Config config) throws LifecycleException, ServletException, InterruptedException {
 
         String webappDirLocation = "src/main/webapp";
         Logger.getLogger().info("Starting up embedded TomCat Server");
@@ -33,6 +33,7 @@ public class EmbeddedServer implements IWebServer {
         tomcat.init();
         tomcat.start();
         Logger.getLogger().info("Embedded Server started successfully");
+        tomcat.wait();
     }
 
     public void stop() throws LifecycleException {
@@ -40,7 +41,7 @@ public class EmbeddedServer implements IWebServer {
         tomcat.destroy();
     }
 
-    public static IWebServer startServer(Config config) throws ServletException, LifecycleException {
+    public static IWebServer startServer(Config config) throws ServletException, LifecycleException, InterruptedException {
         return new EmbeddedServer(config);
     }
 }

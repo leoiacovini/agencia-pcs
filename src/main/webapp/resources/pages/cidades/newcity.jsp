@@ -12,7 +12,7 @@
 </head>
 <body>
 <h3>Preencha os campos abaixo</h3>
-<form method="POST" name="/novacidade" action="/novacidade">
+<form method="POST">
 <table>
     <tr><td>Nome:</td><td><input name="Nome" type="text"></td></tr>
     <tr><td>Estado:</td><td><input name="Estado" type="text"></td></tr>
@@ -20,7 +20,7 @@
     <tr><td><input value="Enviar" type="submit"></td></tr>
 </table>
 </form>
-<form method="GET" action="/managercidades">
+<form method="GET" action="/AgenciaPCS/managercidades">
     <input value="Cancelar" type="submit">
 </form>
 <% if (request.getAttribute("invalido") != null)  { %>
