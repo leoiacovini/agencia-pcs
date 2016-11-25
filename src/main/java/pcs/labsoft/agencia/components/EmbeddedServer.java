@@ -28,7 +28,7 @@ public class EmbeddedServer implements IWebServer {
         tomcat.setSilent(true);
 
         tomcat.setPort(config.getInt("http.port"));
-        StandardContext ctx = (StandardContext) tomcat.addWebapp("", new File(webappDirLocation).getAbsolutePath());
+        StandardContext ctx = (StandardContext) tomcat.addWebapp("/AgenciaPCS", new File(webappDirLocation).getAbsolutePath());
 
         tomcat.init();
         tomcat.start();

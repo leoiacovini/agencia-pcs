@@ -14,10 +14,9 @@
 </head>
 <body>
 <h3>Montar Roteiro de viagem</h3>
-<%if(request.getSession().getAttribute("roteiro") == null) {%>
+<% if(request.getAttribute("roteiro") == null) { %>
 <jsp:text>Selecione a cidade base:</jsp:text>
 
-<%if(request.getSession().getAttribute("roteiro") == null) {%>
 <form method="POST" action="/AgenciaPCS/roteiro">
     <select name="cidadeBaseId">
         <% for(Cidade cidade : cidades) { %>
@@ -30,7 +29,6 @@
 <select>
     <option disabled selected><%= ((Cidade)request.getSession().getAttribute("cidadeBase")).getNome() %></option>
 </select>
-<% } %>
 <br>
 <jsp:text>Informe a próxima cidade:</jsp:text>
 <%}%>

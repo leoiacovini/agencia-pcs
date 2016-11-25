@@ -52,6 +52,7 @@ public class RoteiroController extends HttpController {
         session.setAttribute("cidadeAtual", cidadeBase);
         session.setAttribute("cliente", cliente);
         session.setAttribute("roteiro", roteiro);
+        request.setAttribute("roteiro", roteiro);
         try {
             renderRoteiro(request).forward(request, response);
         } catch (ServletException | IOException e) {
