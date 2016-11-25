@@ -9,6 +9,7 @@
 <body>
 
 <ul>
+    <h3>Cidades cadastradas (<%= cidades.size() %>)</h3>
     <% for (Cidade cidade : cidades) { %>
     <a href="/cidades/<%= cidade.getId() %>">
         <li><%= cidade %></li>
