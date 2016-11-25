@@ -58,10 +58,11 @@ public class CidadeController extends HttpController {
 
     }
 
-    @HttpHandler(path = "/removercidade", method = "POST")
+    @HttpHandler(path = "/cidades/:id/delete", method = "POST")
     public void delCidade(HttpRequest request, HttpServletResponse response) {
+        String cidadeId = request.getPathParam("id");
         try {
-            CityDao.deleteById(Integer.parseInt(request.getParameter("escolha")));
+            CityDao.deleteById(Integer.parseInt(cidadeId));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -69,13 +70,27 @@ public class CidadeController extends HttpController {
         request.setAttribute("Remocao", ok);
         CRUDCidade(request, response);
     }
-    @HttpHandler(path = "/removercidade", method = "GET")
-    public void deleteCidade(HttpRequest request, HttpServletResponse response) {
+    @HttpHandler(path = "/cidades/:id/edit", method = "GET")
+    public void editCidade(HttpRequest request, HttpServletResponse response) throws Exception{
         try {
-            renderDeleteCidade(request).forward(request, response);
+            renderCidadeChange(request.getPathParam("id"),request).forward(request, response);
         } catch (ServletException | IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @HttpHandler(path = "/cidades/:id/edit", method = "POST")
+    public void changeCidade(HttpRequest request, HttpServletResponse response) {
+        String cidadeId = request.getPathParam("id");
+        try {
+            Cidade cidade = new Cidade(request.getParameter("Nome"), request.getParameter("Estado"), request.getParameter("Pais"),Integer.parseInt(request.getParameter("Id")));
+            CityDao.update(cidade);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        String ok = "OK";
+        request.setAttribute("Edicao", ok);
+        CRUDCidade(request, response);
     }
 
     @HttpHandler(path = "/managercidades", method = "GET")
@@ -86,6 +101,9 @@ public class CidadeController extends HttpController {
             }
             if (request.getAttribute("Remocao") == null) {
                 request.setAttribute("Remocao", "Null");
+            }
+            if (request.getAttribute("Edicao") == null) {
+                request.setAttribute("Edicao", "Null");
             }
             renderCRUDCidade(request).forward(request, response);
         } catch (IOException | ServletException e) {
@@ -105,16 +123,21 @@ public class CidadeController extends HttpController {
     private RequestDispatcher renderNewCidade(HttpServletRequest servletRequest) {
         return servletRequest.getRequestDispatcher(getPagePath("newcity.jsp"));
     }
-    private RequestDispatcher renderDeleteCidade(HttpServletRequest servletRequest) {
-        servletRequest.setAttribute("cidades", CityDao.loadAll());
-        return servletRequest.getRequestDispatcher(getPagePath("deletecity.jsp"));
-    }
-
     private RequestDispatcher renderCidadeDetails(String cidadeId, HttpServletRequest servletRequest) throws Exception {
         Cidade cidade = CityDao.findById(Integer.parseInt(cidadeId));
         if (cidade != null) {
             servletRequest.setAttribute("cidade", cidade);
             return servletRequest.getRequestDispatcher(getPagePath("details.jsp"));
+        } else {
+            servletRequest.setAttribute("subject", "cidade");
+            return servletRequest.getRequestDispatcher("404.jsp");
+        }
+    }
+    private RequestDispatcher renderCidadeChange(String cidadeId, HttpServletRequest servletRequest) throws Exception {
+        Cidade cidade = CityDao.findById(Integer.parseInt(cidadeId));
+        if (cidade != null) {
+            servletRequest.setAttribute("cidade", cidade);
+            return servletRequest.getRequestDispatcher(getPagePath("changecity.jsp"));
         } else {
             servletRequest.setAttribute("subject", "cidade");
             return servletRequest.getRequestDispatcher("404.jsp");

@@ -14,15 +14,6 @@
         <li><%= cidade %></li>
     </a>
     <% } %>
-    <a href="/removercidade">
-        <li>Excluir cidade</li>
-    </a>
-    <a href="/mudarcidade">
-        <li>Alterar Cidade</li>
-    </a>
-    <a href="/novacidade">
-        <li>Adicionar Cidade</li>
-    </a>
 </ul>
 
 </body>
