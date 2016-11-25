@@ -1,5 +1,6 @@
 package pcs.labsoft.agencia.controllers;
 
+import pcs.labsoft.agencia.components.Logger;
 import pcs.labsoft.agencia.components.interceptors.AgenteRequired;
 import pcs.labsoft.agencia.components.interceptors.ClienteRequired;
 import pcs.labsoft.agencia.components.interfaces.HttpController;
@@ -50,6 +51,11 @@ public class RoteiroController extends HttpController {
         session.setAttribute("cidadeBase", cidadeBase);
         session.setAttribute("cliente", cliente);
         session.setAttribute("roteiro", roteiro);
+        try {
+            renderRoteiro(request).forward(request, response);
+        } catch (ServletException | IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
