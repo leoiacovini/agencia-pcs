@@ -1,14 +1,12 @@
 package pcs.labsoft.agencia.controllers;
 
+import pcs.labsoft.agencia.components.Logger;
 import pcs.labsoft.agencia.components.interceptors.AgenteRequired;
 import pcs.labsoft.agencia.components.interceptors.ClienteRequired;
 import pcs.labsoft.agencia.components.interfaces.HttpController;
 import pcs.labsoft.agencia.misc.HttpHandler;
 import pcs.labsoft.agencia.misc.HttpRequest;
-import pcs.labsoft.agencia.models.Cidade;
-import pcs.labsoft.agencia.models.Cliente;
-import pcs.labsoft.agencia.models.Funcionario;
-import pcs.labsoft.agencia.models.Roteiro;
+import pcs.labsoft.agencia.models.*;
 import pcs.labsoft.agencia.models.dao.CidadeDao;
 
 import javax.servlet.RequestDispatcher;
@@ -49,7 +47,14 @@ public class RoteiroController extends HttpController {
 //        Cliente cliente = (Cliente) session.getAttribute("cliente");
         Funcionario funcionario = (Funcionario) session.getAttribute("funcionario");
         Roteiro roteiro = new Roteiro(cliente, funcionario);
+        Trecho  trecho = new Trecho(request.getParameter("cidadeBaseId"),);
+        roteiro.addTrecho(trecho);
         session.setAttribute("roteiro", roteiro);
+        try {
+            renderRoteiro(request).forward(request, response);
+        } catch (ServletException | IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @HttpHandler(path = "/roteiro/add-trecho", method = "GET", interceptors = AgenteRequired.class)
