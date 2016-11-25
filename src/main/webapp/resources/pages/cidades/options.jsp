@@ -23,6 +23,10 @@
 
     </ul>
 
+    <form method="GET" action="/index">
+        <input value="Voltar" type="submit">
+    </form>
+
     <% if (request.getAttribute("Adicao").equals("OK"))  { %>
        <jsp:text>Cidade criada com sucesso</jsp:text>
     <% } %>
