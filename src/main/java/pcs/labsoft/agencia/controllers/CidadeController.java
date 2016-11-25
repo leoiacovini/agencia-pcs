@@ -94,14 +94,26 @@ public class CidadeController extends HttpController {
     @HttpHandler(path = "/cidades/:id/edit", method = "POST")
     public void changeCidade(HttpRequest request, HttpServletResponse response) {
         String cidadeId = request.getPathParam("id");
+        String nome = request.getParameter("Nome");
+        String estado = request.getParameter("Estado");
+        String pais = request.getParameter("Pais");
+
         try {
-            Cidade cidade = new Cidade(request.getParameter("Nome"), request.getParameter("Estado"), request.getParameter("Pais"),Integer.parseInt(request.getParameter("Id")));
+            if (isNullOrEmptyOrNumber(nome) ||
+                isNullOrEmptyOrNumber(estado) ||
+                isNullOrEmptyOrNumber(pais))
+            {
+                request.setAttribute("invalido", "Verifique o preenchimento dos campos.");
+                renderCidadeChange(cidadeId, request).forward(request, response);
+                return;
+            }
+
+            Cidade cidade = new Cidade(nome, estado, pais, Integer.parseInt(cidadeId));
             CityDao.update(cidade);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        String ok = "OK";
-        request.setAttribute("Edicao", ok);
+        request.setAttribute("Edicao", "OK");
         CRUDCidade(request, response);
     }
 

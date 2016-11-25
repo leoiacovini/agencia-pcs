@@ -19,5 +19,8 @@
         <tr><td><input value="Login" type="submit"></td></tr>
     </table>
 </form>
+<form method="GET" action="/index">
+    <input value="Voltar" type="submit">
+</form>
 </body>
 </html>
