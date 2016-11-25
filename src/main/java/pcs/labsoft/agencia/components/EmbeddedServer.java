@@ -33,7 +33,7 @@ public class EmbeddedServer implements IWebServer {
         tomcat.init();
         tomcat.start();
         Logger.getLogger().info("Embedded Server started successfully");
-        tomcat.wait();
+        Thread.currentThread().join();
     }
 
     public void stop() throws LifecycleException {

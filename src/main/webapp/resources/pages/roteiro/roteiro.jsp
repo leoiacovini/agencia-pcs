@@ -14,6 +14,7 @@
 </head>
 <body>
 <h3>Montar Roteiro de viagem</h3>
+<%if(request.getSession().getAttribute("roteiro") == null) {%>
 <jsp:text>Selecione a cidade base:</jsp:text>
 
 <%if(request.getSession().getAttribute("roteiro") == null) {%>
@@ -25,13 +26,13 @@
     </select>
     <input type="submit" name="Selecionar" />
 </form>
-<% }else{%>
-<br>
+<% } else {%>
 <select>
-    <option value="<%=request.getSession().getAttribute("roteiro") %>"></option>
+    <option disabled selected><%= ((Cidade)request.getSession().getAttribute("cidadeBase")).getNome() %></option>
 </select>
-<jsp:text>Tudo OK</jsp:text>
-<%--<%=request.getAttribute("roteiro")%>--%>
+<% } %>
+<br>
+<jsp:text>Informe a próxima cidade:</jsp:text>
 <%}%>
 
 </body>
