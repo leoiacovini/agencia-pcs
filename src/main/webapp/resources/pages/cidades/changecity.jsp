@@ -9,19 +9,16 @@
 <html>
 <head>
     <title>Alterar Cidade</title>
-    <% List<Cidade> cidades = (List<Cidade>) request.getAttribute("cidades"); %>
 </head>
 <body>
-<h3>Cidades disponíveis para remoção:</h3>
-<form method="POST" name="/removercidade">
-    <tr><select name="escolha">
-        <option disabled selected value>Selecione uma opção</option>
-        <% for (Cidade cidade : cidades) { %>
-        <option value="<%=cidade.getId()%>"><%=cidade.getNome()%>
-        </option>
-        <% } %>
-    </select></tr>
-    <tr><input value="Deletar" type="submit"></tr>
+<form method="POST" action="/cidades/${requestScope.get("cidade").getId()}/edit">
+    <table>
+        <input type="hidden" name="Id"  value="${requestScope.get("cidade").getId()}">
+        <tr><td>Nome:</td><td><input name="Nome" type="text" value="${requestScope.get("cidade").getNome()}"></td></tr>
+        <tr><td>Estado:</td><td><input name="Estado" type="text" value="${requestScope.get("cidade").getEstado()}"></td></tr>
+        <tr><td>País:</td><td><input name="Pais" type="text" value="${requestScope.get("cidade").getPais()}"></td></tr>
+    </table>
+    <tr><input value="Alterar" type="submit"></tr>
 </form>
 </body>
 </html>

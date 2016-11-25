@@ -29,5 +29,8 @@
     <% if (request.getAttribute("Remocao").equals("OK"))  { %>
     <jsp:text>Cidade removida com sucesso</jsp:text>
     <% } %>
+    <% if (request.getAttribute("Edicao").equals("OK"))  { %>
+    <jsp:text>Cidade alterada com sucesso</jsp:text>
+    <% } %>
     </body>
 </html>

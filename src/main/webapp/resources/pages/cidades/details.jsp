@@ -9,6 +9,11 @@
 <p>Nome: ${requestScope.get("cidade").getNome()} </p>
 <p>Estado: ${requestScope.get("cidade").getEstado()}</p>
 <p>Pais: ${requestScope.get("cidade").getPais()}</p>
-
+<form method="POST" action="/cidades/${requestScope.get("cidade").getId()}/delete">
+    <tr><input value="Deletar" type="submit"></tr>
+</form>
+<form method="GET" action="/cidades/${requestScope.get("cidade").getId()}/edit">
+    <tr><input value="Alterar" type="submit"></tr>
+</form>
 </body>
 </html>
