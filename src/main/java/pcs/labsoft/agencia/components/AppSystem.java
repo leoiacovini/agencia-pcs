@@ -79,6 +79,10 @@ public class AppSystem implements ServletContextListener {
                 h2Server.startServer();
                 break;
             }
+            case "prod": {
+                configFile = "prod.conf";
+                break;
+            }
             default: {
                 configFile = "application.conf";
                 break;
@@ -102,7 +106,7 @@ public class AppSystem implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         try {
-            AppSystem.ensureSystemIsUp(env == null ? "test" : env);
+            AppSystem.ensureSystemIsUp(env == null ? "prod" : env);
         } catch (ServletException | LifecycleException | SQLException e) {
             e.printStackTrace();
             throw new RuntimeException(e);

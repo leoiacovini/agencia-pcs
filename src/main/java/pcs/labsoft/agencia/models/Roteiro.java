@@ -61,6 +61,7 @@ public class Roteiro {
     public void addTrecho(Trecho trecho) {
         this.trechos.add(trecho);
     }
+
     public void removeLastTrecho() {
         this.trechos.remove(this.trechos.size() -1 );
     }
