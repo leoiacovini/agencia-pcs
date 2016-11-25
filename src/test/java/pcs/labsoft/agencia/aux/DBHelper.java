@@ -29,14 +29,14 @@ public class DBHelper {
             {hotelInsert + "('Ibis', 120.0, 1, 1);",
              hotelInsert + "('Hilton', 200.0, 2, 2);",
              hotelInsert + "('Holiday Inn', 100.0, 3, 3)",
-             hotelInsert + "('Ibis', 100.0, 4, 1)",
+             hotelInsert + "('Ibis', 100.0, 4, 4)",
              hotelInsert + "('Triade', 100.0, 5, 5)",
-             hotelInsert + "('Bella', 100.0, 6, 4)"};
+             hotelInsert + "('Bella', 100.0, 6, 6)"};
 
     private final String[] transportesStubs = new String[]
-            {transporteInsert + "('Avião', 240.0, 2, 1, 1);",
-             transporteInsert + "('Onibus', 120.0, 1, 2, 2);",
-             transporteInsert + "('Onibus', 140.0, 2, 3, 3)"};
+            {transporteInsert + "('avião', 240.0, 2, 1, 1);",
+             transporteInsert + "('onibus', 120.0, 1, 2, 2);",
+             transporteInsert + "('onibus', 140.0, 2, 3, 3)"};
 
     private final String[] seedInserts =  Stream.of(cidadesStubs, hoteisStubs, transportesStubs).flatMap(Stream::of).toArray(String[]::new);
 
@@ -48,7 +48,7 @@ public class DBHelper {
         try(Connection con = db.getConnection()) {
             Statement st = con.createStatement();
             for (String sql: seedInserts) {
-                Logger.getLogger().debug("Seed DB Executing: " + sql);
+                Logger.getLogger().info(sql);
                 st.executeUpdate(sql);
             }
         } catch (SQLException e) {
