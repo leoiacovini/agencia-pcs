@@ -1,6 +1,5 @@
 package pcs.labsoft.agencia.aux;
 
-import org.apache.commons.lang3.ArrayUtils;
 import pcs.labsoft.agencia.components.Logger;
 import pcs.labsoft.agencia.components.interfaces.IDB;
 
