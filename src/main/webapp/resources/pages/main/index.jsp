@@ -15,7 +15,7 @@
     <ul>
         <a href="managercidades"><li>Cidades</li></a>
         <a href="login"><li>Fazer login</li></a>
-        <a href="roteiro"><li>Roteiros</li></a>
+        <a href="roteiro/new"><li>Novo Roteiro</li></a>
     </ul>
 </body>
 </html>
