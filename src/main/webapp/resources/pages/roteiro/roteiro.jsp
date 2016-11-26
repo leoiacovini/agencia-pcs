@@ -20,8 +20,11 @@
 <% for(Trecho trecho: roteiro.getTrechos()) {%>
 
 <div style="border: medium solid black;">
+    <% if(trecho.isTrechoInicial()) { %>
+    <h3>Trecho Inicial (Cidade Base)</h3>
+    <% } %>
     <p>Cidade: <%= trecho.getCidade().getNome() %></p>
-    <p>Transporte: <%= trecho.getTransporte().getTipo() %></p>
+    <p>Transporte: <%= trecho.getTransporte().getTipo() %> para <%= trecho.getTransporte().getCidadeDeChegada().getNome() %></p>
     <p>Hotel: <%= trecho.getHotel() != null ? trecho.getHotel().getNome() : "Nenhum" %></p>
     <p>Duração: <%= trecho.getDuracao() %></p>
 </div>
