@@ -1,20 +1,20 @@
 package pcs.labsoft.agencia.models;
 
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by leoiacovini on 26/11/16.
  */
 public class TrechoTest {
 
-    static Cidade cidade;
-    static Cidade cidade2;
-    static Transporte transporte;
-    static Transporte transporte2;
-    static Hotel hotel;
+    private static Cidade cidade;
+    private static Cidade cidade2;
+    private static Transporte transporte;
+    private static Transporte transporte2;
+    private static Hotel hotel;
 
     @BeforeClass
     public static void createStubs() {
@@ -28,7 +28,7 @@ public class TrechoTest {
     @Test
     public void getValor() {
         Trecho trechoInicial = new Trecho(cidade, transporte, null, 0, true, 1);
-        Trecho trecho2 = new Trecho(cidade, transporte2, hotel, 4, false, 2);
+        Trecho trecho2 = new Trecho(cidade2, transporte2, hotel, 4, false, 2);
 
         assertEquals(200.0, trechoInicial.getValor(), 0.0001);
         assertEquals(350.0, trecho2.getValor(), 0.0001);

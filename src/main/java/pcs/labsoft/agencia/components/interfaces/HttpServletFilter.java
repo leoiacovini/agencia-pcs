@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public interface HttpServletFilter {
 
-    public void intercepRequest(HttpServletRequest httpRequest);
-    public void intercepResponse(HttpServletResponse httpResponse);
+    void intercepRequest(HttpServletRequest httpRequest);
+    void intercepResponse(HttpServletResponse httpResponse);
 
 }

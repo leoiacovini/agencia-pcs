@@ -8,9 +8,9 @@ import java.sql.SQLException;
  */
 public interface IDB {
 
-    public Connection getConnection() throws SQLException;
-    public void runMigrations();
-    public void clean();
-    public void stop();
+    Connection getConnection() throws SQLException;
+    void runMigrations();
+    void clean();
+    void stop();
 
 }

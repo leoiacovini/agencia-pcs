@@ -5,7 +5,6 @@ import org.junit.Test;
 import pcs.labsoft.agencia.aux.SystemTest;
 import pcs.labsoft.agencia.models.dao.CidadeDao;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,7 +15,7 @@ import static org.junit.Assert.*;
  */
 public class CidadeTest extends SystemTest {
 
-    static CidadeDao cidadeDao;
+    private static CidadeDao cidadeDao;
 
     @BeforeClass
     public static void before() {

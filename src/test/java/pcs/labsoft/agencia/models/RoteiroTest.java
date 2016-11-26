@@ -1,6 +1,5 @@
 package pcs.labsoft.agencia.models;
 
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -10,11 +9,11 @@ import static org.junit.Assert.*;
  */
 public class RoteiroTest {
 
-    static Trecho trechoInicial;
-    static Trecho trecho2;
-    static Trecho trecho3;
-    static Cliente cliente;
-    static Funcionario funcionario;
+    private static Trecho trechoInicial;
+    private static Trecho trecho2;
+    private static Trecho trecho3;
+    private static Cliente cliente;
+    private static Funcionario funcionario;
 
     @BeforeClass
     public static void setUp() {
