@@ -36,4 +36,8 @@ public class Pagamento {
     public Double getValor() {
         return valor;
     }
+
+    public String toString() {
+        return id + " - " + codigoConfirmacao + ", " + forma + ", " + valor;
+    }
 }
