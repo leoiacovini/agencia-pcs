@@ -60,9 +60,17 @@ public class Roteiro {
 
     public void addTrecho(Trecho trecho) {
         this.trechos.add(trecho);
+        this.duracao += trecho.getDuracao();
     }
 
     public void removeLastTrecho() {
-        this.trechos.remove(this.trechos.size() -1 );
+        int index = this.trechos.size() - 1;
+        Trecho lastTrecho = trechos.get(index);
+        this.trechos.remove(index);
+        this.duracao -= lastTrecho.getDuracao();
+    }
+
+    public Double getValor() {
+        return trechos.stream().map(Trecho::getValor).reduce(0.0, (acc, v) -> acc + v);
     }
 }

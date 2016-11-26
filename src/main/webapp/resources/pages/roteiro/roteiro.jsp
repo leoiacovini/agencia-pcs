@@ -33,6 +33,8 @@
 <% } %>
 
 <a href="/AgenciaPCS/roteiro/get-proxima-cidade"> Novo Trecho </a>
+<br/>
+<a href="/AgenciaPCS/roteiro/pagamento">Finalizar</a>
 
 </body>
 </html>

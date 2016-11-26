@@ -16,4 +16,5 @@ INSERT INTO transportes (tipo, preco, cidade_partida_id, cidade_chegada_id, id) 
 INSERT INTO transportes (tipo, preco, cidade_partida_id, cidade_chegada_id, id) VALUES ('onibus', 120.0, 1, 2, 3);
 INSERT INTO transportes (tipo, preco, cidade_partida_id, cidade_chegada_id, id) VALUES ('onibus', 140.0, 2, 3, 4);
 
-INSERT INTO funcionarios (nome, username, encrypted_password, cargo) VALUES ('Fulano', 'fulano', '46070d4bf934fb0d4b06d9e2c46e346944e322444900a435d7d9a95e6d7435f5', 'agente'); -- password: teste
+INSERT INTO funcionarios (nome, username, encrypted_password, cargo) VALUES ('Fulano', 'fulano', '46070d4bf934fb0d4b06d9e2c46e346944e322444900a435d7d9a95e6d7435f5', 'agente');
+INSERT INTO clientes (nome, cpf, rg, passaporte, email, telefone) VALUES ('Mario', '00312345678', '1234567890', '12309128901', 'cliente@email.com', '991234567');

@@ -54,7 +54,7 @@ CREATE TABLE funcionarios (
 CREATE TABLE pagamentos (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   forma VARCHAR(255) NOT NULL,
-  codigo_confirmacao VARCHAR(255),
+  codigo_confirmacao VARCHAR(255) NULL,
   valor DOUBLE NOT NULL
 );
 
@@ -81,8 +81,8 @@ CREATE TABLE trechos (
   id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   is_trecho_inicial BOOLEAN NOT NULL DEFAULT FALSE,
   duracao INT NOT NULL,
-  cidade_id INT  NOT NULL REFERENCES cidades(id),
-  hotel_id INT REFERENCES hoteis(id),
+  cidade_id INT NOT NULL REFERENCES cidades(id),
+  hotel_id INT NULL REFERENCES hoteis(id),
   transporte_id INT NOT NULL REFERENCES transportes(id),
   roteiro_id INT NOT NULL REFERENCES roteiros(id),
   CONSTRAINT trechos_cidade_id_fk
