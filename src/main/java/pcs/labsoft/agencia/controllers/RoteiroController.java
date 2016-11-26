@@ -35,7 +35,7 @@ public class RoteiroController extends HttpController {
     public void newRoteiro(HttpRequest request, HttpServletResponse response) throws ServletException, IOException {
         clearRoteiroSession(request);
         ClienteDao clienteDao = new ClienteDao(db);
-        List<Cidade> cidadesElegiveis = cidadeDao.loadAll().stream().filter(Cidade::temAeroporto).collect(Collectors.toList());
+        List<Cidade> cidadesElegiveis = cidadeDao.getCidadesComAeroporto();
         List<Cliente> clientes = clienteDao.getAllClientes();
         request.setAttribute("clientes", clientes);
         request.setAttribute("cidadesElegiveis", cidadesElegiveis);
@@ -69,7 +69,7 @@ public class RoteiroController extends HttpController {
     public void getProximasCidades(HttpRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         Cidade cidadeAtual = (Cidade) session.getAttribute("cidadeAtual");
-        List<Cidade> proximasCidades = cidadeAtual.getTransportesDePartida().stream().map(Transporte::getCidadeDeChegada).collect(Collectors.toList());
+        List<Cidade> proximasCidades = cidadeAtual.getCidadesAdjacentes();
         request.setAttribute("proximasCidades", proximasCidades);
         request.getRequestDispatcher("roteiro/proximaCidade.jsp").forward(request, response);
     }
@@ -88,7 +88,7 @@ public class RoteiroController extends HttpController {
         HttpSession session = request.getSession();
         Cidade cidadeAtual = (Cidade) session.getAttribute("cidadeAtual");
         Cidade proximaCidade = (Cidade) session.getAttribute("proximaCidade");
-        List<Transporte> transportes = cidadeAtual.getTransportesDePartida().stream().filter(t -> t.getCidadeDeChegada().getId() == proximaCidade.getId()).collect(Collectors.toList());
+        List<Transporte> transportes = cidadeAtual.getTransportesToCidade(proximaCidade);
         request.setAttribute("transportes", transportes);
         request.getRequestDispatcher("roteiro/setTransporte.jsp").forward(request, response);
     }
@@ -98,7 +98,7 @@ public class RoteiroController extends HttpController {
         HttpSession session = request.getSession();
         Cidade cidadeAtual = (Cidade) session.getAttribute("cidadeAtual");
         int transporteId = Integer.parseInt(request.getParameter("transporteId"));
-        Transporte transporte = cidadeAtual.getTransportesDePartida().stream().filter(t -> t.getId() == transporteId).findFirst().get();
+        Transporte transporte = cidadeAtual.getTransporteDePartidaById(transporteId);
         session.setAttribute("transporte", transporte);
         if (isInicial(session)) {
             addTrecho(request, response);
@@ -122,7 +122,7 @@ public class RoteiroController extends HttpController {
         int hotelId = Integer.parseInt(request.getParameter("hotelId"));
         int duracao = Integer.parseInt(request.getParameter("duracao"));
         Cidade cidadeAtual = (Cidade) session.getAttribute("cidadeAtual");
-        Hotel hotel = cidadeAtual.getHoteis().stream().filter(h -> h.getID() == hotelId).findFirst().get();
+        Hotel hotel = cidadeAtual.getHotelById(hotelId);
         session.setAttribute("duracao", duracao);
         session.setAttribute("hotel", hotel);
         addTrecho(request, response);
@@ -145,10 +145,8 @@ public class RoteiroController extends HttpController {
         Roteiro roteiro = (Roteiro) session.getAttribute("roteiro");
         Pagamento pagamento = new Pagamento(codigoConfirmacao, tipoPagamento, roteiro.getValor());
         roteiro.setPagamento(pagamento);
-
         RoteiroDao roteiroDao = new RoteiroDao(db);
         Roteiro createdRoteiro = roteiroDao.create(roteiro);
-
         if (createdRoteiro != null) {
             response.getWriter().write("CONCLUIDO");
             //request.getRequestDispatcher("/roteiro/" + createdRoteiro.getId() + "/concluido").forward(request, response);

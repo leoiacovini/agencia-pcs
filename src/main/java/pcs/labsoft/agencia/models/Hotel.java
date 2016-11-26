@@ -7,7 +7,7 @@ public class Hotel {
 	private final double preco;
 	private final Cidade cidade;
 
-	public Hotel(String nome, double preco, int id, Cidade cidade) {
+	public Hotel(String nome, double preco, Cidade cidade, int id) {
 		this.nome = nome;
 		this.preco = preco;
 		this.cidade = cidade;

@@ -22,7 +22,7 @@ public class FuncionarioDao extends ModelDao {
             statement.setString(1, username);
             ResultSet rs = statement.executeQuery();
             if (rs.next()) {
-                return new Funcionario(rs.getInt("id"), username, rs.getString("encrypted_password"), rs.getString("nome"), rs.getString("cargo"));
+                return new Funcionario(username, rs.getString("encrypted_password"), rs.getString("nome"), rs.getString("cargo"), rs.getInt("id"));
             } else {
                 return null;
             }

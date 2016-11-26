@@ -12,7 +12,6 @@ public class Roteiro {
     private final Cliente cliente;
     private final Funcionario funcionario;
     private Pagamento pagamento;
-    private int duracao;
     private final int id;
 
     public Roteiro(Cliente cliente, Funcionario funcionario, int id) {
@@ -43,7 +42,7 @@ public class Roteiro {
     }
 
     public int getDuracao() {
-        return duracao;
+        return trechos.stream().mapToInt(Trecho::getDuracao).reduce(0, (acc, d) -> acc + d);
     }
 
     public int getId() {
@@ -54,20 +53,12 @@ public class Roteiro {
         this.pagamento = pagamento;
     }
 
-    public void setDuracao(int duracao) {
-        this.duracao = duracao;
-    }
-
     public void addTrecho(Trecho trecho) {
         this.trechos.add(trecho);
-        this.duracao += trecho.getDuracao();
     }
 
     public void removeLastTrecho() {
-        int index = this.trechos.size() - 1;
-        Trecho lastTrecho = trechos.get(index);
-        this.trechos.remove(index);
-        this.duracao -= lastTrecho.getDuracao();
+        this.trechos.remove(this.trechos.size() - 1);
     }
 
     public Double getValor() {

@@ -15,7 +15,7 @@ public class Funcionario {
     private final String nome;
     private final String cargo;
 
-    public Funcionario(int id, String username, String encryptedPassword, String nome, String cargo) {
+    public Funcionario(String username, String encryptedPassword, String nome, String cargo, int id) {
         this.id = id;
         this.username = username;
         this.encryptedPassword = encryptedPassword;

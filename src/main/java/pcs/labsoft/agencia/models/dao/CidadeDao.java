@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.h2.command.Prepared;
 import pcs.labsoft.agencia.components.Logger;
@@ -47,7 +48,7 @@ public class CidadeDao extends ModelDao {
                 String nome = rsHoteis.getString("nome");
                 Double preco = rsHoteis.getDouble("preco");
                 Cidade cidade = map.get(cidadeId);
-                cidade.addHotel(new Hotel(nome, preco, id, cidade));
+                cidade.addHotel(new Hotel(nome, preco, cidade, id));
             }
 
             ResultSet rsTransportes = statement.executeQuery("SELECT * FROM transportes");
@@ -72,6 +73,10 @@ public class CidadeDao extends ModelDao {
 		
 		return new ArrayList<>(map.values());
 	}
+
+	public List<Cidade> getCidadesComAeroporto() {
+	    return loadAll().stream().filter(Cidade::temAeroporto).collect(Collectors.toList());
+    }
 
 
 	public Cidade findById(int id) {
