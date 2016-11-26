@@ -1,37 +1,35 @@
 <%@ page import="pcs.labsoft.agencia.models.Cidade" %>
-<%@ page import="java.util.List" %><%--
+<%@ page import="java.util.List" %>
+<%@ page import="pcs.labsoft.agencia.models.Roteiro" %>
+<%@ page import="pcs.labsoft.agencia.models.Trecho" %><%--
   Created by IntelliJ IDEA.
-  User: scorpion
-  Date: 18/11/16
-  Time: 17:10
+  User: leoiacovini
+  Date: 25/11/16
+  Time: 21:37
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<% List<Cidade> cidades = (List<Cidade>) request.getAttribute("cidadesElegiveis"); %>
+<% Roteiro roteiro = (Roteiro) request.getAttribute("roteiro"); %>
 <html>
 <head>
-    <title>Montar Roteiro</title>
+    <title>Novo Roteiro</title>
 </head>
 <body>
 <h3>Montar Roteiro de viagem</h3>
-<% if(request.getAttribute("roteiro") == null) { %>
-<jsp:text>Selecione a cidade base:</jsp:text>
 
-<form method="POST" action="/AgenciaPCS/roteiro">
-    <select name="cidadeBaseId">
-        <% for(Cidade cidade : cidades) { %>
-            <option value="<%= cidade.getId() %>"> <%= cidade.getNome() %> </option>
-        <% } %>
-    </select>
-    <input type="submit" name="Selecionar" />
-</form>
-<% } else {%>
-<select>
-    <option disabled selected><%= ((Cidade)request.getSession().getAttribute("cidadeBase")).getNome() %></option>
-</select>
-<br>
-<jsp:text>Informe a próxima cidade:</jsp:text>
-<%}%>
+<% for(Trecho trecho: roteiro.getTrechos()) {%>
+
+<div style="border: medium solid black;">
+    <p>Cidade: <%= trecho.getCidade().getNome() %></p>
+    <p>Transporte: <%= trecho.getTransporte().getTipo() %></p>
+    <p>Hotel: <%= trecho.getHotel() != null ? trecho.getHotel().getNome() : "Nenhum" %></p>
+    <p>Duração: <%= trecho.getDuracao() %></p>
+</div>
+
+<br />
+<% } %>
+
+<a href="/AgenciaPCS/roteiro/get-proxima-cidade"> Novo Trecho </a>
 
 </body>
 </html>

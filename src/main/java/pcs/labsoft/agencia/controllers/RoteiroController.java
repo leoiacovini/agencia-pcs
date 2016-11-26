@@ -31,7 +31,12 @@ public class RoteiroController extends HttpController {
 
     @HttpHandler(path = "/roteiro/new", method = "GET", interceptors = {AgenteRequired.class})
     public void newRotero(HttpRequest request, HttpServletResponse response) throws ServletException, IOException {
-        request.getSession().invalidate();
+        request.getSession().removeAttribute("cidadeBase");
+        request.getSession().removeAttribute("cidadeAtual");
+        request.getSession().removeAttribute("transporte");
+        request.getSession().removeAttribute("hotel");
+        request.getSession().removeAttribute("roteiro");
+        request.getSession().removeAttribute("proximaCidade");
         List<Cidade> cidadesElegiveis = cidadeDao.loadAll().stream().filter(Cidade::temAeroporto).collect(Collectors.toList());
         request.setAttribute("cidadesElegiveis", cidadesElegiveis);
         request.getRequestDispatcher("roteiro/newRoteiro.jsp").forward(request, response);
@@ -50,11 +55,12 @@ public class RoteiroController extends HttpController {
         session.setAttribute("cliente", cliente);
         session.setAttribute("roteiro", roteiro);
         request.setAttribute("roteiro", roteiro);
-        request.getSuperRequestDispatcher("/roteiro/get-proxima-cidade").forward(request, response);
+        response.sendRedirect("/AgenciaPCS/roteiro/get-proxima-cidade");
     }
 
     @HttpHandler(path = "/roteiro", method = "GET", interceptors = {AgenteRequired.class})
     public void roteiro(HttpRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setAttribute("roteiro", request.getSession().getAttribute("roteiro"));
         request.getRequestDispatcher("roteiro/roteiro.jsp").forward(request, response);
     }
 
@@ -73,7 +79,7 @@ public class RoteiroController extends HttpController {
         int proximaCidadeId = Integer.parseInt(request.getParameter("proximaCidadeId"));
         Cidade proximaCidade = cidadeDao.findById(proximaCidadeId);
         session.setAttribute("proximaCidade", proximaCidade);
-        request.getSuperRequestDispatcher("/roteiro/get-transportes").forward(request, response);
+        response.sendRedirect("/AgenciaPCS/roteiro/get-transportes");
     }
 
     @HttpHandler(path = "/roteiro/get-transportes", method = "GET", interceptors = {AgenteRequired.class})
@@ -96,7 +102,7 @@ public class RoteiroController extends HttpController {
         if (isInicial(session)) {
             addTrecho(request, response);
         } else {
-            request.getSuperRequestDispatcher("/roteiro/get-hoteis").forward(request, response);
+            response.sendRedirect("/AgenciaPCS/roteiro/get-hoteis");
         }
     }
 
@@ -128,15 +134,16 @@ public class RoteiroController extends HttpController {
         Cidade cidadeAtual = (Cidade) session.getAttribute("cidadeAtual");
         Transporte transporte = (Transporte) session.getAttribute("transporte");
         Hotel hotel = null;
+        int duracao = 0;
         boolean inicial = isInicial(session);
         if (!inicial) {
             hotel = (Hotel) session.getAttribute("hotel");
+            duracao = (int) session.getAttribute("duracao");
         }
-        int duracao = (int) session.getAttribute("duracao");
         Trecho trecho = new Trecho(cidadeAtual, transporte, hotel, duracao, inicial);
         roteiro.addTrecho(trecho);
         session.setAttribute("cidadeAtual", session.getAttribute("proximaCidade"));
-        request.getSuperRequestDispatcher("/roteiro").forward(request, response);
+        response.sendRedirect("/AgenciaPCS/roteiro");
     }
 
     private boolean isInicial(HttpSession session) {
