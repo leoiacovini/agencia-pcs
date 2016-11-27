@@ -1,7 +1,8 @@
-package pcs.labsoft.agencia.models;
+package pcs.labsoft.agencia.models.dao;
 
 import org.junit.Test;
 import pcs.labsoft.agencia.aux.SystemTest;
+import pcs.labsoft.agencia.models.Cliente;
 import pcs.labsoft.agencia.models.dao.ClienteDao;
 import static org.junit.Assert.*;
 
