@@ -13,7 +13,7 @@
 <body>
     <h2>Registrar novo cliente</h2>
     <br />
-    <form>
+    <form method="POST">
         <table>
             <tr><td>Nome</td><td><input name="nome" type="text"></td></tr>
             <tr><td>CPF:</td><td><input name="cpf" type="text"></td></tr>

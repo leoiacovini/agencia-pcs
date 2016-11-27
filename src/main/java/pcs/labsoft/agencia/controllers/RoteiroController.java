@@ -147,9 +147,9 @@ public class RoteiroController extends HttpController {
         roteiro.setPagamento(pagamento);
         RoteiroDao roteiroDao = new RoteiroDao(db);
         Roteiro createdRoteiro = roteiroDao.create(roteiro);
+        request.setAttribute("roteiro", createdRoteiro);
         if (createdRoteiro != null) {
-            response.getWriter().write("CONCLUIDO");
-            //request.getRequestDispatcher("/roteiro/" + createdRoteiro.getId() + "/concluido").forward(request, response);
+            request.getRequestDispatcher("/roteiro/concluido.jsp").forward(request, response);
         } else {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST);
         }
