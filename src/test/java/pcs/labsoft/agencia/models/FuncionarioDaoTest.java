@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
 public class FuncionarioDaoTest extends SystemTest {
 
     @Test
-    public void getFuncionarioById() {
+    public void getFuncionarioByUsername() {
         FuncionarioDao dao =  new FuncionarioDao(system.getDataBase());
         Funcionario funcionario = dao.getByUsername("fulano");
         assertNotNull(funcionario);
@@ -21,6 +21,14 @@ public class FuncionarioDaoTest extends SystemTest {
 
         Funcionario notFuncionario = dao.getByUsername("not-found");
         assertNull(notFuncionario);
+    }
+
+    @Test
+    public void getFuncionarioById() {
+        FuncionarioDao funcionarioDao = new FuncionarioDao(system.getDataBase());
+        Funcionario funcionario = funcionarioDao.getById(1);
+        assertNotNull(funcionario);
+        assertEquals(1, funcionario.getId());
     }
 
 }

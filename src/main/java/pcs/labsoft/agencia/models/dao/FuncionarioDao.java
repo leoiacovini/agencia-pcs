@@ -42,8 +42,7 @@ public class FuncionarioDao extends ModelDao {
         try (Connection connection = db.getConnection()) {
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM funcionarios WHERE id = ?");
             statement.setInt(1, id);
-            statement.executeUpdate();
-            ResultSet rs = statement.getGeneratedKeys();
+            ResultSet rs = statement.executeQuery();
             if (rs.next()) {
                 String nome = rs.getString("nome");
                 String cargo = rs.getString("cargo");
@@ -56,11 +55,7 @@ public class FuncionarioDao extends ModelDao {
             }
         }
         catch (SQLException e) {
-            if (e.getErrorCode() == 23505) {
-                Logger.getLogger().warn(e.getMessage());
-            } else {
-                e.printStackTrace();
-            }
+            e.printStackTrace();
             return null;
         }
     }
