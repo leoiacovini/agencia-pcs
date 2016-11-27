@@ -25,7 +25,7 @@ public class FuncionarioDao extends ModelDao {
             statement.setString(1, username);
             ResultSet rs = statement.executeQuery();
             if (rs.next()) {
-                return new Funcionario(rs.getInt("id"), username, rs.getString("encrypted_password"), rs.getString("nome"), rs.getString("cargo"));
+                return new Funcionario(username, rs.getString("encrypted_password"), rs.getString("nome"), rs.getString("cargo"), rs.getInt("id"));
             } else {
                 return null;
             }
@@ -49,7 +49,7 @@ public class FuncionarioDao extends ModelDao {
                 String cargo = rs.getString("cargo");
                 String username = rs.getString("username");
                 String password = rs.getString("encrypted_password");
-                return new Funcionario(id, username, password, nome, cargo);
+                return new Funcionario(username, password, nome, cargo, id);
             }
             else {
                 return null;

@@ -8,6 +8,8 @@ import pcs.labsoft.agencia.misc.HttpHandler;
 import pcs.labsoft.agencia.misc.HttpRequest;
 import pcs.labsoft.agencia.models.*;
 import pcs.labsoft.agencia.models.dao.CidadeDao;
+import pcs.labsoft.agencia.models.dao.ClienteDao;
+import pcs.labsoft.agencia.models.dao.RoteiroDao;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -32,7 +34,10 @@ public class RoteiroController extends HttpController {
     @HttpHandler(path = "/roteiro/new", method = "GET", interceptors = {AgenteRequired.class})
     public void newRoteiro(HttpRequest request, HttpServletResponse response) throws ServletException, IOException {
         clearRoteiroSession(request);
-        List<Cidade> cidadesElegiveis = cidadeDao.loadAll().stream().filter(Cidade::temAeroporto).collect(Collectors.toList());
+        ClienteDao clienteDao = new ClienteDao(db);
+        List<Cidade> cidadesElegiveis = cidadeDao.getCidadesComAeroporto();
+        List<Cliente> clientes = clienteDao.getAllClientes();
+        request.setAttribute("clientes", clientes);
         request.setAttribute("cidadesElegiveis", cidadesElegiveis);
         request.getRequestDispatcher("roteiro/newRoteiro.jsp").forward(request, response);
     }
@@ -40,8 +45,9 @@ public class RoteiroController extends HttpController {
     @HttpHandler(path = "/roteiro/new", method = "POST", interceptors = {AgenteRequired.class})
     public void startRoteiro(HttpRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
-        Cliente cliente = new Cliente("Cliente", "00312345678", "1234567890", "cliente@email.com", "12309128901", "991234567");
         int cidadeBaseId = Integer.parseInt(request.getParameter("cidadeBaseId"));
+        int clienteId = Integer.parseInt(request.getParameter("clienteId"));
+        Cliente cliente = new ClienteDao(db).getClienteById(clienteId);
         Cidade cidadeBase = cidadeDao.findById(cidadeBaseId);
         Funcionario funcionario = (Funcionario) session.getAttribute("funcionario");
         Roteiro roteiro = new Roteiro(cliente, funcionario);
@@ -63,7 +69,7 @@ public class RoteiroController extends HttpController {
     public void getProximasCidades(HttpRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         Cidade cidadeAtual = (Cidade) session.getAttribute("cidadeAtual");
-        List<Cidade> proximasCidades = cidadeAtual.getTransportesDePartida().stream().map(t -> t.getCidadeDeChegada()).collect(Collectors.toList());
+        List<Cidade> proximasCidades = cidadeAtual.getCidadesAdjacentes();
         request.setAttribute("proximasCidades", proximasCidades);
         request.getRequestDispatcher("roteiro/proximaCidade.jsp").forward(request, response);
     }
@@ -82,7 +88,7 @@ public class RoteiroController extends HttpController {
         HttpSession session = request.getSession();
         Cidade cidadeAtual = (Cidade) session.getAttribute("cidadeAtual");
         Cidade proximaCidade = (Cidade) session.getAttribute("proximaCidade");
-        List<Transporte> transportes = cidadeAtual.getTransportesDePartida().stream().filter(t -> t.getCidadeDeChegada().getId() == proximaCidade.getId()).collect(Collectors.toList());
+        List<Transporte> transportes = cidadeAtual.getTransportesToCidade(proximaCidade);
         request.setAttribute("transportes", transportes);
         request.getRequestDispatcher("roteiro/setTransporte.jsp").forward(request, response);
     }
@@ -92,7 +98,7 @@ public class RoteiroController extends HttpController {
         HttpSession session = request.getSession();
         Cidade cidadeAtual = (Cidade) session.getAttribute("cidadeAtual");
         int transporteId = Integer.parseInt(request.getParameter("transporteId"));
-        Transporte transporte = cidadeAtual.getTransportesDePartida().stream().filter(t -> t.getId() == transporteId).findFirst().get();
+        Transporte transporte = cidadeAtual.getTransporteDePartidaById(transporteId);
         session.setAttribute("transporte", transporte);
         if (isInicial(session)) {
             addTrecho(request, response);
@@ -116,10 +122,37 @@ public class RoteiroController extends HttpController {
         int hotelId = Integer.parseInt(request.getParameter("hotelId"));
         int duracao = Integer.parseInt(request.getParameter("duracao"));
         Cidade cidadeAtual = (Cidade) session.getAttribute("cidadeAtual");
-        Hotel hotel = cidadeAtual.getHoteis().stream().filter(h -> h.getID() == hotelId).findFirst().get();
+        Hotel hotel = cidadeAtual.getHotelById(hotelId);
         session.setAttribute("duracao", duracao);
         session.setAttribute("hotel", hotel);
         addTrecho(request, response);
+    }
+
+    @HttpHandler(path = "/roteiro/pagamento", method = "GET", interceptors = {AgenteRequired.class})
+    public void pagamento(HttpRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setAttribute("valor", ((Roteiro) request.getSession().getAttribute("roteiro")).getValor());
+        request.getRequestDispatcher("roteiro/pagamento.jsp").forward(request, response);
+    }
+
+    @HttpHandler(path = "/roteiro/concluir", method = "POST", interceptors = {AgenteRequired.class})
+    public void concluir(HttpRequest request, HttpServletResponse response) throws IOException, ServletException {
+        String tipoPagamento = request.getParameter("tipoPagamento");
+        String codigoConfirmacao = null;
+        if (tipoPagamento.equals("cartao")) {
+            codigoConfirmacao = request.getParameter("codigoConfirmacao");
+        }
+        HttpSession session = request.getSession();
+        Roteiro roteiro = (Roteiro) session.getAttribute("roteiro");
+        Pagamento pagamento = new Pagamento(codigoConfirmacao, tipoPagamento, roteiro.getValor());
+        roteiro.setPagamento(pagamento);
+        RoteiroDao roteiroDao = new RoteiroDao(db);
+        Roteiro createdRoteiro = roteiroDao.create(roteiro);
+        if (createdRoteiro != null) {
+            response.getWriter().write("CONCLUIDO");
+            //request.getRequestDispatcher("/roteiro/" + createdRoteiro.getId() + "/concluido").forward(request, response);
+        } else {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+        }
     }
 
     private void addTrecho(HttpRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -133,6 +166,7 @@ public class RoteiroController extends HttpController {
         Trecho trecho = new Trecho(cidadeAtual, transporte, hotel, duracao, inicial);
         roteiro.addTrecho(trecho);
         session.setAttribute("cidadeAtual", session.getAttribute("proximaCidade"));
+        session.removeAttribute("proximaCidade");
         response.sendRedirect("/AgenciaPCS/roteiro");
     }
 

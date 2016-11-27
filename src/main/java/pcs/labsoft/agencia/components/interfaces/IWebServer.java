@@ -10,10 +10,10 @@ import javax.servlet.ServletException;
  */
 public interface IWebServer {
 
-    public static IWebServer startServer(Servlet servlet) throws ServletException, LifecycleException {
+    static IWebServer startServer(Servlet servlet) throws ServletException, LifecycleException {
         return null;
-    };
+    }
 
-    public void stop() throws LifecycleException;
+    void stop() throws LifecycleException;
 
 }

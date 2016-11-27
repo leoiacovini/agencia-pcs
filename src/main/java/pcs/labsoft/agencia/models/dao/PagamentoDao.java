@@ -34,7 +34,7 @@ public class PagamentoDao extends ModelDao {
                 String codigo_confirmacao = rs.getString("codigo_confirmacao");
                 String forma = rs.getString("forma");
                 Double valor = rs.getDouble("valor");
-                Pagamento p = new Pagamento(id, codigo_confirmacao, forma, valor);
+                Pagamento p = new Pagamento(codigo_confirmacao, forma, valor, id);
                 list.add(p);
             }
         }
@@ -60,7 +60,7 @@ public class PagamentoDao extends ModelDao {
             ResultSet rs = statement.getGeneratedKeys();
             if (rs.next()) {
                 int id = rs.getInt(1);
-                return new Pagamento(id, pagamento.getForma(), pagamento.getCodigoConfirmacao(), pagamento.getValor());
+                return new Pagamento(pagamento.getForma(), pagamento.getCodigoConfirmacao(), pagamento.getValor(), id);
             } else {
                 return null;
             }
@@ -85,7 +85,7 @@ public class PagamentoDao extends ModelDao {
                 String codigo_confirmacao = rs.getString("codigo_confirmacao");
                 String forma = rs.getString("forma");
                 Double valor = rs.getDouble("valor");
-                return new Pagamento(id, codigo_confirmacao, forma, valor);
+                return new Pagamento(codigo_confirmacao, forma, valor, id);
             }
             else {
                 return null;

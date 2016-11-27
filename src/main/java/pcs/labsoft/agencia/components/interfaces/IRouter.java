@@ -12,7 +12,7 @@ import java.lang.reflect.InvocationTargetException;
  */
 public interface IRouter {
 
-    public void route(HttpRequest servletRequest, HttpServletResponse servletResponse) throws
+    void route(HttpRequest servletRequest, HttpServletResponse servletResponse) throws
             IOException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException;
 
 }
