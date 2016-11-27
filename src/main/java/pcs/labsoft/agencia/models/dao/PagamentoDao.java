@@ -27,23 +27,18 @@ public class PagamentoDao extends ModelDao {
 
         try (Connection connection = db.getConnection()) {
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM pagamentos");
-            statement.executeUpdate();
-            ResultSet rs = statement.getGeneratedKeys();
+            ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 int id = rs.getInt("id");
-                String codigo_confirmacao = rs.getString("codigo_confirmacao");
+                String codigoConfirmacao = rs.getString("codigo_confirmacao");
                 String forma = rs.getString("forma");
                 Double valor = rs.getDouble("valor");
-                Pagamento p = new Pagamento(codigo_confirmacao, forma, valor, id);
+                Pagamento p = new Pagamento(codigoConfirmacao, forma, valor, id);
                 list.add(p);
             }
         }
         catch (SQLException e) {
-            if (e.getErrorCode() == 23505) {
-                Logger.getLogger().warn(e.getMessage());
-            } else {
-                e.printStackTrace();
-            }
+            Logger.getLogger().warn(e.getMessage());
         }
 
         return list;
@@ -55,21 +50,17 @@ public class PagamentoDao extends ModelDao {
             PreparedStatement statement = connection.prepareStatement("INSERT INTO pagamentos (forma, codigo_confirmacao, valor) VALUES (?, ?, ?)");
             statement.setString(1, pagamento.getForma());
             statement.setString(2, pagamento.getCodigoConfirmacao());
-            statement.setString(3, pagamento.getValor().toString());
+            statement.setDouble(3, pagamento.getValor());
             statement.executeUpdate();
             ResultSet rs = statement.getGeneratedKeys();
             if (rs.next()) {
                 int id = rs.getInt(1);
                 return new Pagamento(pagamento.getForma(), pagamento.getCodigoConfirmacao(), pagamento.getValor(), id);
             } else {
-                return null;
+                throw new SQLException("Não foi possivel criar o pagamento");
             }
         } catch (SQLException e) {
-            if (e.getErrorCode() == 23505) {
-                Logger.getLogger().warn(e.getMessage());
-            } else {
-                e.printStackTrace();
-            }
+            Logger.getLogger().warn(e.getMessage());
             return null;
         }
     }
@@ -79,24 +70,18 @@ public class PagamentoDao extends ModelDao {
         try (Connection connection = db.getConnection()) {
             PreparedStatement statement = connection.prepareStatement("SELECT * FROM pagamentos WHERE id = ?");
             statement.setInt(1, id);
-            statement.executeUpdate();
-            ResultSet rs = statement.getGeneratedKeys();
+            ResultSet rs = statement.executeQuery();
             if (rs.next()) {
-                String codigo_confirmacao = rs.getString("codigo_confirmacao");
+                String codigoConfirmacao = rs.getString("codigo_confirmacao");
                 String forma = rs.getString("forma");
                 Double valor = rs.getDouble("valor");
-                return new Pagamento(codigo_confirmacao, forma, valor, id);
-            }
-            else {
+                return new Pagamento(codigoConfirmacao, forma, valor, id);
+            } else{
                 return null;
             }
         }
         catch (SQLException e) {
-            if (e.getErrorCode() == 23505) {
-                Logger.getLogger().warn(e.getMessage());
-            } else {
-                e.printStackTrace();
-            }
+            e.printStackTrace();
             return null;
         }
     }

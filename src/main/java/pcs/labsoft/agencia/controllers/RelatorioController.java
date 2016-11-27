@@ -3,7 +3,6 @@ package pcs.labsoft.agencia.controllers;
 import pcs.labsoft.agencia.misc.HttpHandler;
 import pcs.labsoft.agencia.misc.HttpRequest;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -14,20 +13,9 @@ import java.io.IOException;
 public class RelatorioController {
 
     @HttpHandler(path = "/relatorio/vendas", method = "GET")
-    public void getVendas(HttpRequest request, HttpServletResponse response) {
-        try {
-            renderVendas(request).forward(request, response);
-        } catch (ServletException | IOException e) {
-            e.printStackTrace();
-        }
+    public void getVendas(HttpRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        request.getRequestDispatcher("relatorio/vendas.jsp").forward(request, response);
     }
 
-    private RequestDispatcher renderVendas(HttpRequest servletRequest) {
-        return servletRequest.getRequestDispatcher(getPagePath("vendas.jsp"));
-    }
-
-    private String getPagePath(String pageName) {
-        String baseDirectory = "relatorio/";
-        return baseDirectory + pageName;
-    }
 }
