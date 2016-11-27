@@ -25,6 +25,7 @@ class DistanceMap extends HashMap<Integer, Double>{
     }
 
 }
+
 class PreviousMap extends HashMap<Integer, Edge>{}
 
 public class Graph {
@@ -57,7 +58,7 @@ public class Graph {
         PreviousMap previousMapFromSource = previousMap.get(fromNodeId);
         Set<Integer> unvisitedNodesIds = ((HashMap<Integer, List<Edge>>)adjacencyMap.clone()).keySet();
 
-        if (distanceMapFromSource == null || previousMapFromSource == null) { // Xunxo for whe the Graph is empty
+        if (distanceMapFromSource == null || previousMapFromSource == null) { // Xunxo for when the Graph is empty
             return new Path(new ArrayList<>());
         }
 

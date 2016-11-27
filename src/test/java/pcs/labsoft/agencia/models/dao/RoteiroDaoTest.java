@@ -56,4 +56,21 @@ public class RoteiroDaoTest extends SystemTest {
         assertEquals(2, createdRoteiro.getTrechos().size());
     }
 
+    @Test
+    public void loadAll() {
+        RoteiroDao roteiroDao = new RoteiroDao(system.getDataBase());
+        List<Roteiro> roteiros = roteiroDao.loadAll();
+
+        assertEquals(1, roteiros.size());
+
+        Roteiro roteiro = roteiros.get(0);
+        assertNotNull(roteiro);
+        assertEquals(1, roteiro.getId());
+        assertEquals(1, roteiro.getCliente().getId());
+        assertEquals(920.0, roteiro.getValor(), 0.001); // 120 * 5  + 200 + 120 = 920
+        assertEquals(2, roteiro.getTrechos().size());
+        assertEquals(1, roteiro.getPagamento().getId());
+        assertEquals(5, roteiro.getDuracao());
+    }
+
 }

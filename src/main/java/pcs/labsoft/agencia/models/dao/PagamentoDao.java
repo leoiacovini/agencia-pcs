@@ -55,7 +55,7 @@ public class PagamentoDao extends ModelDao {
             ResultSet rs = statement.getGeneratedKeys();
             if (rs.next()) {
                 int id = rs.getInt(1);
-                return new Pagamento(pagamento.getForma(), pagamento.getCodigoConfirmacao(), pagamento.getValor(), id);
+                return new Pagamento(pagamento.getCodigoConfirmacao(), pagamento.getForma(), pagamento.getValor(), id);
             } else {
                 throw new SQLException("Não foi possivel criar o pagamento");
             }

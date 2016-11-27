@@ -2,11 +2,11 @@ package pcs.labsoft.agencia.models.dao;
 
 import pcs.labsoft.agencia.components.interfaces.IDB;
 import pcs.labsoft.agencia.components.interfaces.ModelDao;
-import pcs.labsoft.agencia.models.Pagamento;
-import pcs.labsoft.agencia.models.Roteiro;
-import pcs.labsoft.agencia.models.Trecho;
+import pcs.labsoft.agencia.models.*;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by leoiacovini on 26/11/16.
@@ -16,6 +16,68 @@ public class RoteiroDao extends ModelDao {
     public RoteiroDao(IDB db) {
         super(db);
     }
+
+    public List<Roteiro> loadAll() {
+
+        try (Connection connection = db.getConnection()) {
+
+            List<Roteiro> roteiros = new ArrayList<>();
+
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM roteiros");
+            ResultSet roteirosRs = statement.executeQuery();
+
+            while (roteirosRs.next()) {
+                int clienteId = roteirosRs.getInt("cliente_id");
+                int pagamentoid = roteirosRs.getInt("pagamento_id");
+                int funcionarioId = roteirosRs.getInt("funcionario_id");
+                int roteiroId = roteirosRs.getInt("id");
+
+                ClienteDao clienteDao = new ClienteDao(db);
+                Cliente cliente = clienteDao.getClienteById(clienteId);
+
+                FuncionarioDao funcionarioDao = new FuncionarioDao(db);
+                Funcionario funcionario = funcionarioDao.getById(funcionarioId);
+
+                PagamentoDao pagamentoDao = new PagamentoDao(db);
+                Pagamento pagamento = pagamentoDao.getById(pagamentoid);
+
+                Roteiro roteiro = new Roteiro(cliente, funcionario, roteiroId);
+                roteiro.setPagamento(pagamento);
+
+                PreparedStatement trechoStatement = connection.prepareStatement("SELECT * FROM trechos WHERE roteiro_id = ?");
+                trechoStatement.setInt(1, roteiroId);
+                ResultSet trechoRs = trechoStatement.executeQuery();
+
+                while (trechoRs.next()) {
+                    int trechoId = trechoRs.getInt("id");
+                    boolean isTrechoInicial = trechoRs.getBoolean("is_trecho_inicial");
+                    int duracao = trechoRs.getInt("duracao");
+                    int cidadeId = trechoRs.getInt("cidade_id");
+                    int transporteId = trechoRs.getInt("transporte_id");
+                    int hotelId = trechoRs.getInt("hotel_id");
+
+                    CidadeDao cidadeDao = new CidadeDao(db);
+                    Cidade cidade = cidadeDao.findById(cidadeId);
+                    Hotel hotel;
+                    if (hotelId == 0) {
+                        hotel = null;
+                    } else {
+                        hotel = cidade.getHotelById(hotelId);
+                    }
+                    Transporte transporte = cidade.getTransporteDePartidaById(transporteId);
+                    Trecho trecho = new Trecho(cidade, transporte, hotel, duracao, isTrechoInicial, trechoId);
+                    roteiro.addTrecho(trecho);
+                }
+                roteiros.add(roteiro);
+            }
+            return roteiros;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+    }
+
 
     public Roteiro create(Roteiro roteiro) {
 
@@ -28,26 +90,17 @@ public class RoteiroDao extends ModelDao {
             Roteiro storedRoteiro;
 
             // 1 - Create Pagamento
-            PreparedStatement pagamentoStatement = connection.prepareStatement("INSERT INTO pagamentos (forma, codigo_confirmacao, valor) VALUES (?, ?, ?)");
             Pagamento pagamento = roteiro.getPagamento();
-            pagamentoStatement.setString(1, pagamento.getForma());
-            pagamentoStatement.setString(2, pagamento.getCodigoConfirmacao());
-            pagamentoStatement.setDouble(3, pagamento.getValor());
-            pagamentoStatement.executeUpdate();
-            ResultSet pagamentoRs = pagamentoStatement.getGeneratedKeys();
-            if (pagamentoRs.next()) {
-                pagamentoId = pagamentoRs.getInt(1);
-                storedPagamento = new Pagamento(pagamento.getCodigoConfirmacao(), pagamento.getForma(), pagamento.getValor(), pagamentoId);
-            } else {
-                throw new SQLException("Pagamento não pode ser criado");
-            }
+            PagamentoDao pagamentoDao = new PagamentoDao(db);
+            storedPagamento = pagamentoDao.create(pagamento);
+            if (storedPagamento == null) throw new SQLException("Pagamento não pode ser criado");
 
             // 2 - Create Roteiro
             PreparedStatement roteiroStatement = connection.prepareStatement("INSERT INTO roteiros (duracao, funcionario_id, cliente_id, pagamento_id) VALUES (? ,? ,?, ?)");
             roteiroStatement.setInt(1, roteiro.getDuracao());
             roteiroStatement.setInt(2, roteiro.getFuncionario().getId());
             roteiroStatement.setInt(3, roteiro.getCliente().getId());
-            roteiroStatement.setInt(4, pagamentoId);
+            roteiroStatement.setInt(4, storedPagamento.getId());
             roteiroStatement.executeUpdate();
             ResultSet roteiroRs = roteiroStatement.getGeneratedKeys();
             if (roteiroRs.next()) {
@@ -86,6 +139,5 @@ public class RoteiroDao extends ModelDao {
             e.printStackTrace();
             return null;
         }
-
     }
 }
