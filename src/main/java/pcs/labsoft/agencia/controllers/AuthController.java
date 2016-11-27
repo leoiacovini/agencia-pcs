@@ -34,7 +34,7 @@ public class AuthController extends HttpController {
         if (username != null && password != null) {
             Funcionario funcionario = Funcionario.logIn(username, password, db, auth);
             if (funcionario != null) {
-                request.getSession().setAttribute("user", funcionario);
+                request.getSession().setAttribute("funcionario", funcionario);
                 response.getWriter().write("Logado com sucesso: " + funcionario.getNome());
             } else {
                 response.getWriter().write("Login Invalido");

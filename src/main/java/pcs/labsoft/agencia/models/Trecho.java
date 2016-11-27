@@ -48,4 +48,12 @@ public class Trecho {
     public int getDuracao() {
         return duracao;
     }
+
+    public Double getValor() {
+        if (hotel != null) {
+            return transporte.getPreco() + (hotel.getPreco() * duracao);
+        } else {
+            return transporte.getPreco();
+        }
+    }
 }

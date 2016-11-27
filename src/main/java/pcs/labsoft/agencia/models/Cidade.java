@@ -79,4 +79,20 @@ public class Cidade {
         return transportesDePartida.stream().filter(t -> t.getTipo().equals("avião")).count() > 0;
     }
 
+    public List<Cidade> getCidadesAdjacentes() {
+        return getTransportesDePartida().stream().map(Transporte::getCidadeDeChegada).collect(Collectors.toList());
+    }
+
+    public List<Transporte> getTransportesToCidade(Cidade proximaCidade) {
+        return getTransportesDePartida().stream().filter(t -> t.getCidadeDeChegada().getId() == proximaCidade.getId()).collect(Collectors.toList());
+    }
+
+    public Transporte getTransporteDePartidaById(int transporteId) {
+        return getTransportesDePartida().stream().filter(t -> t.getId() == transporteId).findFirst().get();
+    }
+
+    public Hotel getHotelById(int hotelId) {
+        return getHoteis().stream().filter(h -> h.getID() == hotelId).findFirst().get();
+    }
+
 }

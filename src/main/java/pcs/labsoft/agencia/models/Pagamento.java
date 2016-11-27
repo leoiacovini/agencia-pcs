@@ -10,11 +10,15 @@ public class Pagamento {
     private final String forma;
     private final Double valor;
 
-    public Pagamento(int id, String codigoConfirmacao, String forma, Double valor) {
+    public Pagamento(String codigoConfirmacao, String forma, Double valor, int id) {
         this.id = id;
         this.codigoConfirmacao = codigoConfirmacao;
         this.forma = forma;
         this.valor = valor;
+    }
+
+    public Pagamento(String codigoConfirmacao, String forma, Double valor) {
+        this(codigoConfirmacao, forma, valor, 0);
     }
 
     public int getId() {
@@ -31,5 +35,9 @@ public class Pagamento {
 
     public Double getValor() {
         return valor;
+    }
+
+    public String toString() {
+        return id + " - " + codigoConfirmacao + ", " + forma + ", " + valor;
     }
 }

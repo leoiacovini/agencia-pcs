@@ -18,7 +18,7 @@ public class SystemTest {
 
     @BeforeClass
     public static void setUp() throws LifecycleException, ServletException, SQLException {
-        SystemTest.system = AppSystem.startSystem("test");
+        SystemTest.system = AppSystem.ensureSystemIsUp("test");
     }
 
     @Before

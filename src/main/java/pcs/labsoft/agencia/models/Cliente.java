@@ -16,7 +16,7 @@ public class Cliente {
     private final String passaporte;
     private final String telefone;
 
-    public Cliente(int id, String nome, String cpf, String rg, String email, String passaporte, String telefone) {
+    public Cliente(String nome, String cpf, String rg, String email, String passaporte, String telefone, int id) {
         this.id = id;
         this.nome = nome;
         this.cpf = cpf;
@@ -27,7 +27,7 @@ public class Cliente {
     }
 
     public Cliente(String nome, String cpf, String rg, String email, String passaporte, String telefone) {
-        this(0, nome, cpf, rg, email, passaporte, telefone);
+        this(nome, cpf, rg, email, passaporte, telefone, 0);
     }
 
     public int getId() {

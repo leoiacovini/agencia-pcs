@@ -15,7 +15,7 @@ public class AgenteRequired implements HttpInterceptor {
 
     @Override
     public void intercept(HttpRequest httpRequest, HttpServletResponse httpResponse) {
-        Object user = httpRequest.getSession().getAttribute("user");
+        Object user = httpRequest.getSession().getAttribute("funcionario");
         if (!(user instanceof Funcionario) || !((Funcionario) user).getCargo().equals("agente")) {
             try {
                 httpResponse.sendError(HttpServletResponse.SC_FORBIDDEN);
