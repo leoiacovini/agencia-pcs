@@ -63,6 +63,7 @@ public class AppSystem implements ServletContextListener {
             AppSystem.getSystem().stop();
         }
         Logger.getLogger().info("Stopping System");
+        AppSystem.system = null;
         System.out.println();
     }
 

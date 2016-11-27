@@ -1,8 +1,6 @@
 package pcs.labsoft.agencia.controllers;
 
-import pcs.labsoft.agencia.components.Logger;
 import pcs.labsoft.agencia.components.interceptors.AgenteRequired;
-import pcs.labsoft.agencia.components.interceptors.ClienteRequired;
 import pcs.labsoft.agencia.components.interfaces.HttpController;
 import pcs.labsoft.agencia.misc.HttpHandler;
 import pcs.labsoft.agencia.misc.HttpRequest;
@@ -11,14 +9,11 @@ import pcs.labsoft.agencia.models.dao.CidadeDao;
 import pcs.labsoft.agencia.models.dao.ClienteDao;
 import pcs.labsoft.agencia.models.dao.RoteiroDao;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Created by adilsontorres on 18/11/16.
@@ -33,7 +28,7 @@ public class RoteiroController extends HttpController {
 
     @HttpHandler(path = "/roteiro/new", method = "GET", interceptors = {AgenteRequired.class})
     public void newRoteiro(HttpRequest request, HttpServletResponse response) throws ServletException, IOException {
-        clearRoteiroSession(request);
+        clearRoteiroSession(request.getSession());
         ClienteDao clienteDao = new ClienteDao(db);
         List<Cidade> cidadesElegiveis = cidadeDao.getCidadesComAeroporto();
         List<Cliente> clientes = clienteDao.getAllClientes();
@@ -148,6 +143,7 @@ public class RoteiroController extends HttpController {
         RoteiroDao roteiroDao = new RoteiroDao(db);
         Roteiro createdRoteiro = roteiroDao.create(roteiro);
         request.setAttribute("roteiro", createdRoteiro);
+        clearRoteiroSession(request.getSession());
         if (createdRoteiro != null) {
             request.getRequestDispatcher("/roteiro/concluido.jsp").forward(request, response);
         } else {
@@ -176,13 +172,14 @@ public class RoteiroController extends HttpController {
         return cidadeBase.getId() == cidadeAtual.getId();
     }
 
-    private void clearRoteiroSession(HttpRequest request) {
-        request.getSession().removeAttribute("cidadeBase");
-        request.getSession().removeAttribute("cidadeAtual");
-        request.getSession().removeAttribute("transporte");
-        request.getSession().removeAttribute("hotel");
-        request.getSession().removeAttribute("roteiro");
-        request.getSession().removeAttribute("proximaCidade");
-        request.getSession().removeAttribute("cliente");
+    private void clearRoteiroSession(HttpSession session) {
+        session.removeAttribute("cidadeBase");
+        session.removeAttribute("cidadeAtual");
+        session.removeAttribute("transporte");
+        session.removeAttribute("hotel");
+        session.removeAttribute("roteiro");
+        session.removeAttribute("duracao");
+        session.removeAttribute("proximaCidade");
+        session.removeAttribute("cliente");
     }
 }
