@@ -19,7 +19,7 @@
         <tr><td><input value="Login" type="submit"></td></tr>
     </table>
 </form>
-<form method="GET" action="/index">
+<form method="GET" action="/AgenciaPCS/index">
     <input value="Voltar" type="submit">
 </form>
 </body>

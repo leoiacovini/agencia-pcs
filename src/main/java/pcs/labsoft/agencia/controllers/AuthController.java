@@ -34,11 +34,17 @@ public class AuthController extends HttpController {
         if (username != null && password != null) {
             Funcionario funcionario = Funcionario.logIn(username, password, db, auth);
             if (funcionario != null) {
+                request.setAttribute("login", "ok");
+                request.setAttribute("msg", "Logado com sucesso: " + funcionario.getNome());
                 request.getSession().setAttribute("funcionario", funcionario);
-                response.getWriter().write("Logado com sucesso: " + funcionario.getNome());
+//                response.getWriter().write("Logado com sucesso: " + funcionario.getNome());
             } else {
-                response.getWriter().write("Login Invalido");
+//                response.getWriter().write("Login Invalido");
+                request.setAttribute("login", "nok");
+                request.setAttribute("msg", "Login inválido!");
             }
+            IndexController idx = new IndexController();
+            idx.getIndex(request, response);
         }
     }
 

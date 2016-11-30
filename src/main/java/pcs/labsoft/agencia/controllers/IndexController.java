@@ -17,6 +17,9 @@ public class IndexController  extends HttpController {
     @HttpHandler(path = "/index", method = "GET")
     public void getIndex(HttpRequest request, HttpServletResponse response) {
         try {
+            if (request.getAttribute("login") == null) {
+                request.setAttribute("login", "Null");
+            }
             renderIndex(request).forward(request, response);
         } catch (ServletException | IOException e) {
             e.printStackTrace();
