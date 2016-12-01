@@ -17,6 +17,7 @@
         <a href="/AgenciaPCS/managercidades"><li>Gerenciar cidades</li></a>
         <a href="/AgenciaPCS/roteiro/new"><li>Montar Roteiro</li></a>
         <a href="/AgenciaPCS/sugestao/roteiro/new"><li>Sugestão de Roteiro</li></a>
+        <a href="/AgenciaPCS/relatorio/vendas"><li>Relatório de vendas</li></a>
     </ul>
 
     <% if (request.getAttribute("login").equals("ok") | request.getAttribute("login").equals("nok"))  { %>
