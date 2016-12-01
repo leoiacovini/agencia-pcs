@@ -13,9 +13,10 @@
 <body>
     <h2>Agência de viagens PCS</h2>
     <ul>
-        <a href="/AgenciaPCS/managercidades"><li>Cidades</li></a>
         <a href="/AgenciaPCS/login"><li>Fazer login</li></a>
-        <a href="/AgenciaPCS/roteiro/new"><li>Novo Roteiro</li></a>
+        <a href="/AgenciaPCS/managercidades"><li>Gerenciar cidades</li></a>
+        <a href="/AgenciaPCS/roteiro/new"><li>Montar Roteiro</li></a>
+        <a href="/AgenciaPCS/sugestao/roteiro/new"><li>Sugestão de Roteiro</li></a>
     </ul>
 
     <% if (request.getAttribute("login").equals("ok") | request.getAttribute("login").equals("nok"))  { %>
