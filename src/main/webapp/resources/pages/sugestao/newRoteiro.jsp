@@ -1,5 +1,6 @@
 <%@ page import="pcs.labsoft.agencia.models.Cidade" %>
 <%@ page import="java.util.List" %>
+<%@ page import="pcs.labsoft.agencia.models.Cliente" %>
 <%--
   Created by IntelliJ IDEA.
   User: scorpion
@@ -10,6 +11,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <% List<Cidade> cidades = (List<Cidade>) request.getAttribute("cidadesElegiveis"); %>
+<% List<Cliente> clientes = (List<Cliente>) request.getAttribute("clientes"); %>
 <html>
 <head>
     <title>Sugerir Roteiro</title>
@@ -33,6 +35,13 @@
         <% } %>
     </select>
     <br />
+    <p>Cliente</p>
+    <select name="clienteId">
+        <% for(Cliente cliente : clientes) { %>
+        <option value="<%= cliente.getId() %>"> <%= cliente.getNome() %> </option>
+        <% } %>
+    </select>
+    <br />
     <input type="submit" name="Selecionar" />
 </form>
 
@@ -40,6 +49,10 @@
 <form method="GET" action="/AgenciaPCS/index">
     <input value="Voltar" type="submit">
 </form>
+<br />
+<% if (request.getAttribute("EqualsCity").equals("Iguais") )  { %>
+<p>Cidades origem e destino devem ser diferentes</p>
+<% } %>
 
 </body>
 </html>

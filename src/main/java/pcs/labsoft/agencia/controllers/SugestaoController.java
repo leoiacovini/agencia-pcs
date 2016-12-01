@@ -34,8 +34,36 @@ public class SugestaoController extends HttpController{
         List<Cliente> clientes = clienteDao.getAllClientes();
         request.setAttribute("clientes", clientes);
         request.setAttribute("cidadesElegiveis", cidadesElegiveis);
+        if (request.getAttribute("EqualsCity") == null){
+            request.setAttribute("EqualsCity","null");
+        }
         request.getRequestDispatcher("sugestao/newRoteiro.jsp").forward(request, response);
     }
+
+    @HttpHandler(path = "/sugestao/roteiro/new", method = "POST", interceptors = {AgenteRequired.class})
+    public void startRoteiro(HttpRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        int cidadeBaseId = Integer.parseInt(request.getParameter("cidadeBaseId"));
+        int cidadeFinalId = Integer.parseInt(request.getParameter("cidadeFinalId"));
+
+        if (cidadeBaseId==cidadeFinalId){
+            request.setAttribute("EqualsCity","Iguais");
+            newRoteiro(request,response);
+
+        }else {
+            int clienteId = Integer.parseInt(request.getParameter("clienteId"));
+            Cliente cliente = new ClienteDao(db).getClienteById(clienteId);
+            Cidade cidadeBase = cidadeDao.findById(cidadeBaseId);
+            Funcionario funcionario = (Funcionario) session.getAttribute("funcionario");
+            Roteiro roteiro = new Roteiro(cliente, funcionario);
+            session.setAttribute("cidadeBase", cidadeBase);
+            session.setAttribute("cidadeAtual", cidadeBase);
+            session.setAttribute("cliente", cliente);
+            session.setAttribute("roteiro", roteiro);
+            request.setAttribute("roteiro", roteiro);
+        }
+    }
+
 
     private void clearRoteiroSession(HttpSession session) {
         session.removeAttribute("cidadeBase");
