@@ -24,9 +24,15 @@
     <h3>Trecho Inicial (Cidade Base)</h3>
     <% } %>
     <p>Cidade: <%= trecho.getCidade().getNome() %></p>
-    <p>Transporte: <%= trecho.getTransporte().getTipo() %> para <%= trecho.getTransporte().getCidadeDeChegada().getNome() %></p>
-    <p>Hotel: <%= trecho.getHotel() != null ? trecho.getHotel().getNome() : "Nenhum" %></p>
-    <p>Duração: <%= trecho.getDuracao() %></p>
+    <% if(trecho.getTransporte() != null) { %>
+        <p>Transporte: <%= trecho.getTransporte().getTipo() %> de <%= trecho.getTransporte().getCidadeDePartida().getNome() %> para <%= trecho.getTransporte().getCidadeDeChegada().getNome() %></p>
+    <% } %>
+    <% if(trecho.getHotel() != null) { %>
+        <p>Hotel: <%= trecho.getHotel().getNome() %></p>
+    <% } %>
+    <% if(trecho.getDuracao() != 0) { %>
+        <p>Duração: <%= trecho.getDuracao() %></p>
+    <% } %>
 </div>
 
 <br />

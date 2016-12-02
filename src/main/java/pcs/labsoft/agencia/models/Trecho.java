@@ -53,7 +53,11 @@ public class Trecho {
         if (hotel != null) {
             return transporte.getPreco() + (hotel.getPreco() * duracao);
         } else {
-            return transporte.getPreco();
+            if (transporte != null) {
+                return transporte.getPreco();
+            } else {
+                return 0.0;
+            }
         }
     }
 }

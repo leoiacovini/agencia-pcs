@@ -84,7 +84,7 @@ CREATE TABLE trechos (
   duracao INT NOT NULL,
   cidade_id INT NOT NULL REFERENCES cidades(id) ON DELETE CASCADE ,
   hotel_id INT NULL REFERENCES hoteis(id) ON DELETE CASCADE ,
-  transporte_id INT NOT NULL REFERENCES transportes(id) ON DELETE CASCADE ,
+  transporte_id INT NULL REFERENCES transportes(id) ON DELETE CASCADE,
   roteiro_id INT NOT NULL REFERENCES roteiros(id) ON DELETE CASCADE,
   CONSTRAINT trechos_cidade_id_fk
     FOREIGN KEY (cidade_id)

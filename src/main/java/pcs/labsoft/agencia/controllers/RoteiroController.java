@@ -51,7 +51,8 @@ public class RoteiroController extends HttpController {
         session.setAttribute("cliente", cliente);
         session.setAttribute("roteiro", roteiro);
         request.setAttribute("roteiro", roteiro);
-        response.sendRedirect("/AgenciaPCS/roteiro/get-proxima-cidade");
+        addTrecho(request, response);
+        //response.sendRedirect("/AgenciaPCS/roteiro/get-proxima-cidade");
     }
 
     @HttpHandler(path = "/roteiro", method = "GET", interceptors = {AgenteRequired.class})
@@ -95,18 +96,14 @@ public class RoteiroController extends HttpController {
         int transporteId = Integer.parseInt(request.getParameter("transporteId"));
         Transporte transporte = cidadeAtual.getTransporteDePartidaById(transporteId);
         session.setAttribute("transporte", transporte);
-        if (isInicial(session)) {
-            addTrecho(request, response);
-        } else {
-            response.sendRedirect("/AgenciaPCS/roteiro/get-hoteis");
-        }
+        response.sendRedirect("/AgenciaPCS/roteiro/get-hoteis");
     }
 
     @HttpHandler(path = "/roteiro/get-hoteis", method = "GET", interceptors = {AgenteRequired.class})
     public void getHoteis(HttpRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
-        Cidade cidadeAtual = (Cidade) session.getAttribute("cidadeAtual");
-        List<Hotel> hotels = cidadeAtual.getHoteis();
+        Cidade proximaCidade = (Cidade) session.getAttribute("proximaCidade");
+        List<Hotel> hotels = proximaCidade.getHoteis();
         request.setAttribute("hoteis", hotels);
         request.getRequestDispatcher("roteiro/setHotel.jsp").forward(request, response);
     }
@@ -116,8 +113,8 @@ public class RoteiroController extends HttpController {
         HttpSession session = request.getSession();
         int hotelId = Integer.parseInt(request.getParameter("hotelId"));
         int duracao = Integer.parseInt(request.getParameter("duracao"));
-        Cidade cidadeAtual = (Cidade) session.getAttribute("cidadeAtual");
-        Hotel hotel = cidadeAtual.getHotelById(hotelId);
+        Cidade proximaCidade = (Cidade) session.getAttribute("proximaCidade");
+        Hotel hotel = proximaCidade.getHotelById(hotelId);
         session.setAttribute("duracao", duracao);
         session.setAttribute("hotel", hotel);
         addTrecho(request, response);
@@ -153,23 +150,25 @@ public class RoteiroController extends HttpController {
 
     private void addTrecho(HttpRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
-        Roteiro roteiro = (Roteiro) session.getAttribute("roteiro");
-        Cidade cidadeAtual = (Cidade) session.getAttribute("cidadeAtual");
-        Transporte transporte = (Transporte) session.getAttribute("transporte");
-        Hotel hotel = (Hotel) session.getAttribute("hotel");
         boolean inicial = isInicial(session);
         int duracao = inicial ? 0 : (int) session.getAttribute("duracao");
-        Trecho trecho = new Trecho(cidadeAtual, transporte, hotel, duracao, inicial);
+        Roteiro roteiro = (Roteiro) session.getAttribute("roteiro");
+        Cidade cidade = inicial ? (Cidade) session.getAttribute("cidadeAtual") : (Cidade) session.getAttribute("proximaCidade");
+        Transporte transporte = (Transporte) session.getAttribute("transporte");
+        Hotel hotel = (Hotel) session.getAttribute("hotel");
+        Trecho trecho = new Trecho(cidade, transporte, hotel, duracao, inicial);
         roteiro.addTrecho(trecho);
-        session.setAttribute("cidadeAtual", session.getAttribute("proximaCidade"));
-        session.removeAttribute("proximaCidade");
+        if (!inicial) {
+            session.setAttribute("cidadeAtual", cidade);
+            session.removeAttribute("proximaCidade");
+        }
         response.sendRedirect("/AgenciaPCS/roteiro");
     }
 
     private boolean isInicial(HttpSession session) {
-        Cidade cidadeAtual = (Cidade) session.getAttribute("cidadeAtual");
-        Cidade cidadeBase = (Cidade) session.getAttribute("cidadeBase");
-        return cidadeBase.getId() == cidadeAtual.getId();
+        //Cidade cidadeAtual = (Cidade) session.getAttribute("cidadeAtual");
+        //Cidade cidadeBase = (Cidade) session.getAttribute("cidadeBase");
+        return session.getAttribute("proximaCidade") == null; //cidadeBase.getId() == cidadeAtual.getId();
     }
 
     private void clearRoteiroSession(HttpSession session) {

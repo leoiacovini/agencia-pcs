@@ -121,7 +121,11 @@ public class RoteiroDao extends ModelDao {
                 } else {
                     trechoStatement.setInt(3, trecho.getHotel().getID());
                 }
-                trechoStatement.setInt(4, trecho.getTransporte().getId());
+                if (trecho.getHotel() == null) {
+                    trechoStatement.setNull(4, Types.INTEGER);
+                } else {
+                    trechoStatement.setInt(4, trecho.getTransporte().getId());
+                }
                 trechoStatement.setInt(5, roteiroId);
                 trechoStatement.setBoolean(6, trecho.isTrechoInicial());
                 trechoStatement.executeUpdate();
