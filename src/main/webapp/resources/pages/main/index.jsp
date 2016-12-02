@@ -20,8 +20,8 @@
         <a href="/AgenciaPCS/relatorio/vendas"><li>Relatório de vendas</li></a>
     </ul>
 
-    <% if (request.getAttribute("login").equals("ok") | request.getAttribute("login").equals("nok"))  { %>
-    <%=request.getAttribute("msg")%>
+    <% if (request.getAttribute("msg") != null)  { %>
+        <%=request.getAttribute("msg")%>
     <% } %>
 </body>
 </html>

@@ -47,8 +47,12 @@ public class Router implements IRouter {
             }
         } else {
             try {
-                Logger.getLogger().info("Route not matched, trying resource folder...");
-                servletRequest.getRequest().getRequestDispatcher("/resources/" + servletRequest.getPathInfo()).forward(servletRequest, servletResponse);
+                if (servletRequest.getPathInfo().equals("/AgenciaPCS/")) {
+                    servletRequest.getRequest().getRequestDispatcher("/resources/menu.html" + servletRequest.getPathInfo()).forward(servletRequest, servletResponse);
+                } else {
+                    Logger.getLogger().info("Route not matched, trying resource folder...");
+                    servletRequest.getRequest().getRequestDispatcher("/resources/" + servletRequest.getPathInfo()).forward(servletRequest, servletResponse);
+                }
             } catch (ServletException e) {
                 e.printStackTrace();
             }

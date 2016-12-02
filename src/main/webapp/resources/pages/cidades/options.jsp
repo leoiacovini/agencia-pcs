@@ -23,7 +23,7 @@
 
     </ul>
 
-    <form method="GET" action="/AgenciaPCS/index">
+    <form method="GET" action="/AgenciaPCS/">
         <input value="Voltar" type="submit">
     </form>
 

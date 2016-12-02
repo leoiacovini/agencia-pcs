@@ -28,7 +28,7 @@ public class AuthController extends HttpController {
     }
 
     @HttpHandler(path = "/login", method = "POST")
-    public void loginFuncionario(HttpRequest request, HttpServletResponse response) throws IOException {
+    public void loginFuncionario(HttpRequest request, HttpServletResponse response) throws IOException, ServletException {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         if (username != null && password != null) {
