@@ -61,5 +61,5 @@ INSERT INTO roteiros (duracao, funcionario_id, cliente_id, pagamento_id) VALUES 
 
 // =================================================================================================================
 // trechos
-INSERT INTO trechos (duracao, cidade_id, hotel_id, transporte_id, roteiro_id) VALUES (0, 2, null, 2, 1);
+INSERT INTO trechos (duracao, cidade_id, hotel_id, transporte_id, roteiro_id) VALUES (0, 2, null, 11, 1);
 INSERT INTO trechos (duracao, cidade_id, hotel_id, transporte_id, roteiro_id) VALUES (5, 1, 1, 3, 1);

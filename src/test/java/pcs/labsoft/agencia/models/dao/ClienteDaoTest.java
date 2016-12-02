@@ -14,7 +14,7 @@ public class ClienteDaoTest extends SystemTest {
     @Test
     public void createCliente() {
         ClienteDao dao =  new ClienteDao(system.getDataBase());
-        Cliente cliente = new Cliente("Cliente 1", "cpf_1234", "rg_1234", "cliente@email.com", "passaporte_1234", "telefone_1234");
+        Cliente cliente = new Cliente("Cliente 1", "cpf_1234", "rg_1234", "notexistent@email.com", "passaporte_1234", "telefone_1234");
         Cliente createdCliente = dao.createCliente(cliente);
         assertNotNull(createdCliente);
         assertEquals(cliente.getNome(), createdCliente.getNome());
@@ -28,7 +28,7 @@ public class ClienteDaoTest extends SystemTest {
     @Test
     public void getClienteById() {
         ClienteDao dao =  new ClienteDao(system.getDataBase());
-        Cliente cliente = new Cliente("Cliente 1", "cpf_1234", "rg_1234", "cliente@email.com", "passaporte_1234", "telefone_1234");
+        Cliente cliente = new Cliente("Cliente 1", "cpf_1234", "rg_1234", "notexistent@email.com", "passaporte_1234", "telefone_1234");
         Cliente createdCliente = dao.createCliente(cliente);
         assertNotNull(createdCliente);
         Cliente foundCliente = dao.getClienteById(createdCliente.getId());

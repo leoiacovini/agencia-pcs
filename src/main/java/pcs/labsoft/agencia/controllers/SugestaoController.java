@@ -50,7 +50,7 @@ public class SugestaoController extends HttpController{
             request.setAttribute("EqualsCity","Iguais");
             newRoteiro(request,response);
 
-        }else {
+        } else {
             int clienteId = Integer.parseInt(request.getParameter("clienteId"));
             Cliente cliente = new ClienteDao(db).getClienteById(clienteId);
             Cidade cidadeBase = cidadeDao.findById(cidadeBaseId);

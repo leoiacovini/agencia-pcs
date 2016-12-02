@@ -27,7 +27,7 @@ public class CidadeDaoTest extends SystemTest {
     @Test
     public void loadAll() {
         List<Cidade> cidades = cidadeDao.loadAll();
-        assertEquals(6, cidades.size());
+        assertEquals(4, cidades.size());
     }
 
     @Test
@@ -41,8 +41,8 @@ public class CidadeDaoTest extends SystemTest {
     @Test
     public void findCidade() throws Exception {
         Cidade cidade = cidadeDao.findById(1);
-        assertEquals(cidade.getNome(), "Sao Paulo");
-        assertEquals(cidade.getEstado(), "SP");
+        assertEquals(cidade.getNome(), "Rio de Janeiro");
+        assertEquals(cidade.getEstado(), "RJ");
         assertEquals(cidade.getPais(), "Brasil");
     }
 
