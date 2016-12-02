@@ -24,43 +24,43 @@ public class CidadeTest extends SystemTest {
 
     @Test
     public void temAeroporto() {
-        Cidade cidadeComAeroporto = cidadeDao.findById(2);
-        Cidade cidadeSemAeroporto = cidadeDao.findById(1);
+        Cidade cidadeComAeroporto = cidadeDao.findById(1);
+        Cidade cidadeSemAeroporto = cidadeDao.findById(4);
         assertTrue(cidadeComAeroporto.temAeroporto());
         assertFalse(cidadeSemAeroporto.temAeroporto());
     }
 
     @Test
     public void getCidadesAdjacentes() {
-        Cidade cidade = cidadeDao.findById(2);
+        Cidade cidade = cidadeDao.findById(1);
         List<Cidade> cidadesAdjacentes = cidade.getCidadesAdjacentes();
-        int adjacentesCount = cidadesAdjacentes.stream().filter(c -> c.getId() == 1 || c.getId() == 3).collect(Collectors.toList()).size();
-        assertEquals(2, adjacentesCount);
+
+        int adjacentesCount = cidadesAdjacentes.stream().filter(c -> c.getId() == 2 || c.getId() == 3 || c.getId() == 4).collect(Collectors.toList()).size();
+        assertEquals(3, adjacentesCount);
     }
 
     @Test
     public void getTransportesToCidade() {
-        Cidade cidadeDeOrigem = cidadeDao.findById(2);
-        Cidade cidadeDeDestino = cidadeDao.findById(3);
+        Cidade cidadeDeOrigem = cidadeDao.findById(1);
+        Cidade cidadeDeDestino = cidadeDao.findById(2);
         List<Transporte> transportes = cidadeDeOrigem.getTransportesToCidade(cidadeDeDestino);
-        assertEquals(1, transportes.size());
-        assertEquals(4, transportes.get(0).getId());
+        assertEquals(3, transportes.size());
     }
 
     @Test
     public void getTransporteDePartidaByIid() {
-        Cidade cidade = cidadeDao.findById(2);
-        Transporte transporte = cidade.getTransporteDePartidaById(4);
+        Cidade cidade = cidadeDao.findById(1);
+        Transporte transporte = cidade.getTransporteDePartidaById(1);
         assertNotNull(transporte);
-        assertEquals(transporte.getId(), 4);
+        assertEquals(transporte.getId(), 1);
     }
 
     @Test
     public void getHotelById() {
-        Cidade cidade = cidadeDao.findById(2);
-        Hotel hotel = cidade.getHotelById(2);
+        Cidade cidade = cidadeDao.findById(1);
+        Hotel hotel = cidade.getHotelById(1);
         assertNotNull(hotel);
-        assertEquals(2, hotel.getID());
+        assertEquals(1, hotel.getID());
     }
 
 }

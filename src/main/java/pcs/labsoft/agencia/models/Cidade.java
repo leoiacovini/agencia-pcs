@@ -80,7 +80,7 @@ public class Cidade {
     }
 
     public List<Cidade> getCidadesAdjacentes() {
-        return getTransportesDePartida().stream().map(Transporte::getCidadeDeChegada).collect(Collectors.toList());
+        return new ArrayList(getTransportesDePartida().stream().map(Transporte::getCidadeDeChegada).collect(Collectors.toSet()));
     }
 
     public List<Transporte> getTransportesToCidade(Cidade proximaCidade) {
