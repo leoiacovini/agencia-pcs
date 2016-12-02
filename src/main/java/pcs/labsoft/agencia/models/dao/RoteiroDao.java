@@ -59,12 +59,18 @@ public class RoteiroDao extends ModelDao {
                     CidadeDao cidadeDao = new CidadeDao(db);
                     Cidade cidade = cidadeDao.findById(cidadeId);
                     Hotel hotel;
+                    Transporte transporte;
+
                     if (hotelId == 0) {
                         hotel = null;
                     } else {
                         hotel = cidade.getHotelById(hotelId);
                     }
-                    Transporte transporte = cidade.getTransporteDePartidaById(transporteId);
+                    if (transporteId == 0) {
+                        transporte = null;
+                    } else {
+                        transporte = cidade.getTransporteDeChegadaById(transporteId);
+                    }
                     Trecho trecho = new Trecho(cidade, transporte, hotel, duracao, isTrechoInicial, trechoId);
                     roteiro.addTrecho(trecho);
                 }

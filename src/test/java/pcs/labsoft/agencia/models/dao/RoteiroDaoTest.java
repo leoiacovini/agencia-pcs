@@ -67,7 +67,7 @@ public class RoteiroDaoTest extends SystemTest {
         assertNotNull(roteiro);
         assertEquals(1, roteiro.getId());
         assertEquals(1, roteiro.getCliente().getId());
-        assertEquals(1830.0, roteiro.getValor(), 0.001); // 120 * 5  + 200 + 120 = 920
+        assertEquals(1740.0, roteiro.getValor(), 0.001); // 120 * 5  + 200 + 120 = 920
         assertEquals(2, roteiro.getTrechos().size());
         assertEquals(1, roteiro.getPagamento().getId());
         assertEquals(5, roteiro.getDuracao());

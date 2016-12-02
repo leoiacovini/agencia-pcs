@@ -19,7 +19,7 @@ public class RelatorioController extends HttpController {
     @HttpHandler(path = "/relatorio/vendas", method = "GET")
     public void getVendas(HttpRequest request, HttpServletResponse response) throws ServletException, IOException {
         RoteiroDao roteiroDao = new RoteiroDao(db);
-        List<Roteiro> roteiros =roteiroDao.loadAll();
+        List<Roteiro> roteiros = roteiroDao.loadAll();
         request.setAttribute("roteiros", roteiros);
         request.getRequestDispatcher("relatorio/vendas.jsp").forward(request, response);
     }

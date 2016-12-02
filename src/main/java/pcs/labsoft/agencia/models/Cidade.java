@@ -91,6 +91,10 @@ public class Cidade {
         return getTransportesDePartida().stream().filter(t -> t.getId() == transporteId).findFirst().get();
     }
 
+    public Transporte getTransporteDeChegadaById(int transporteId) {
+        return getTransportesDeChegada().stream().filter(t -> t.getId() == transporteId).findFirst().get();
+    }
+
     public Hotel getHotelById(int hotelId) {
         return getHoteis().stream().filter(h -> h.getID() == hotelId).findFirst().get();
     }
