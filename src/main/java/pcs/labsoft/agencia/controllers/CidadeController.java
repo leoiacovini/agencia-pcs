@@ -80,7 +80,13 @@ public class CidadeController extends HttpController {
         }
         String ok = "OK";
         request.setAttribute("Remocao", ok);
-        CRUDCidade(request, response);
+        try {
+            CRUDCidade(request, response);
+        } catch (ServletException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     @HttpHandler(path = "/cidades/:id/edit", method = "GET")
     public void editCidade(HttpRequest request, HttpServletResponse response) throws Exception{
@@ -114,25 +120,18 @@ public class CidadeController extends HttpController {
             e.printStackTrace();
         }
         request.setAttribute("Edicao", "OK");
-        CRUDCidade(request, response);
+        try {
+            CRUDCidade(request, response);
+        } catch (ServletException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @HttpHandler(path = "/managercidades", method = "GET")
-    public void CRUDCidade(HttpRequest request, HttpServletResponse response) {
-        try {
-            if (request.getAttribute("Adicao") == null) {
-                request.setAttribute("Adicao", "Null");
-            }
-            if (request.getAttribute("Remocao") == null) {
-                request.setAttribute("Remocao", "Null");
-            }
-            if (request.getAttribute("Edicao") == null) {
-                request.setAttribute("Edicao", "Null");
-            }
-            renderCRUDCidade(request).forward(request, response);
-        } catch (IOException | ServletException e) {
-            e.printStackTrace();
-        }
+    public void CRUDCidade(HttpRequest request, HttpServletResponse response) throws ServletException, IOException {
+                renderCRUDCidade(request).forward(request, response);
     }
 
     private RequestDispatcher renderCidadesList(HttpServletRequest servletRequest) {

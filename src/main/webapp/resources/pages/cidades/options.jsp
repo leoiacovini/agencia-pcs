@@ -27,13 +27,13 @@
         <input value="Voltar" type="submit">
     </form>
 
-    <% if (request.getAttribute("Adicao").equals("OK"))  { %>
+    <% if (request.getAttribute("Adicao") !=null && request.getAttribute("Adicao").equals("OK"))  { %>
        <jsp:text>Cidade criada com sucesso</jsp:text>
     <% } %>
-    <% if (request.getAttribute("Remocao").equals("OK"))  { %>
+    <% if (request.getAttribute("Remocao")!=null && request.getAttribute("Remocao").equals("OK"))  { %>
     <jsp:text>Cidade removida com sucesso</jsp:text>
     <% } %>
-    <% if (request.getAttribute("Edicao").equals("OK"))  { %>
+    <% if (request.getAttribute("Edicao") != null && request.getAttribute("Edicao").equals("OK"))  { %>
     <jsp:text>Cidade alterada com sucesso</jsp:text>
     <% } %>
     </body>

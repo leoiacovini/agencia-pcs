@@ -19,6 +19,11 @@ public class IndexController  extends HttpController {
         renderIndex(request).forward(request, response);
     }
 
+    @HttpHandler(path = "/index", method = "GET")
+    public void getIndex_2(HttpRequest request, HttpServletResponse response) throws ServletException, IOException {
+        renderIndex(request).forward(request, response);
+    }
+
     private RequestDispatcher renderIndex(HttpRequest servletRequest) {
         return servletRequest.getRequestDispatcher(getPagePath("index.jsp"));
     }
