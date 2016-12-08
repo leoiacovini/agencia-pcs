@@ -23,7 +23,7 @@ INSERT INTO hoteis (nome, preco, cidade_id, id) VALUES ('Emiliano Hotel', 370.0,
 // =================================================================================================================
 // transportes
 INSERT INTO transportes (tipo, preco, cidade_partida_id, cidade_chegada_id, id) VALUES ('trem', 110.0, 1, 2, 1);
-INSERT INTO transportes (tipo, preco, cidade_partida_id, cidade_chegada_id, id) VALUES ('rem', 200.0, 1, 4, 2);
+INSERT INTO transportes (tipo, preco, cidade_partida_id, cidade_chegada_id, id) VALUES ('trem', 200.0, 1, 4, 2);
 INSERT INTO transportes (tipo, preco, cidade_partida_id, cidade_chegada_id, id) VALUES ('onibus', 90.0, 1, 2, 3);
 INSERT INTO transportes (tipo, preco, cidade_partida_id, cidade_chegada_id, id) VALUES ('avião', 300.0, 1, 2, 4);
 INSERT INTO transportes (tipo, preco, cidade_partida_id, cidade_chegada_id, id) VALUES ('avião', 230.0, 1, 3, 5);
@@ -31,7 +31,7 @@ INSERT INTO transportes (tipo, preco, cidade_partida_id, cidade_chegada_id, id) 
 INSERT INTO transportes (tipo, preco, cidade_partida_id, cidade_chegada_id, id) VALUES ('trem', 240.0, 2, 1, 7);
 INSERT INTO transportes (tipo, preco, cidade_partida_id, cidade_chegada_id, id) VALUES ('trem', 110.0, 2, 3, 8);
 INSERT INTO transportes (tipo, preco, cidade_partida_id, cidade_chegada_id, id) VALUES ('onibus', 70.0, 2, 4, 9);
-INSERT INTO transportes (tipo, preco, cidade_partida_id, cidade_chegada_id, id) VALUES ('onibus', 100.0, 2, 2, 10);
+INSERT INTO transportes (tipo, preco, cidade_partida_id, cidade_chegada_id, id) VALUES ('onibus', 100.0, 2, 1, 10);
 INSERT INTO transportes (tipo, preco, cidade_partida_id, cidade_chegada_id, id) VALUES ('avião', 240.0, 2, 1, 11);
 INSERT INTO transportes (tipo, preco, cidade_partida_id, cidade_chegada_id, id) VALUES ('avião', 360.0, 2, 3, 12);
 INSERT INTO transportes (tipo, preco, cidade_partida_id, cidade_chegada_id, id) VALUES ('avião', 290.0, 2, 4, 13);
