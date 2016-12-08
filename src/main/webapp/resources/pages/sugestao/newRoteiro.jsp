@@ -50,7 +50,7 @@
     <input value="Voltar" type="submit">
 </form>
 <br />
-<% if (request.getAttribute("EqualsCity").equals("Iguais") )  { %>
+<% if (request.getAttribute("EqualsCity") != null && request.getAttribute("EqualsCity").equals("Iguais") )  { %>
 <p>Cidades origem e destino devem ser diferentes</p>
 <% } %>
 

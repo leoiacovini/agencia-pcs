@@ -1,5 +1,6 @@
 package pcs.labsoft.agencia.controllers;
 
+import pcs.labsoft.agencia.components.Logger;
 import pcs.labsoft.agencia.components.interceptors.AgenteRequired;
 import pcs.labsoft.agencia.components.interfaces.HttpController;
 import pcs.labsoft.agencia.misc.HttpHandler;
@@ -8,6 +9,8 @@ import pcs.labsoft.agencia.models.*;
 import pcs.labsoft.agencia.models.dao.CidadeDao;
 import pcs.labsoft.agencia.models.Cliente;
 import pcs.labsoft.agencia.models.dao.ClienteDao;
+import pcs.labsoft.agencia.models.graph.Graph;
+import pcs.labsoft.agencia.models.graph.Path;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletResponse;
@@ -34,9 +37,6 @@ public class SugestaoController extends HttpController{
         List<Cliente> clientes = clienteDao.getAllClientes();
         request.setAttribute("clientes", clientes);
         request.setAttribute("cidadesElegiveis", cidadesElegiveis);
-        if (request.getAttribute("EqualsCity") == null){
-            request.setAttribute("EqualsCity","null");
-        }
         request.getRequestDispatcher("sugestao/newRoteiro.jsp").forward(request, response);
     }
 
@@ -54,6 +54,7 @@ public class SugestaoController extends HttpController{
             int clienteId = Integer.parseInt(request.getParameter("clienteId"));
             Cliente cliente = new ClienteDao(db).getClienteById(clienteId);
             Cidade cidadeBase = cidadeDao.findById(cidadeBaseId);
+            Cidade cidadeFinal = cidadeDao.findById(cidadeFinalId);
             Funcionario funcionario = (Funcionario) session.getAttribute("funcionario");
             Roteiro roteiro = new Roteiro(cliente, funcionario);
             session.setAttribute("cidadeBase", cidadeBase);
@@ -61,8 +62,23 @@ public class SugestaoController extends HttpController{
             session.setAttribute("cliente", cliente);
             session.setAttribute("roteiro", roteiro);
             request.setAttribute("roteiro", roteiro);
+            Path path = makeRoteiro(cidadeBaseId,cidadeFinalId,roteiro);
+            Logger.getLogger().info("ola");
+            for (int i:path.getEdgesIds()) {
+                Logger.getLogger().info("message"+i);u ji8
+                
+            }
+
         }
     }
+
+    private Path makeRoteiro(int cidadeBaseId, int cidadefinalId, Roteiro roteiro){
+        List<Cidade> cidades = cidadeDao.loadAll();
+        Graph graph = Graph.buildFromCidades(cidades);
+        return graph.getShortestPath(cidadeBaseId, cidadefinalId);
+    }
+
+
 
 
     private void clearRoteiroSession(HttpSession session) {
