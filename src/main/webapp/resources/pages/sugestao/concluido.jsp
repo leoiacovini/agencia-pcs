@@ -1,9 +1,9 @@
 <%@ page import="pcs.labsoft.agencia.models.Roteiro" %>
 <%@ page import="pcs.labsoft.agencia.models.Trecho" %><%--
   Created by IntelliJ IDEA.
-  User: leoiacovini
-  Date: 26/11/16
-  Time: 21:53
+  User: scorpion
+  Date: 08/12/16
+  Time: 21:25
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -28,18 +28,19 @@
         <% } %>
         <p>Cidade: <%= trecho.getCidade().getNome() %></p>
         <% if(trecho.getTransporte() != null) { %>
-            <p>Transporte: <%= trecho.getTransporte().getTipo() %> de <%= trecho.getTransporte().getCidadeDePartida().getNome() %> para <%= trecho.getTransporte().getCidadeDeChegada().getNome() %></p>
+        <p>Transporte: <%= trecho.getTransporte().getTipo() %> de <%= trecho.getTransporte().getCidadeDePartida().getNome() %> para <%= trecho.getTransporte().getCidadeDeChegada().getNome() %></p>
         <% } %>
         <% if(trecho.getHotel() != null) { %>
-            <p>Hotel: <%= trecho.getHotel().getNome() %></p>
+        <p>Hotel: <%= trecho.getHotel().getNome() %></p>
         <% } %>
         <% if(trecho.getDuracao() != 0) { %>
-            <p>Duração: <%= trecho.getDuracao() %></p>
+        <p>Duração: <%= trecho.getDuracao() %></p>
         <% } %>
     </div>
     <% } %>
 </div>
 <br />
+
 <form method="GET" action="/AgenciaPCS/">
     <input value="Voltar" type="submit">
 </form>
