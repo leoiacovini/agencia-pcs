@@ -57,7 +57,7 @@ INSERT INTO pagamentos (forma, codigo_confirmacao, valor) VALUES ('cartao', '123
 
 // =================================================================================================================
 // roteiros
-INSERT INTO roteiros (duracao, funcionario_id, cliente_id, pagamento_id) VALUES (5, 1, 1, 1);
+INSERT INTO roteiros (duracao, funcionario_id, cliente_id, pagamento_id, numero_pessoas) VALUES (5, 1, 1, 1, 1);
 
 // =================================================================================================================
 // trechos

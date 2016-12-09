@@ -41,6 +41,8 @@
         <option value="<%= cliente.getId() %>"> <%= cliente.getNome() %> </option>
         <% } %>
     </select>
+    <p>Número de Pessoas</p>
+    <input type="number" name="numeroPessoas" />
     <br />
     <input type="submit" name="Selecionar" />
 </form>

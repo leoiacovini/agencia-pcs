@@ -24,7 +24,7 @@ import java.util.List;
 /**
  * Created by scorpion on 30/11/16.
  */
-public class SugestaoController extends HttpController{
+public class SugestaoController extends HttpController {
 
     private final CidadeDao cidadeDao;
 
@@ -49,31 +49,30 @@ public class SugestaoController extends HttpController{
         int cidadeBaseId = Integer.parseInt(request.getParameter("cidadeBaseId"));
         int cidadeFinalId = Integer.parseInt(request.getParameter("cidadeFinalId"));
 
-        if (cidadeBaseId==cidadeFinalId){
+        if (cidadeBaseId == cidadeFinalId) {
             request.setAttribute("EqualsCity","Iguais");
             newRoteiro(request,response);
-
         } else {
             int clienteId = Integer.parseInt(request.getParameter("clienteId"));
             Cliente cliente = new ClienteDao(db).getClienteById(clienteId);
             Cidade cidadeBase = cidadeDao.findById(cidadeBaseId);
             Cidade cidadeFinal = cidadeDao.findById(cidadeFinalId);
             Funcionario funcionario = (Funcionario) session.getAttribute("funcionario");
-            Roteiro roteiro = new Roteiro(cliente, funcionario);
+            int numeroPessoas = Integer.parseInt(request.getParameter("numeroPessoas"));
+            Roteiro roteiro = new Roteiro(cliente, funcionario, numeroPessoas);
             session.setAttribute("cidadeBase", cidadeBase);
             session.setAttribute("cidadeFinal", cidadeFinal);
             session.setAttribute("cidadeAtual", cidadeBase);
             session.setAttribute("cliente", cliente);
             session.setAttribute("roteiro", roteiro);
+            session.setAttribute("numeroPessoas", numeroPessoas);
             request.setAttribute("roteiro", roteiro);
-            roteiro = Roteiro.montaRoteiro(roteiro, cidadeBase,cidadeFinal,cidadeDao);
+            roteiro = Roteiro.montaRoteiro(roteiro, cidadeBase, cidadeFinal, cidadeDao);
             session.setAttribute("roteiro",roteiro);
             request.setAttribute("roteiro",roteiro);
             request.getRequestDispatcher("sugestao/roteiro.jsp").forward(request, response);
         }
     }
-
-
 
     @HttpHandler(path = "/sugestao/pagamento", method = "GET", interceptors = {AgenteRequired.class})
     public void pagamento(HttpRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -107,6 +106,7 @@ public class SugestaoController extends HttpController{
         session.removeAttribute("cidadeBase");
         session.removeAttribute("cidadeAtual");
         session.removeAttribute("transporte");
+        session.removeAttribute("numeroPessoas");
         session.removeAttribute("hotel");
         session.removeAttribute("roteiro");
         session.removeAttribute("duracao");

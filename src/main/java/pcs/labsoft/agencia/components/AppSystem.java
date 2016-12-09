@@ -76,8 +76,6 @@ public class AppSystem implements ServletContextListener {
         switch (env) {
             case "test": {
                 configFile = "test.conf";
-                this.h2Server = new H2Server();
-                h2Server.startServer();
                 break;
             }
             case "prod": {

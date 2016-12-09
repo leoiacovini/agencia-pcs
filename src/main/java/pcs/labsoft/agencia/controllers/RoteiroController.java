@@ -42,10 +42,12 @@ public class RoteiroController extends HttpController {
         HttpSession session = request.getSession();
         int cidadeBaseId = Integer.parseInt(request.getParameter("cidadeBaseId"));
         int clienteId = Integer.parseInt(request.getParameter("clienteId"));
+        int numeroPessoas = Integer.parseInt(request.getParameter("numeroPessoas"));
         Cliente cliente = new ClienteDao(db).getClienteById(clienteId);
         Cidade cidadeBase = cidadeDao.findById(cidadeBaseId);
         Funcionario funcionario = (Funcionario) session.getAttribute("funcionario");
-        Roteiro roteiro = new Roteiro(cliente, funcionario);
+        Roteiro roteiro = new Roteiro(cliente, funcionario, numeroPessoas);
+        session.setAttribute("numeroPessoas", numeroPessoas);
         session.setAttribute("cidadeBase", cidadeBase);
         session.setAttribute("cidadeAtual", cidadeBase);
         session.setAttribute("cliente", cliente);
@@ -172,6 +174,7 @@ public class RoteiroController extends HttpController {
     }
 
     private void clearRoteiroSession(HttpSession session) {
+        session.removeAttribute("numeroPessoas");
         session.removeAttribute("cidadeBase");
         session.removeAttribute("cidadeAtual");
         session.removeAttribute("transporte");

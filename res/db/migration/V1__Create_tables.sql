@@ -64,6 +64,7 @@ CREATE TABLE roteiros (
   funcionario_id INT NULL REFERENCES funcionarios(id) ON DELETE SET NULL,
   cliente_id INT NOT NULL REFERENCES clientes(id) ON DELETE CASCADE,
   pagamento_id INT REFERENCES pagamentos(id) ON DELETE CASCADE,
+  numero_pessoas INT,
   CONSTRAINT roteiros_cliente_fk
     FOREIGN KEY (cliente_id)
     REFERENCES clientes(id)

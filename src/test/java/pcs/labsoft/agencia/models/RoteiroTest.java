@@ -33,15 +33,19 @@ public class RoteiroTest {
 
     @Test
     public void getValor() {
-        Roteiro roteiro = new Roteiro(cliente, funcionario);
+        Roteiro roteiro = new Roteiro(cliente, funcionario, 1);
         roteiro.addTrecho(trechoInicial);
         roteiro.addTrecho(trecho2);
         assertEquals(550.0, roteiro.getValor(), 0.0001);
+        roteiro = new Roteiro(cliente, funcionario, 2);
+        roteiro.addTrecho(trechoInicial);
+        roteiro.addTrecho(trecho2);
+        assertEquals(1100.0, roteiro.getValor(), 0.0001);
     }
 
     @Test
     public void getDuracao() {
-        Roteiro roteiro = new Roteiro(cliente, funcionario);
+        Roteiro roteiro = new Roteiro(cliente, funcionario, 1);
         roteiro.addTrecho(trechoInicial);
         roteiro.addTrecho(trecho2);
         roteiro.addTrecho(trecho3);

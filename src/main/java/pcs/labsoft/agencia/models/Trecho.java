@@ -49,12 +49,12 @@ public class Trecho {
         return duracao;
     }
 
-    public Double getValor() {
+    public Double getValor(int numeroPessoas) {
         if (hotel != null) {
-            return transporte.getPreco() + (hotel.getPreco() * duracao);
+            return numeroPessoas * (transporte.getPreco() + (hotel.getPreco() * duracao));
         } else {
             if (transporte != null) {
-                return transporte.getPreco();
+                return numeroPessoas * transporte.getPreco();
             } else {
                 return 0.0;
             }

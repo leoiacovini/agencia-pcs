@@ -24,7 +24,7 @@ public class RoteiroDaoTest extends SystemTest {
         FuncionarioDao funcionarioDao = new FuncionarioDao(system.getDataBase());
         Funcionario funcionario = funcionarioDao.getByUsername("fulano");
 
-        Roteiro roteiro = new Roteiro(cliente, funcionario);
+        Roteiro roteiro = new Roteiro(cliente, funcionario, 1);
 
         Cidade cidadeBase = cidadeDao.getCidadesComAeroporto().get(0);
         List<Cidade> cidadesAdjacentes = cidadeBase.getCidadesAdjacentes();
@@ -67,7 +67,7 @@ public class RoteiroDaoTest extends SystemTest {
         assertNotNull(roteiro);
         assertEquals(1, roteiro.getId());
         assertEquals(1, roteiro.getCliente().getId());
-        assertEquals(1740.0, roteiro.getValor(), 0.001); // 120 * 5  + 200 + 120 = 920
+        assertEquals(1740.0, roteiro.getValor(), 0.001);
         assertEquals(2, roteiro.getTrechos().size());
         assertEquals(1, roteiro.getPagamento().getId());
         assertEquals(5, roteiro.getDuracao());

@@ -31,7 +31,7 @@ public class RoteiroDao extends ModelDao {
                 int pagamentoid = roteirosRs.getInt("pagamento_id");
                 int funcionarioId = roteirosRs.getInt("funcionario_id");
                 int roteiroId = roteirosRs.getInt("id");
-
+                int numeroPessoas = roteirosRs.getInt("numero_pessoas");
                 ClienteDao clienteDao = new ClienteDao(db);
                 Cliente cliente = clienteDao.getClienteById(clienteId);
 
@@ -41,7 +41,7 @@ public class RoteiroDao extends ModelDao {
                 PagamentoDao pagamentoDao = new PagamentoDao(db);
                 Pagamento pagamento = pagamentoDao.getById(pagamentoid);
 
-                Roteiro roteiro = new Roteiro(cliente, funcionario, roteiroId);
+                Roteiro roteiro = new Roteiro(cliente, funcionario, numeroPessoas, roteiroId);
                 roteiro.setPagamento(pagamento);
 
                 PreparedStatement trechoStatement = connection.prepareStatement("SELECT * FROM trechos WHERE roteiro_id = ?");
@@ -102,16 +102,17 @@ public class RoteiroDao extends ModelDao {
             if (storedPagamento == null) throw new SQLException("Pagamento não pode ser criado");
 
             // 2 - Create Roteiro
-            PreparedStatement roteiroStatement = connection.prepareStatement("INSERT INTO roteiros (duracao, funcionario_id, cliente_id, pagamento_id) VALUES (? ,? ,?, ?)");
+            PreparedStatement roteiroStatement = connection.prepareStatement("INSERT INTO roteiros (duracao, funcionario_id, cliente_id, pagamento_id, numero_pessoas) VALUES (? ,? ,?, ?, ?)");
             roteiroStatement.setInt(1, roteiro.getDuracao());
             roteiroStatement.setInt(2, roteiro.getFuncionario().getId());
             roteiroStatement.setInt(3, roteiro.getCliente().getId());
             roteiroStatement.setInt(4, storedPagamento.getId());
+            roteiroStatement.setInt(5, roteiro.getNumeroPessoas());
             roteiroStatement.executeUpdate();
             ResultSet roteiroRs = roteiroStatement.getGeneratedKeys();
             if (roteiroRs.next()) {
                 roteiroId = roteiroRs.getInt(1);
-                storedRoteiro = new Roteiro(roteiro.getCliente(), roteiro.getFuncionario(), roteiroId);
+                storedRoteiro = new Roteiro(roteiro.getCliente(), roteiro.getFuncionario(), roteiro.getNumeroPessoas(), roteiroId);
                 storedRoteiro.setPagamento(storedPagamento);
             } else {
                 throw new SQLException("Roteiro não pode ser criado");

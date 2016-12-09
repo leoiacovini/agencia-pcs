@@ -30,8 +30,10 @@ public class TrechoTest {
         Trecho trechoInicial = new Trecho(cidade, transporte, null, 0, true, 1);
         Trecho trecho2 = new Trecho(cidade2, transporte2, hotel, 4, false, 2);
 
-        assertEquals(200.0, trechoInicial.getValor(), 0.0001);
-        assertEquals(350.0, trecho2.getValor(), 0.0001);
+        assertEquals(200.0, trechoInicial.getValor(1), 0.0001);
+        assertEquals(400.0, trechoInicial.getValor(2), 0.0001);
+        assertEquals(350.0, trecho2.getValor(1), 0.0001);
+        assertEquals(700.0, trecho2.getValor(2), 0.0001);
     }
 
 }

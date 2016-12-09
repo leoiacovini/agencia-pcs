@@ -16,7 +16,7 @@ import pcs.labsoft.agencia.models.dao.RoteiroDao;
 /**
  * Created by scorpion on 08/12/16.
  */
-public class SugestaoTest extends SystemTest{
+public class SugestaoTest extends SystemTest {
     private static Cidade CidadeOrigem;
     private static Cidade CidadeDestino;
     private static Cliente cliente;
@@ -32,15 +32,12 @@ public class SugestaoTest extends SystemTest{
         FuncionarioDao funcionarioDao = new FuncionarioDao(system.getDataBase());
         funcionario = funcionarioDao.getByUsername("fulano");
 
-        Roteiro roteiro = new Roteiro(cliente, funcionario);
+        Roteiro roteiro = new Roteiro(cliente, funcionario, 1);
         roteiro = Roteiro.montaRoteiro(roteiro, cidadeOrigem,cidadeDestino,cidadeDao);
         assertNotNull(roteiro);
         assertEquals(cliente,roteiro.getCliente());
         assertEquals(3,roteiro.getTrechos().size());
         assertEquals(funcionario,roteiro.getFuncionario());
-
-
     }
-
 
 }
