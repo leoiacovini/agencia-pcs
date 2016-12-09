@@ -113,3 +113,4 @@ local.properties
 /tomcat.*/
 target/
 */target/*
+*.DS_STORE

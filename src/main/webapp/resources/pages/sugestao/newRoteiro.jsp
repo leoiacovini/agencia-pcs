@@ -41,6 +41,7 @@
         <option value="<%= cliente.getId() %>"> <%= cliente.getNome() %> </option>
         <% } %>
     </select>
+    <a href="/AgenciaPCS/clientes/registrar">Registrar Novo Cliente</a>
     <p>Número de Pessoas</p>
     <input type="number" name="numeroPessoas" />
     <br />

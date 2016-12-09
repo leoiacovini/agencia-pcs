@@ -28,8 +28,8 @@
         <% for(Cliente cliente : clientes) { %>
         <option value="<%= cliente.getId() %>"> <%= cliente.getNome() %> </option>
         <% } %>
-    <a href="/AgenciaPCS/clientes/registrar">Registrar Novo Cliente</a>
     </select>
+    <a href="/AgenciaPCS/clientes/registrar">Registrar Novo Cliente</a>
     <p>Número de Pessoas</p>
     <input type="number" name="numeroPessoas"/>
     <br />

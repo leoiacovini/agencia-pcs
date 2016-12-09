@@ -24,6 +24,7 @@
             <tr><td><input value="Cadastrar" type="submit"></td></tr>
         </table>
     </form>
-
+    <br />
+    <a href="/AgenciaPCS/">Voltar</a>
 </body>
 </html>
