@@ -3,6 +3,7 @@ INSERT INTO cidades (nome, estado, pais, id) VALUES ('Rio de Janeiro', 'RJ', 'Br
 INSERT INTO cidades (nome, estado, pais, id) VALUES ('Sao Paulo', 'SP', 'Brasil', 2);
 INSERT INTO cidades (nome, estado, pais, id) VALUES ('Salvador', 'BA', 'Brasil', 3);
 INSERT INTO cidades (nome, estado, pais, id) VALUES ('Porto Alegre', 'RS', 'Brasil', 4);
+INSERT INTO cidades (nome, estado, pais, id) VALUES ('Sergipe', 'PE', 'Brasil', 5);
 
 
 INSERT INTO hoteis (nome, preco, cidade_id, id) VALUES ('Mercure', 300.0, 1, 1);
@@ -18,6 +19,8 @@ INSERT INTO hoteis (nome, preco, cidade_id, id) VALUES ('Luz Plaza Hotel', 450.0
 INSERT INTO hoteis (nome, preco, cidade_id, id) VALUES ('Gran Estanplaza Berrin', 330.0, 2, 8);
 INSERT INTO hoteis (nome, preco, cidade_id, id) VALUES ('Ritter Hotel', 400.0, 4, 12);
 INSERT INTO hoteis (nome, preco, cidade_id, id) VALUES ('Emiliano Hotel', 370.0, 4, 13);
+INSERT INTO hoteis (nome, preco, cidade_id, id) VALUES ('Sergipe Hotel', 170.0, 5, 14);
+INSERT INTO hoteis (nome, preco, cidade_id, id) VALUES ('Pernambuco Hotel', 280.0, 5, 15);
 
 
 INSERT INTO transportes (tipo, preco, cidade_partida_id, cidade_chegada_id, id) VALUES ('trem', 110.0, 1, 2, 1);
@@ -40,7 +43,9 @@ INSERT INTO transportes (tipo, preco, cidade_partida_id, cidade_chegada_id, id) 
 INSERT INTO transportes (tipo, preco, cidade_partida_id, cidade_chegada_id, id) VALUES ('onibus', 120.0, 4, 1, 18);
 INSERT INTO transportes (tipo, preco, cidade_partida_id, cidade_chegada_id, id) VALUES ('onibus', 160.0, 4, 2, 19);
 INSERT INTO transportes (tipo, preco, cidade_partida_id, cidade_chegada_id, id) VALUES ('trem', 110.0, 4, 3, 20);
-
+INSERT INTO transportes (tipo, preco, cidade_partida_id, cidade_chegada_id, id) VALUES ('ônibus', 130.0, 3, 5, 21);
+INSERT INTO transportes (tipo, preco, cidade_partida_id, cidade_chegada_id, id) VALUES ('avião', 130.0, 5, 3, 22);
+INSERT INTO transportes (tipo, preco, cidade_partida_id, cidade_chegada_id, id) VALUES ('avião', 110.0, 3, 5, 23);
 
 INSERT INTO funcionarios (nome, username, encrypted_password, cargo) VALUES ('Fulano', 'fulano', '46070d4bf934fb0d4b06d9e2c46e346944e322444900a435d7d9a95e6d7435f5', 'agente');
 
