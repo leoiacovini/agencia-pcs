@@ -66,53 +66,14 @@ public class SugestaoController extends HttpController{
             session.setAttribute("cliente", cliente);
             session.setAttribute("roteiro", roteiro);
             request.setAttribute("roteiro", roteiro);
-            montaRoteiro(request,response);
+            roteiro = Roteiro.montaRoteiro(roteiro, cidadeBase,cidadeFinal,cidadeDao);
+            session.setAttribute("roteiro",roteiro);
+            request.setAttribute("roteiro",roteiro);
+            request.getRequestDispatcher("sugestao/roteiro.jsp").forward(request, response);
         }
     }
 
-    private void montaRoteiro(HttpRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        Graph graph;
-        int cityId;
-        int transpId=0;
-        Path path;
-        List<Cidade> cidades = cidadeDao.loadAll();
-        graph = Graph.buildFromCidades(cidades);
-        Cidade origem = (Cidade) session.getAttribute("cidadeBase");
-        Roteiro roteiro = (Roteiro) session.getAttribute("roteiro");
-        int cidadeBaseId = origem.getId();
-        int cidadeFinalId = ((Cidade) session.getAttribute("cidadeFinal")).getId();
-        path = graph.getShortestPath(cidadeBaseId,cidadeFinalId);
-        List<Integer> listcities = path.getNodesId();
-        List<Integer> listtransp = path.getEdgesIds();
-        for(int i:listcities){
-            Logger.getLogger().warn("Id Cidade: "+i);
-        }
-        for(int i:listtransp){
-            Logger.getLogger().warn("Id Transp: "+i);
-        }
-        Trecho trecho = new Trecho(origem, null, null, 0, true);
-        roteiro.addTrecho(trecho);
-        cityId=1;
-        while(cityId!=listcities.size()) {
-            Cidade cidadeAtual = cidadeDao.findById(listcities.get(cityId-1));
-            Cidade cidadeProx = cidadeDao.findById(listcities.get(cityId));
-            Transporte transporte =  cidadeAtual.getTransporteDePartidaById(listtransp.get(transpId));
-            Logger.getLogger().warn("Transp escolhido: "+transporte.getId());
-            List<Hotel> hoteis = cidadeProx.getHoteis();
-            Collections.sort(hoteis); // Ordena os hoteis por preço
-            Hotel hotel =cidadeProx.getHotelById(hoteis.get(hoteis.size()/2).getID());
-            Logger.getLogger().warn("Hotel escolhido: "+hotel.getID());
-            trecho = new Trecho(cidadeProx,transporte,hotel,5,false);
-            roteiro.addTrecho(trecho);
-            cityId++;
-            transpId++;
-        }
-        session.setAttribute("roteiro",roteiro);
-        request.setAttribute("roteiro",roteiro);
-        request.getRequestDispatcher("sugestao/roteiro.jsp").forward(request, response);
 
-    }
 
     @HttpHandler(path = "/sugestao/pagamento", method = "GET", interceptors = {AgenteRequired.class})
     public void pagamento(HttpRequest request, HttpServletResponse response) throws ServletException, IOException {
