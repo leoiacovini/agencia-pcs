@@ -57,14 +57,15 @@ public class AppSystem implements ServletContextListener {
     }
 
     public static void stopSystem() throws LifecycleException {
+        Logger.getLogger().info("Stopping System");
         if (AppSystem.getSystem().webServer != null) {
             AppSystem.system.webServer.stop();
         } else {
             AppSystem.getSystem().stop();
         }
-        Logger.getLogger().info("Stopping System");
         AppSystem.system = null;
         System.out.println();
+        Logger.getLogger().info("System stopped");
     }
 
     public AppSystem() {}
@@ -97,9 +98,6 @@ public class AppSystem implements ServletContextListener {
 
     private void stop() throws LifecycleException {
         DataBase.stop();
-        if (h2Server != null) {
-            h2Server.stopServer();
-        }
     }
 
     @Override
