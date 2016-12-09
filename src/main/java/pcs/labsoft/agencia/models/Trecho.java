@@ -7,7 +7,7 @@ public class Trecho {
 
     private final Cidade cidade;
     private final Transporte transporte;
-    private final Hotel hotel;
+    private Hotel hotel;
     private final boolean isTrechoInicial;
     private final int duracao;
     private final int id;
@@ -60,4 +60,9 @@ public class Trecho {
             }
         }
     }
+
+    public void updateHotel(Hotel hotel) {
+        this.hotel = hotel;
+    }
+
 }

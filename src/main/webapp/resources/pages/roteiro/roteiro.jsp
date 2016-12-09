@@ -16,7 +16,7 @@
 </head>
 <body>
 <h3>Montar Roteiro de viagem</h3>
-
+<% int index = 0; %>
 <% for(Trecho trecho: roteiro.getTrechos()) {%>
 
 <div style="border: medium solid black;">
@@ -29,6 +29,7 @@
     <% } %>
     <% if(trecho.getHotel() != null) { %>
         <p>Hotel: <%= trecho.getHotel().getNome() %></p>
+        <a href="/AgenciaPCS/roteiro/updateHotel/<%= index %>">Alterar Hotel</a>
     <% } %>
     <% if(trecho.getDuracao() != 0) { %>
         <p>Duração: <%= trecho.getDuracao() %></p>
@@ -36,6 +37,7 @@
 </div>
 
 <br />
+<% index++;  %>
 <% } %>
 
 <a href="/AgenciaPCS/roteiro/get-proxima-cidade"> Novo Trecho </a>

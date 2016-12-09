@@ -70,8 +70,38 @@ public class SugestaoController extends HttpController {
             roteiro = Roteiro.montaRoteiro(roteiro, cidadeBase, cidadeFinal, cidadeDao);
             session.setAttribute("roteiro",roteiro);
             request.setAttribute("roteiro",roteiro);
-            request.getRequestDispatcher("sugestao/roteiro.jsp").forward(request, response);
+            response.sendRedirect("/AgenciaPCS/sugestao/roteiro");
         }
+    }
+
+    @HttpHandler(path = "/sugestao/roteiro", method = "GET", interceptors = {AgenteRequired.class})
+    public void roteiro(HttpRequest request, HttpServletResponse response) throws ServletException, IOException {
+        request.setAttribute("roteiro", request.getSession().getAttribute("roteiro"));
+        request.getRequestDispatcher("sugestao/roteiro.jsp").forward(request, response);
+    }
+
+    @HttpHandler(path = "/sugestao/updateHotel/:trechoIndex", method = "GET", interceptors = {AgenteRequired.class})
+    public void getUpdateHotel(HttpRequest request, HttpServletResponse response) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        Roteiro roteiro = (Roteiro) session.getAttribute("roteiro");
+        int index = Integer.parseInt(request.getPathParam("trechoIndex"));
+        Trecho trecho = roteiro.getTrecho(index);
+        List<Hotel> hotelList = trecho.getCidade().getHoteis();
+        request.setAttribute("hoteis", hotelList);
+        request.setAttribute("trechoIndex", index);
+        request.getRequestDispatcher("sugestao/updateHotel.jsp").forward(request, response);
+    }
+
+    @HttpHandler(path = "/sugestao/updateHotel/:trechoIndex", method = "POST", interceptors = {AgenteRequired.class})
+    public void updateHotel(HttpRequest request, HttpServletResponse response) throws IOException {
+        HttpSession session = request.getSession();
+        Roteiro roteiro = (Roteiro) session.getAttribute("roteiro");
+        int index = Integer.parseInt(request.getPathParam("trechoIndex"));
+        int hotelId = Integer.parseInt(request.getParameter("hotelId"));
+        Trecho trecho = roteiro.getTrecho(index);
+        Hotel hotel = trecho.getCidade().getHotelById(hotelId);
+        trecho.updateHotel(hotel);
+        response.sendRedirect("/AgenciaPCS/sugestao/roteiro");
     }
 
     @HttpHandler(path = "/sugestao/pagamento", method = "GET", interceptors = {AgenteRequired.class})

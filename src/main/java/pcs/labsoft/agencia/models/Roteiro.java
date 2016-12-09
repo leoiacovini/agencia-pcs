@@ -117,4 +117,8 @@ public class Roteiro {
     public int getNumeroPessoas() {
         return this.numeroPessoas;
     }
+
+    public Trecho getTrecho(int index) {
+        return this.trechos.get(index);
+    }
 }

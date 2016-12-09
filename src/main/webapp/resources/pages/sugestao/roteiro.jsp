@@ -14,25 +14,26 @@
 </head>
 <body>
 <h3>Roteiro de viagem sugerido</h3>
-
+<% int index = 0; %>
 <% for(Trecho trecho: roteiro.getTrechos()) {%>
 
 <div style="border: medium solid black;">
     <% if(trecho.isTrechoInicial()) { %>
     <h3>Trecho Inicial (Cidade Base)</h3>
     <% } %>
-    <p>Cidade: <%= trecho.getCidade().getNome() %></p>
+        <p>Cidade: <%= trecho.getCidade().getNome() %></p>
     <% if(trecho.getTransporte() != null) { %>
-    <p>Transporte: <%= trecho.getTransporte().getTipo() %> de <%= trecho.getTransporte().getCidadeDePartida().getNome() %> para <%= trecho.getTransporte().getCidadeDeChegada().getNome() %></p>
+        <p>Transporte: <%= trecho.getTransporte().getTipo() %> de <%= trecho.getTransporte().getCidadeDePartida().getNome() %> para <%= trecho.getTransporte().getCidadeDeChegada().getNome() %></p>
     <% } %>
     <% if(trecho.getHotel() != null) { %>
-    <p>Hotel: <%= trecho.getHotel().getNome() %></p>
+        <p>Hotel: <%= trecho.getHotel().getNome() %></p>
+        <a href="/AgenciaPCS/sugestao/updateHotel/<%= index %>">Alterar Hotel</a>
     <% } %>
     <% if(trecho.getDuracao() != 0) { %>
-    <p>Duração: <%= trecho.getDuracao() %></p>
+        <p>Duração: <%= trecho.getDuracao() %></p>
     <% } %>
 </div>
-
+<% index++;  %>
 <br />
 <% } %>
 <br/>
